@@ -1,2 +1,20 @@
 import axios, { AxiosRequestConfig, AxiosResponseHeaders } from 'axios';
 import { v4 as uuid } from 'uuid';
+
+import { AIPacaApi } from './AIPacaApi'
+import { BlockApi } from './blockApi'
+import { CallApi } from './callApi'
+import { CassandraApi } from './cassandraApi'
+import { ChatApi } from './chatApi'
+import { ConfigApi } from './configApi'
+import { GameApi } from './gameApi'
+import { GiftApi } from './giftApi'
+import { GroupApi } from './groupApi'
+import { HiddenApi } from './hiddenApi'
+import { LoginApi } from './loginApi'
+import { MiscApi } from './miscApi'
+import { MuteKeywordApi } from './muteKeywordApi'
+import { PostApi } from './postApi'
+import { ReviewApi } from './reviewApi'
+import { ThreadApi } from './threadApi'
+import { UserApi } from './userApi'
