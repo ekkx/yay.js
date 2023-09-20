@@ -1,3 +1,3 @@
 export class ChatApi {
-    constructor() {}
+  constructor() {}
 }

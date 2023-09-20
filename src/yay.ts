@@ -1,20 +1,17 @@
-import axios, { AxiosRequestConfig, AxiosResponseHeaders } from 'axios';
-import { v4 as uuid } from 'uuid';
-
-import { AIPacaApi } from './lib/AIPacaApi'
-import { BlockApi } from './lib/blockApi'
-import { CallApi } from './lib/callApi'
-import { CassandraApi } from './lib/cassandraApi'
-import { ChatApi } from './lib/chatApi'
-import { ConfigApi } from './lib/configApi'
-import { GameApi } from './lib/gameApi'
-import { GiftApi } from './lib/giftApi'
-import { GroupApi } from './lib/groupApi'
-import { HiddenApi } from './lib/hiddenApi'
-import { LoginApi } from './lib/loginApi'
-import { MiscApi } from './lib/miscApi'
-import { MuteKeywordApi } from './lib/muteKeywordApi'
-import { PostApi } from './lib/postApi'
-import { ReviewApi } from './lib/reviewApi'
-import { ThreadApi } from './lib/threadApi'
-import { UserApi } from './lib/userApi'
+import { AIPacaApi } from './lib/AIPaca';
+import { BlockApi } from './lib/block';
+import { CallApi } from './lib/call';
+import { CassandraApi } from './lib/cassandra';
+import { ChatApi } from './lib/chat';
+import { ConfigApi } from './lib/config';
+import { GameApi } from './lib/game';
+import { GiftApi } from './lib/gift';
+import { GroupApi } from './lib/group';
+import { HiddenApi } from './lib/hidden';
+import { LoginApi } from './lib/login';
+import { MiscApi } from './lib/misc';
+import { MuteKeywordApi } from './lib/muteKeyword';
+import { PostApi } from './lib/post';
+import { ReviewApi } from './lib/review';
+import { ThreadApi } from './lib/thread';
+import { UserApi } from './lib/user';
