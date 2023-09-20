@@ -2,7 +2,8 @@
   "name": "yay-js",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "source": "./src/index.ts",
+  "main": "./build/index.js",
   "scripts": {
     "build": "rimraf ./lib && swc src --config-file .swcrc -d build && tsc --emitDeclarationOnly",
     "test": "echo \"Error: no test specified\" && exit 1"
