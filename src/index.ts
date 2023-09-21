@@ -1,1 +1,1 @@
-export * from './yay';
+export * from './client';
