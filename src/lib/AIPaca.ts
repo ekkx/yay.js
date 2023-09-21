@@ -1,3 +1,5 @@
+import { REST } from '../rest';
+
 export class AIPacaApi {
-    constructor() {}
+  public constructor(private readonly rest: REST) {}
 }

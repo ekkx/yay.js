@@ -1,3 +1,5 @@
+import { REST } from '../rest';
+
 export class ThreadApi {
-    constructor() {}
+  public constructor(private readonly rest: REST) {}
 }
