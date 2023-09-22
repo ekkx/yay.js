@@ -3,5 +3,5 @@
 ### Installation
 
 ```bash
-npm install yay-js
+npm install yay.js
 ```

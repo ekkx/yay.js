@@ -72,9 +72,53 @@ export interface RequestHeaders {
  * リクエストを送信する際のAPIメソッド
  */
 export enum RequestMethod {
-  Delete = 'DELETE',
-  Get = 'GET',
-  Patch = 'PATCH',
-  Post = 'POST',
-  Put = 'PUT',
+  delete = 'DELETE',
+  get = 'GET',
+  patch = 'PATCH',
+  post = 'POST',
+  put = 'PUT',
+}
+
+/**
+ * 投稿のタイプ
+ */
+export enum PostType {
+  text = 'text',
+  media = 'media',
+  image = 'image',
+  video = 'video',
+  survey = 'survey',
+  call = 'call',
+  shareable_url = 'shareable_url',
+}
+
+/**
+ * 通話のタイプ
+ */
+export enum CallType {
+  voice = 'voice',
+  video = 'vdo',
+}
+
+/**
+ * 画像のタイプ
+ */
+export enum ImageType {
+  post = 'post',
+  chatMessage = 'chat_message',
+  chatBackground = 'chat_background',
+  report = 'report',
+  userAvatar = 'user_avatar',
+  userCover = 'user_cover',
+  groupIcon = 'group_icon',
+  groupCover = 'group_cover',
+  groupThreadIcon = 'group_thread_icon',
+}
+
+/**
+ * 共有のタイプ
+ */
+export enum ShareableType {
+  group = 'group',
+  thread = 'thread',
 }
