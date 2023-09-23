@@ -1,20 +1,20 @@
 import { AIPacaApi } from '../lib/AIPaca';
-import { BlockApi } from '../lib/block';
-import { CallApi } from '../lib/call';
-import { CassandraApi } from '../lib/cassandra';
-import { ChatApi } from '../lib/chat';
-import { ConfigApi } from '../lib/config';
-import { GameApi } from '../lib/game';
-import { GiftApi } from '../lib/gift';
-import { GroupApi } from '../lib/group';
-import { HiddenApi } from '../lib/hidden';
-import { LoginApi } from '../lib/login';
-import { MiscApi } from '../lib/misc';
-import { MuteKeywordApi } from '../lib/muteKeyword';
-import { PostApi } from '../lib/post';
-import { ReviewApi } from '../lib/review';
-import { ThreadApi } from '../lib/thread';
-import { UserApi } from '../lib/user';
+import { BlockApi } from '../lib/Block';
+import { CallApi } from '../lib/Call';
+import { CassandraApi } from '../lib/Cassandra';
+import { ChatApi } from '../lib/Chat';
+import { ConfigApi } from '../lib/Config';
+import { GameApi } from '../lib/Game';
+import { GiftApi } from '../lib/Gift';
+import { GroupApi } from '../lib/Group';
+import { HiddenApi } from '../lib/Hidden';
+import { LoginApi } from '../lib/Login';
+import { MiscApi } from '../lib/Misc';
+import { MuteKeywordApi } from '../lib/MuteKeyword';
+import { PostApi } from '../lib/Post';
+import { ReviewApi } from '../lib/Review';
+import { ThreadApi } from '../lib/Thread';
+import { UserApi } from '../lib/User';
 
 import { REST } from '../rest';
 
