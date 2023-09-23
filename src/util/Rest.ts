@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { v4 as uuid } from 'uuid';
 
 import { RequestMethod } from './Types';
-import type { RESTOptions, RequestHeaders } from './Types';
+import { RESTOptions, RequestHeaders } from './Types';
 import { BASE_API_URL } from './Constants';
 import {
 	AuthenticationError,
@@ -37,9 +37,16 @@ export class REST {
 	public async request(
 		method: RequestMethod,
 		route: string,
+		requireAuth: boolean,
 		params?: Record<string, any>,
 		json?: Record<string, any>,
+		headers?: RequestHeaders,
 	): Promise<any> {
+		// if (requireAuth) {
+
+		// 	headers?.Authorization
+		// }
+
 		const config: AxiosRequestConfig = {
 			method,
 			url: this.host + route,

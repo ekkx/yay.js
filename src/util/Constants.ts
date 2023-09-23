@@ -6,10 +6,10 @@ export const API_VERSION_KEY = 'a9551e9986e04937b68dfd4d9e1343e0';
 export const API_VERSION_NAME = '3.24';
 export const VERSION_NAME = '3.24.0';
 
-export const BASE_API_URL = 'https://api.yay.space';
-export const BASE_CASSANDRA_URL = 'https://cas.yay.space';
-export const BASE_CONFIG_URL = 'https://settings.yay.space';
-export const WEB_SOCKET_URL = 'wss://cable.yay.space';
+export const BASE_API_URL = 'https://api.yay.space/';
+export const BASE_CASSANDRA_URL = 'https://cas.yay.space/';
+export const BASE_CONFIG_URL = 'https://settings.yay.space/';
+export const WEB_SOCKET_URL = 'wss://cable.yay.space/';
 
 export const DEFAULT_DEVICE = {
 	deviceType: 'android',

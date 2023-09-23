@@ -86,6 +86,15 @@ export interface ClientOptions {
 	cookie_filename: string;
 }
 
+export interface GetBlockedUsersOptions {
+	nickname?: string;
+	username?: string;
+	biography?: string;
+	prefecture?: string;
+	gender?: number;
+	fromId?: number;
+}
+
 /**
  * リクエストを送信する際のヘッダー情報
  */
