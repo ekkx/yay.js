@@ -1,4 +1,4 @@
-import { REST } from '../util/rest';
+import { REST } from '../util/reste';
 
 export class BlockApi {
   public constructor(private readonly rest: REST) {}
