@@ -11,5 +11,6 @@
 	},
 	"jest.autoRun": {},
 	"deno.enable": false,
-	"prettier.tabWidth": 4
+	"prettier.tabWidth": 4,
+	"prettier.printWidth": 120
 }

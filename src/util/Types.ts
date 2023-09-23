@@ -1,21 +1,63 @@
+import { AxiosProxyConfig, AxiosHeaders } from 'axios';
+
 /**
- * REST インスタンスを作成するときの引数
+ * RESTインスタンスを作成するときの引数
  */
 export interface RESTOptions {
 	/**
+	 * APIのベースエンドポイント
+	 *
+	 * @defaultValue `https://api.yay.space`
+	 */
+	host: string;
+	/**
 	 * プロキシのアドレス
 	 */
-	proxy: string | null;
+	proxy?: AxiosProxyConfig;
+	/**
+	 * リクエストの待機時間
+	 *
+	 * @defaultValue `30` 秒
+	 */
+	timeout: number;
+	/**
+	 * リクエストヘッダー
+	 *
+	 * @defaultValue `AxiosHeaders` or `object`
+	 */
+	headers?: AxiosHeaders;
+}
+
+/**
+ * Clientインスタンスを作成するときの引数
+ */
+export interface ClientOptions {
+	/**
+	 * APIのベースエンドポイント
+	 *
+	 * @defaultValue `https://api.yay.space`
+	 */
+	host: string;
+	/**
+	 * プロキシのアドレス
+	 */
+	proxy?: AxiosProxyConfig;
+	/**
+	 * リクエストの待機時間
+	 *
+	 * @defaultValue `30` 秒
+	 */
+	timeout: number;
 	/**
 	 * リクエストの最大リトライ回数
 	 *
-	 * @defaultValue `3`
+	 * @defaultValue `3` 回
 	 */
 	max_retries: number;
 	/**
 	 * リトライ待機時間の増加割合係数
 	 *
-	 * @defaultValue `1.5`
+	 * @defaultValue `1.5` 倍
 	 */
 	backoff_factor: number;
 	/**
@@ -24,12 +66,6 @@ export interface RESTOptions {
 	 * @defaultValue `true`
 	 */
 	wait_on_rate_limit: boolean;
-	/**
-	 * リクエストの待機時間
-	 *
-	 * @defaultValue `30`
-	 */
-	timeout: number;
 	/**
 	 * クッキーを保存するかどうか
 	 *
@@ -72,11 +108,18 @@ export interface RequestHeaders {
  * リクエストを送信する際のAPIメソッド
  */
 export enum RequestMethod {
-	delete = 'DELETE',
-	get = 'GET',
-	patch = 'PATCH',
-	post = 'POST',
-	put = 'PUT',
+	DELETE = 'DELETE',
+	GET = 'GET',
+	PATCH = 'PATCH',
+	POST = 'POST',
+	PUT = 'PUT',
+}
+
+export interface ErrorResponse {
+	result: string;
+	message: string;
+	error_code: number;
+	ban_until: number | null;
 }
 
 /**
