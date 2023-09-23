@@ -8,5 +8,5 @@ import type { RequestHeaders } from './Types';
  * Represents the class that manages handlers for endpoints
  */
 export class REST {
-  public constructor() {}
+	public constructor() {}
 }

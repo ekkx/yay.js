@@ -1,5 +1,5 @@
 import { REST } from '../util/Rest';
 
 export class GroupApi {
-  public constructor(private readonly rest: REST) {}
+	public constructor(private readonly rest: REST) {}
 }
