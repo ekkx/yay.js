@@ -10,3 +10,11 @@ export const BASE_API_URL = 'https://api.yay.space';
 export const BASE_CASSANDRA_URL = 'https://cas.yay.space';
 export const BASE_CONFIG_URL = 'https://settings.yay.space';
 export const WEB_SOCKET_URL = 'wss://cable.yay.space';
+
+export const DEFAULT_DEVICE = {
+	deviceType: 'android',
+	osVersion: '11',
+	screenDensity: '3.5',
+	screenSize: '1440x2960',
+	model: 'Galaxy S9',
+};
