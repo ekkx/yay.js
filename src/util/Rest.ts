@@ -12,7 +12,7 @@ import {
 	NotFoundError,
 	RateLimitError,
 	ServerError,
-} from './Errors';
+} from '../lib/Errors';
 
 /**
  * Represents the class that manages handlers for endpoints

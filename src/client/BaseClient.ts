@@ -1,5 +1,5 @@
 import { RequestMethod } from '../util/Types';
-import { AuthenticationError } from '../util/Errors';
+import { AuthenticationError } from '../lib/Errors';
 
 import { REST } from '../util/Rest';
 
