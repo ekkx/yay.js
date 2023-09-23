@@ -16,7 +16,7 @@ import { ReviewApi } from '../lib/Review';
 import { ThreadApi } from '../lib/Thread';
 import { UserApi } from '../lib/User';
 
-import { REST } from '../util/rest';
+import { REST } from '../util/Rest';
 
 export class Client {
   public readonly AIPaca: AIPacaApi;
