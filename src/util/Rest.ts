@@ -1,4 +1,4 @@
-import axios, { AxiosHeaders, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { v4 as uuid } from 'uuid';
 
 import { RequestMethod } from './Types';
@@ -35,44 +35,41 @@ export class REST {
 	}
 
 	public async request(
-		method: string,
+		method: RequestMethod,
 		route: string,
 		params?: Record<string, any>,
 		json?: Record<string, any>,
 	): Promise<any> {
+		const config: AxiosRequestConfig = {
+			method,
+			url: this.host + route,
+			params: params,
+			data: json,
+		};
+
 		try {
-			const config: AxiosRequestConfig = {
-				method,
-				url: this.host + route,
-				params: params,
-				data: json,
-			};
-
 			const response: AxiosResponse = await this.api(config);
+			const { status, data } = response;
 
-			if (response.status === 400) {
-				throw new BadRequestError(response.data);
-			}
-			if (response.status === 401) {
-				throw new AuthenticationError(response.data);
-			}
-			if (response.status === 403) {
-				throw new ForbiddenError(response.data);
-			}
-			if (response.status === 404) {
-				throw new NotFoundError(response.data);
-			}
-			if (response.status === 429) {
-				throw new RateLimitError(response.data);
-			}
-			if (response.status === 500) {
-				throw new ServerError(response.data);
-			}
-
-			if (200 <= response.status && response.status < 300) {
-				return response.data;
-			} else {
-				throw new HTTPError(response.data);
+			switch (status) {
+				case 400:
+					throw new BadRequestError(data);
+				case 401:
+					throw new AuthenticationError(data);
+				case 403:
+					throw new ForbiddenError(data);
+				case 404:
+					throw new NotFoundError(data);
+				case 429:
+					throw new RateLimitError(data);
+				case 500:
+					throw new ServerError(data);
+				default:
+					if (status >= 200 && status < 300) {
+						return data;
+					} else {
+						throw new HTTPError(data);
+					}
 			}
 		} catch (error) {
 			throw error;
