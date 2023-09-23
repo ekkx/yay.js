@@ -48,23 +48,3 @@ export class BlockApi {
 	};
 }
 
-const rest = new REST();
-const block = new BlockApi(rest);
-
-const main = async () => {
-	const rest = new REST();
-	const block = new BlockApi(rest);
-
-	await block.getBlockedUsers({ nickname: 'hello' });
-
-	const threadsAPI = new ThreadsAPI({
-		username: '_junhoyeo', // Your username
-		password: 'PASSWORD', // Your password
-	});
-
-	await threadsAPI.publish({
-		text: '🤖 Hello World',
-	});
-};
-
-main();
