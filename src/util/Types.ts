@@ -1,7 +1,7 @@
 import { AxiosProxyConfig } from 'axios';
 
 /**
- * RESTクラスreq関数の引数
+ * RESTクラスのrequest関数の引数
  */
 export interface RESTOptions {
 	method: RequestMethod;
@@ -9,6 +9,8 @@ export interface RESTOptions {
 	requireAuth: boolean;
 	params?: Record<string, any>;
 	json?: Record<string, any>;
+	baseURL?: string;
+	accessToken?: string;
 	headers?: RequestHeaders;
 }
 
