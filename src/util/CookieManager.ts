@@ -20,14 +20,15 @@ export class CookieManager {
 	private accessToken: string = '';
 	private refreshToken: string = '';
 
-	private ENCRYPTION_KEY: string | undefined;
+	private encryptionKey: string | undefined;
 
-	public constructor(encryptEnabled: boolean, fileName: string, filePath?: string) {
+	public constructor(encryptEnabled: boolean, fileName: string, password?: string, filePath?: string) {
 		this.algorithm = 'aes-256-ctr';
 		this.encryptEnabled = encryptEnabled;
 		this.fileName = filePath ? `${filePath}/${fileName}` : fileName;
+		this.encryptionKey = password;
 
-		if (this.encryptEnabled) {
+		if (this.encryptEnabled && !this.encryptionKey) {
 			this.setEncryptionKey();
 		}
 	}
@@ -38,7 +39,7 @@ export class CookieManager {
 			output: process.stdout,
 		});
 
-		this.ENCRYPTION_KEY = await new Promise<string>((resolve) => {
+		this.encryptionKey = await new Promise<string>((resolve) => {
 			rl.question('パスワードを設定してください: ', (key) => {
 				rl.close();
 				resolve(key);
@@ -47,9 +48,9 @@ export class CookieManager {
 	}
 
 	private encrypt(text: string): string {
-		if (this.ENCRYPTION_KEY) {
+		if (this.encryptionKey) {
 			const iv = crypto.randomBytes(16);
-			const cipher = crypto.createCipheriv(this.algorithm, Buffer.from(this.ENCRYPTION_KEY, 'hex'), iv);
+			const cipher = crypto.createCipheriv(this.algorithm, Buffer.from(this.encryptionKey, 'hex'), iv);
 			let encrypted = cipher.update(text);
 			encrypted = Buffer.concat([encrypted, cipher.final()]);
 			return iv.toString('hex') + ':' + encrypted.toString('hex');
@@ -59,11 +60,11 @@ export class CookieManager {
 	}
 
 	private decrypt(text: string): string {
-		if (this.ENCRYPTION_KEY) {
+		if (this.encryptionKey) {
 			const textParts = text.split(':');
 			const iv = Buffer.from(textParts.shift() as string, 'hex');
 			const encryptedText = Buffer.from(textParts.join(':'), 'hex');
-			const decipher = crypto.createDecipheriv(this.algorithm, Buffer.from(this.ENCRYPTION_KEY, 'hex'), iv);
+			const decipher = crypto.createDecipheriv(this.algorithm, Buffer.from(this.encryptionKey, 'hex'), iv);
 			let decrypted = decipher.update(encryptedText);
 			decrypted = Buffer.concat([decrypted, decipher.final()]);
 			return decrypted.toString();
