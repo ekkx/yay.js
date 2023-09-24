@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosProxyConfig, AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { v4 as uuid } from 'uuid';
 
 import { RequestMethod } from './Types';
@@ -21,37 +21,35 @@ export class REST {
 	private host: string;
 	private api: AxiosInstance;
 
-	public constructor(private options: RESTOptions = { host: BASE_API_URL, timeout: 30 }) {
-		this.host = options.host;
+	public constructor(
+		host: string = 'https://api.yay.space',
+		timeout: number = 30,
+		proxy?: AxiosProxyConfig,
+		headers?: AxiosHeaders,
+	) {
+		this.host = host;
 		this.api = axios.create({
 			baseURL: this.host,
-			proxy: options.proxy || undefined,
-			timeout: options.timeout * 1000,
-			headers: options.headers,
+			proxy: proxy || undefined,
+			timeout: timeout * 1000,
+			headers: headers,
 			validateStatus: function (status) {
 				return true;
 			},
 		});
 	}
 
-	public async request(
-		method: RequestMethod,
-		route: string,
-		requireAuth: boolean,
-		params?: Record<string, any>,
-		json?: Record<string, any>,
-		headers?: RequestHeaders,
-	): Promise<any> {
+	public async request(options: RESTOptions): Promise<any> {
 		// if (requireAuth) {
 
 		// 	headers?.Authorization
 		// }
 
 		const config: AxiosRequestConfig = {
-			method,
-			url: this.host + route,
-			params: params,
-			data: json,
+			method: options.method,
+			url: this.host + options.route,
+			params: options.params,
+			data: options.json,
 		};
 
 		try {

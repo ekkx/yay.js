@@ -6,11 +6,15 @@ export class BlockApi {
 	public constructor(private readonly rest: REST) {}
 
 	blockUser = async (userId: number) => {
-		return await this.rest.request(RequestMethod.POST, `v1/users/${userId}/block`, true);
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v1/users/${userId}/block`,
+			requireAuth: true,
+		});
 	};
 
 	getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
-		return await this.rest.request(RequestMethod.GET, `v1/users/block_ids`, true);
+		return await this.rest.request({ method: RequestMethod.GET, route: `v1/users/block_ids`, requireAuth: true });
 	};
 
 	getBlockedUsers = async (options: GetBlockedUsersOptions): Promise<BlockedUsersResponse> => {
@@ -40,31 +44,19 @@ export class BlockApi {
 			params.from_id = options.fromId;
 		}
 
-		return await this.rest.request(RequestMethod.POST, `v2/users/blocked`, true, params);
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v2/users/blocked`,
+			requireAuth: true,
+			params: params,
+		});
 	};
 
 	unblockUser = async (userId: number) => {
-		return await this.rest.request(RequestMethod.GET, `v2/users/${userId}/unblock`, true);
+		return await this.rest.request({
+			method: RequestMethod.GET,
+			route: `v2/users/${userId}/unblock`,
+			requireAuth: true,
+		});
 	};
 }
-
-const rest = new REST();
-const block = new BlockApi(rest);
-
-const main = async () => {
-	const rest = new REST();
-	const block = new BlockApi(rest);
-
-	await block.getBlockedUsers({ nickname: 'hello' });
-
-	const threadsAPI = new ThreadsAPI({
-		username: '_junhoyeo', // Your username
-		password: 'PASSWORD', // Your password
-	});
-
-	await threadsAPI.publish({
-		text: '🤖 Hello World',
-	});
-};
-
-main();

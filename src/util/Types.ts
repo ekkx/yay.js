@@ -1,31 +1,15 @@
 import { AxiosProxyConfig, AxiosHeaders } from 'axios';
 
 /**
- * RESTインスタンスを作成するときの引数
+ * RESTクラスreq関数の引数
  */
 export interface RESTOptions {
-	/**
-	 * APIのベースエンドポイント
-	 *
-	 * @defaultValue `https://api.yay.space`
-	 */
-	host: string;
-	/**
-	 * プロキシのアドレス
-	 */
-	proxy?: AxiosProxyConfig;
-	/**
-	 * リクエストの待機時間
-	 *
-	 * @defaultValue `30` 秒
-	 */
-	timeout: number;
-	/**
-	 * リクエストヘッダー
-	 *
-	 * @defaultValue `AxiosHeaders` or `object`
-	 */
-	headers?: AxiosHeaders;
+	method: RequestMethod;
+	route: string;
+	requireAuth: boolean;
+	params?: Record<string, any>;
+	json?: Record<string, any>;
+	headers?: RequestHeaders;
 }
 
 /**
