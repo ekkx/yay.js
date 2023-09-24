@@ -10,6 +10,7 @@ const unlink = promisify(fs.unlink);
 export class CookieManager {
 	private algorithm: string;
 	private filePath: string;
+	private encryptionKey: Buffer | undefined;
 
 	private email: string = '';
 	private userId: number = 0;
@@ -17,8 +18,6 @@ export class CookieManager {
 	private deviceUuid: string = '';
 	private accessToken: string = '';
 	private refreshToken: string = '';
-
-	private encryptionKey: Buffer | undefined;
 
 	public constructor(filePath: string, password?: string) {
 		this.algorithm = 'aes-256-ctr';
@@ -49,13 +48,12 @@ export class CookieManager {
 
 	private decrypt(text: string): string {
 		if (this.encryptionKey) {
-			const textParts = text.split(':');
-			const iv = Buffer.from(textParts.shift() as string, 'hex');
-			const encryptedText = Buffer.from(textParts.join(':'), 'hex');
+			const [ivHex, encryptedTextHex] = text.split(':');
+			const iv = Buffer.from(ivHex, 'hex');
 			const decipher = crypto.createDecipheriv(this.algorithm, this.encryptionKey, iv);
-			let decrypted = decipher.update(encryptedText);
-			decrypted = Buffer.concat([decrypted, decipher.final()]);
-			return decrypted.toString();
+			let decrypted = decipher.update(encryptedTextHex, 'hex', 'utf-8');
+			decrypted += decipher.final('utf-8');
+			return decrypted;
 		} else {
 			throw new Error('パスワードが設定されていません。');
 		}
