@@ -93,15 +93,6 @@ export interface CookieOptionsDevice {
 	deviceUuid: string;
 }
 
-export interface GetBlockedUsersOptions {
-	nickname?: string;
-	username?: string;
-	biography?: string;
-	prefecture?: string;
-	gender?: number;
-	fromId?: number;
-}
-
 /**
  * リクエストを送信する際のヘッダー情報
  */
@@ -180,4 +171,32 @@ export enum ImageType {
 export enum ShareableType {
 	group = 'group',
 	thread = 'thread',
+}
+
+export interface GetBlockedUsersOptions {
+	nickname?: string;
+	username?: string;
+	biography?: string;
+	prefecture?: string;
+	gender?: number;
+	fromId?: number;
+}
+
+export interface GetCallInvitableUsersOptions {
+	call_id: number;
+	from_timestamp?: number;
+	nickname?: string;
+}
+
+export interface GetGamesOptions {
+	number: number;
+	from_id?: number;
+	ids: number[];
+}
+
+export interface GetGroupCallsOptions {
+	number?: number;
+	group_category_id?: number;
+	from_timestamp?: number;
+	scope?: string;
 }
