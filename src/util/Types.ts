@@ -1,4 +1,4 @@
-import { AxiosProxyConfig, AxiosHeaders } from 'axios';
+import { AxiosProxyConfig } from 'axios';
 
 /**
  * RESTクラスreq関数の引数
@@ -68,6 +68,27 @@ export interface ClientOptions {
 	 * @defaultValue `'cookie'`
 	 */
 	cookie_filename: string;
+}
+
+export interface CookieOptions {
+	authentication: CookieOptionsAuthentication;
+	user: CookieOptionsUser;
+	device: CookieOptionsDevice;
+}
+
+export interface CookieOptionsAuthentication {
+	accessToken: string;
+	refreshToken: string;
+}
+
+export interface CookieOptionsUser {
+	userId: number;
+	email: string;
+	uuid: string;
+}
+
+export interface CookieOptionsDevice {
+	deviceUuid: string;
 }
 
 export interface GetBlockedUsersOptions {
