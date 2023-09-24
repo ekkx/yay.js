@@ -1,4 +1,4 @@
-import { GetGamesOptions, GetCallInvitableUsersOptions, RequestMethod, GetGroupCallsOptions } from '../util/Types';
+import { RequestMethod } from '../util/Types';
 import { REST } from '../util/Rest';
 import {
 	PostResponse,
@@ -48,20 +48,19 @@ export class CallApi {
 		});
 	};
 
-	getCallInvitableUsers = async (options: GetCallInvitableUsersOptions): Promise<UsersByTimestampResponse> => {
+	getCallInvitableUsers = async (
+		call_id: number,
+		from_timestamp?: number,
+		nickname?: string,
+	): Promise<UsersByTimestampResponse> => {
 		const params: Record<string, any> = {};
 
-		if (options.from_timestamp) {
-			params.from_timestamp = options.from_timestamp;
-		}
-
-		if (options.nickname) {
-			params.nickname = options.nickname;
-		}
+		if (from_timestamp) params.from_timestamp = from_timestamp;
+		if (nickname) params.nickname = nickname;
 
 		return await this.rest.request({
 			method: RequestMethod.GET,
-			route: `v1/calls/conferences/${options.call_id}`,
+			route: `v1/calls/conferences/${call_id}`,
 			requireAuth: false,
 			params: params,
 		});
@@ -75,15 +74,13 @@ export class CallApi {
 		});
 	};
 
-	getGames = async (options: GetGamesOptions): Promise<GamesResponse> => {
+	getGames = async (number: number, ids: number[], from_id?: number): Promise<GamesResponse> => {
 		const params: Record<string, any> = {};
 
-		params.number = options.number;
-		params['ids[]'] = options.ids;
+		params.number = number;
+		params['ids[]'] = ids;
 
-		if (options.from_id) {
-			params.from_id = options.from_id;
-		}
+		if (from_id) params.from_id = from_id;
 
 		return await this.rest.request({
 			method: RequestMethod.GET,
@@ -97,9 +94,7 @@ export class CallApi {
 		const params: Record<string, any> = {};
 		params.number = number;
 
-		if (from) {
-			params.from = from;
-		}
+		if (from) params.from = from;
 
 		return await this.rest.request({
 			method: RequestMethod.GET,
@@ -109,24 +104,18 @@ export class CallApi {
 		});
 	};
 
-	getGroupCalls = async (options: GetGroupCallsOptions): Promise<PostsResponse> => {
+	getGroupCalls = async (
+		number?: number,
+		group_category_id?: number,
+		from_timestamp?: number,
+		scope?: string,
+	): Promise<PostsResponse> => {
 		const params: Record<string, any> = {};
 
-		if (options.from_timestamp) {
-			params.from_timestamp = options.from_timestamp;
-		}
-
-		if (options.group_category_id) {
-			params.group_category_id = options.group_category_id;
-		}
-
-		if (options.number) {
-			params.number = options.number;
-		}
-
-		if (options.scope) {
-			params.scope = options.scope;
-		}
+		if (from_timestamp) params.from_timestamp = from_timestamp;
+		if (group_category_id) params.group_category_id = group_category_id;
+		if (number) params.number = number;
+		if (scope) params.scope = scope;
 
 		return await this.rest.request({
 			method: RequestMethod.GET,
@@ -150,7 +139,82 @@ export class CallApi {
 			method: RequestMethod.POST,
 			route: `v1/calls/conference_calls/${call_id}/invite`,
 			requireAuth: true,
-			params: { 'user_ids[]': user_ids },
+			json: { 'user_ids[]': user_ids },
+		});
+	};
+
+	inviteUsersToChatCall = async (chat_room_id?: number, room_id?: number, room_url?: string) => {
+		const json: Record<string, any> = {};
+
+		if (chat_room_id) json.chat_room_id = chat_room_id;
+		if (room_id) json.room_id = room_id;
+		if (room_url) json.room_url = room_url;
+
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v2/calls/invite`,
+			requireAuth: true,
+			json: json,
+		});
+	};
+
+	kickAndBanFromCall = async (call_id: number, user_id: number) => {
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v1/calls/conference_calls/${call_id}/kick`,
+			requireAuth: true,
+			json: { call_id: call_id, user_id: user_id },
+		});
+	};
+
+	notifyAnonymousUserLeaveAgoraChannel = async (conference_id: number, agora_uid: string) => {
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v1/anonymous_calls/leave_agora_channel`,
+			requireAuth: false,
+			json: { conference_id: conference_id, agora_uid: agora_uid },
+		});
+	};
+
+	notifyUserLeaveAgoraChannel = async (conference_id: number, user_id: number) => {
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v1/calls/leave_agora_channel`,
+			requireAuth: false,
+			json: { conference_id: conference_id, user_id: user_id },
+		});
+	};
+
+	sendCallScreenshot = async (screenshot_filename: string, conference_id: number) => {
+		return await this.rest.request({
+			method: RequestMethod.PUT,
+			route: `v1/calls/screenshot`,
+			requireAuth: false,
+			json: { screenshot_filename: screenshot_filename, conference_id: conference_id },
+		});
+	};
+
+	setCall = async (call_id: number, joinable_by: string, game_title?: string, category_id?: string) => {
+		const json: Record<string, any> = {};
+		json.joinable_by = joinable_by;
+
+		if (category_id) json.category_id = category_id;
+		if (game_title) json.game_title = game_title;
+
+		return await this.rest.request({
+			method: RequestMethod.PUT,
+			route: `v1/calls/${call_id}`,
+			requireAuth: true,
+			json: json,
+		});
+	};
+
+	setUserRole = async (call_id: number, user_id: number, role: string) => {
+		return await this.rest.request({
+			method: RequestMethod.PUT,
+			route: `/v1/calls/${call_id}/users/${user_id}`,
+			requireAuth: true,
+			json: { role: role },
 		});
 	};
 }

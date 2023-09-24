@@ -3,7 +3,7 @@ import { AxiosProxyConfig } from 'axios';
 /**
  * RESTクラスのrequest関数の引数
  */
-export interface RESTOptions {
+export type RESTOptions = {
 	method: RequestMethod;
 	route: string;
 	requireAuth: boolean;
@@ -12,12 +12,12 @@ export interface RESTOptions {
 	baseURL?: string;
 	accessToken?: string;
 	headers?: RequestHeaders;
-}
+};
 
 /**
  * Clientインスタンスを作成するときの引数
  */
-export interface ClientOptions {
+export type ClientOptions = {
 	/**
 	 * APIのベースエンドポイント
 	 *
@@ -70,28 +70,28 @@ export interface ClientOptions {
 	 * @defaultValue `'cookie'`
 	 */
 	cookie_filename: string;
-}
+};
 
-export interface CookieOptions {
+export type CookieOptions = {
 	authentication: CookieOptionsAuthentication;
 	user: CookieOptionsUser;
 	device: CookieOptionsDevice;
-}
+};
 
-export interface CookieOptionsAuthentication {
+export type CookieOptionsAuthentication = {
 	accessToken: string;
 	refreshToken: string;
-}
+};
 
-export interface CookieOptionsUser {
+export type CookieOptionsUser = {
 	userId: number;
 	email: string;
 	uuid: string;
-}
+};
 
-export interface CookieOptionsDevice {
+export type CookieOptionsDevice = {
 	deviceUuid: string;
-}
+};
 
 /**
  * リクエストを送信する際のヘッダー情報
@@ -122,12 +122,12 @@ export enum RequestMethod {
 	PUT = 'PUT',
 }
 
-export interface ErrorResponse {
+export type ErrorResponse = {
 	result: string;
 	message: string;
 	error_code: number;
 	ban_until: number | null;
-}
+};
 
 /**
  * 投稿のタイプ
@@ -171,32 +171,4 @@ export enum ImageType {
 export enum ShareableType {
 	group = 'group',
 	thread = 'thread',
-}
-
-export interface GetBlockedUsersOptions {
-	nickname?: string;
-	username?: string;
-	biography?: string;
-	prefecture?: string;
-	gender?: number;
-	fromId?: number;
-}
-
-export interface GetCallInvitableUsersOptions {
-	call_id: number;
-	from_timestamp?: number;
-	nickname?: string;
-}
-
-export interface GetGamesOptions {
-	number: number;
-	from_id?: number;
-	ids: number[];
-}
-
-export interface GetGroupCallsOptions {
-	number?: number;
-	group_category_id?: number;
-	from_timestamp?: number;
-	scope?: string;
 }
