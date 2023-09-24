@@ -1,9 +1,14 @@
+import * as fs from 'fs';
+import { promisify } from 'util';
 import { CookieOptions } from './Types';
 
+const fileWriter = promisify(fs.writeFile);
+const fileReader = promisify(fs.readFile);
+const unlink = promisify(fs.unlink);
+
 export class CookieManager {
-	private filePath: string;
-	private fileName: string;
 	private encryptEnabled: boolean;
+	private fileName: string;
 
 	private email: string = '';
 	private userId: number = 0;
@@ -12,10 +17,9 @@ export class CookieManager {
 	private accessToken: string = '';
 	private refreshToken: string = '';
 
-	public constructor(filePath: string, fileName: string, encryptEnabled: boolean) {
-		this.filePath = filePath;
-		this.fileName = fileName;
+	public constructor(encryptEnabled: boolean, fileName: string, filePath?: string) {
 		this.encryptEnabled = encryptEnabled;
+		this.fileName = filePath ? `${filePath}/${fileName}` : fileName;
 	}
 
 	public setCookie(options: CookieOptions) {
@@ -51,9 +55,46 @@ export class CookieManager {
 		this.refreshToken = refreshToken;
 	}
 
-	public saveCookie() {}
+	public async saveCookie() {
+		const data: CookieOptions = {
+			user: {
+				email: this.email,
+				userId: this.userId,
+				uuid: this.uuid,
+			},
+			device: {
+				deviceUuid: this.deviceUuid,
+			},
+			authentication: {
+				accessToken: this.accessToken,
+				refreshToken: this.refreshToken,
+			},
+		};
 
-	public loadCookie() {}
+		const cookie = JSON.stringify(data);
 
-	public deleteCookie() {}
+		try {
+			await fileWriter(this.fileName, cookie, 'utf-8');
+		} catch (error) {
+			throw new Error('クッキーデータの保存に失敗しました。');
+		}
+	}
+
+	public async loadCookie(): Promise<CookieOptions> {
+		try {
+			const data = await fileReader(this.fileName, 'utf-8');
+			const cookie: CookieOptions = JSON.parse(data);
+			return cookie;
+		} catch (error) {
+			throw new Error('クッキーデータの読み込みに失敗しました。');
+		}
+	}
+
+	public async deleteCookie() {
+		try {
+			await unlink(this.fileName);
+		} catch (error) {
+			throw new Error('クッキーデータの削除に失敗しました。');
+		}
+	}
 }
