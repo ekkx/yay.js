@@ -217,4 +217,22 @@ export class CallApi {
 			json: { role: role },
 		});
 	};
+
+	startCall = async (conference_id: number, call_sid: string): Promise<ConferenceCallResponse> => {
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v2/calls/start_conference_call`,
+			requireAuth: false,
+			json: { conference_id: conference_id, call_sid: call_sid },
+		});
+	};
+
+	stopCall = async (conference_id: number, call_sid: string) => {
+		return await this.rest.request({
+			method: RequestMethod.POST,
+			route: `v1/calls/leave_conference_call`,
+			requireAuth: false,
+			json: { conference_id: conference_id, call_sid: call_sid },
+		});
+	};
 }
