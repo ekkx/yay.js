@@ -1,5 +1,5 @@
 import { CookieManager } from '../src/util/CookieManager';
-import { CookieOptions } from '../src/util/Types';
+import { Cookie } from '../src/util/Types';
 
 describe('CookieManager', () => {
 	let cookieManager: CookieManager;
@@ -19,7 +19,7 @@ describe('CookieManager', () => {
 		cookieEncryptManager.deleteCookie();
 	});
 
-	const testCookie: CookieOptions = {
+	const testCookie: Cookie = {
 		user: {
 			email: 'test@example.com',
 			userId: 123,

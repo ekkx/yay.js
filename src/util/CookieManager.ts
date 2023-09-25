@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { promisify } from 'util';
-import { CookieProps } from './Types';
+import { Cookie } from './Types';
 
 const fileWriter = promisify(fs.writeFile);
 const fileReader = promisify(fs.readFile);
@@ -59,7 +59,7 @@ export class CookieManager {
 		}
 	}
 
-	public setCookie(cookie: CookieProps) {
+	public setCookie(cookie: Cookie) {
 		this.setEmail(cookie.user.email);
 		this.setUserId(cookie.user.userId);
 		this.setUuid(cookie.user.uuid);
@@ -93,7 +93,7 @@ export class CookieManager {
 	}
 
 	public async saveCookie() {
-		const data: CookieProps = {
+		const data: Cookie = {
 			user: {
 				email: this.email,
 				userId: this.userId,
@@ -117,10 +117,10 @@ export class CookieManager {
 		}
 	}
 
-	public async loadCookie(): Promise<CookieProps> {
+	public async loadCookie(): Promise<Cookie> {
 		try {
 			const data = await fileReader(this.filePath, 'utf-8');
-			const cookie: CookieProps = JSON.parse(data);
+			const cookie: Cookie = JSON.parse(data);
 
 			if (this.encryptionKey) {
 				return {

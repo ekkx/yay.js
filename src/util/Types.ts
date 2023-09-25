@@ -4,15 +4,15 @@ import { AxiosProxyConfig } from 'axios';
  * RESTクラスのrequest関数の引数
  */
 export type RESTOptions = {
-	baseURL?: string,
-    proxy?: AxiosProxyConfig,
-    timeout?: number;
-    device: Device;
-    cookie?: CookieProps;
+	baseURL?: string;
+	proxy?: AxiosProxyConfig;
+	timeout?: number;
+	device: Device;
+	cookie?: Cookie;
 };
 
 export type RequestOptions = {
-    method: RequestMethod;
+	method: RequestMethod;
 	route: string;
 	requireAuth: boolean;
 	params?: Record<string, any>;
@@ -20,7 +20,7 @@ export type RequestOptions = {
 	baseURL?: string;
 	accessToken?: string;
 	headers?: RequestHeaders;
-}
+};
 
 /**
  * Clientインスタンスを作成するときの引数
@@ -80,34 +80,34 @@ export type ClientOptions = {
 	cookie_filename: string;
 };
 
-export type CookieProps = {
-	authentication: CookiePropsAuthentication;
-	user: CookiePropsUser;
-	device: CookiePropsDevice;
+export type Cookie = {
+	authentication: CookieAuthentication;
+	user: CookieUser;
+	device: CookieDevice;
 };
 
-export type CookiePropsAuthentication = {
+export type CookieAuthentication = {
 	accessToken: string;
 	refreshToken: string;
 };
 
-export type CookiePropsUser = {
+export type CookieUser = {
 	userId: number;
 	email: string;
 	uuid: string;
 };
 
-export type CookiePropsDevice = {
+export type CookieDevice = {
 	deviceUuid: string;
 };
 
 export type Device = {
-    deviceType: string;
-    osVersion: string;
-    screenDensity: string;
-    screenSize: string;
-    model: string;
-}
+	deviceType: string;
+	osVersion: string;
+	screenDensity: string;
+	screenSize: string;
+	model: string;
+};
 
 /**
  * リクエストを送信する際のヘッダー情報
@@ -125,7 +125,7 @@ export type RequestHeaders = {
 	'X-Connection-Speed': string;
 	'Accept-Language': string;
 	'Content-Type': string;
-}
+};
 
 /**
  * リクエストを送信する際のAPIメソッド
