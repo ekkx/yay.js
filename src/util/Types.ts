@@ -109,6 +109,10 @@ export type Device = {
 	model: string;
 };
 
+export type Params = Record<string, any>;
+
+export type Json = Record<string, any>;
+
 /**
  * リクエストを送信する際のヘッダー情報
  */

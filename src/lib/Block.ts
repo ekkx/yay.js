@@ -1,5 +1,5 @@
 import { REST } from './Rest';
-import { RequestMethod } from '../util/Types';
+import { Params, RequestMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
 export class BlockApi {
@@ -25,7 +25,7 @@ export class BlockApi {
 		gender?: number,
 		from_id?: number,
 	): Promise<BlockedUsersResponse> => {
-		const params: Record<string, any> = {};
+		const params: Params = {};
 
 		if (nickname) params.nickname = nickname;
 		if (username) params.username = username;

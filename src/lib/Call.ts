@@ -1,4 +1,4 @@
-import { RequestMethod } from '../util/Types';
+import { Json, Params, RequestMethod } from '../util/Types';
 import { REST } from './Rest';
 import {
 	PostResponse,
@@ -53,7 +53,7 @@ export class CallApi {
 		from_timestamp?: number,
 		nickname?: string,
 	): Promise<UsersByTimestampResponse> => {
-		const params: Record<string, any> = {};
+		const params: Params = {};
 
 		if (from_timestamp) params.from_timestamp = from_timestamp;
 		if (nickname) params.nickname = nickname;
@@ -75,7 +75,7 @@ export class CallApi {
 	};
 
 	getGames = async (number: number, ids: number[], from_id?: number): Promise<GamesResponse> => {
-		const params: Record<string, any> = {};
+		const params: Params = {};
 
 		params.number = number;
 		params['ids[]'] = ids;
@@ -91,7 +91,7 @@ export class CallApi {
 	};
 
 	getGenres = async (number: number, from: number): Promise<GenresResponse> => {
-		const params: Record<string, any> = {};
+		const params: Params = {};
 		params.number = number;
 
 		if (from) params.from = from;
@@ -110,7 +110,7 @@ export class CallApi {
 		from_timestamp?: number,
 		scope?: string,
 	): Promise<PostsResponse> => {
-		const params: Record<string, any> = {};
+		const params: Params = {};
 
 		if (from_timestamp) params.from_timestamp = from_timestamp;
 		if (group_category_id) params.group_category_id = group_category_id;
@@ -144,7 +144,7 @@ export class CallApi {
 	};
 
 	inviteUsersToChatCall = async (chat_room_id?: number, room_id?: number, room_url?: string) => {
-		const json: Record<string, any> = {};
+		const json: Json = {};
 
 		if (chat_room_id) json.chat_room_id = chat_room_id;
 		if (room_id) json.room_id = room_id;
@@ -195,7 +195,7 @@ export class CallApi {
 	};
 
 	setCall = async (call_id: number, joinable_by: string, game_title?: string, category_id?: string) => {
-		const json: Record<string, any> = {};
+		const json: Json = {};
 		json.joinable_by = joinable_by;
 
 		if (category_id) json.category_id = category_id;
