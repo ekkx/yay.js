@@ -1,11 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import camelcaseKeys from "camelcase-keys";
 import snakecaseKeys from "snakecase-keys";
 import { v4 as uuid } from 'uuid';
 
-import { RequestOptions } from '../util/Types';
+import { CookieProps, Device, RequestHeaders, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
-import { BASE_API_URL } from '../util/Constants';
+import { API_VERSION_NAME, BASE_API_URL, DEFAULT_DEVICE} from '../util/Constants';
 import {
 	AuthenticationError,
 	BadRequestError,
@@ -21,6 +21,14 @@ import {
  */
 export class REST {
 	private api: AxiosInstance;
+    private clientIP: string;
+    private connectionSpeed: string;
+    private connectionType: string;
+    private cookie?: CookieProps;
+    private device: Device;
+    private userAgent: string;
+    private deviceInfo: string;
+    private headers?: RequestHeaders;
 
 	public constructor(options: RESTOptions) {
 		this.api = axios.create({
@@ -31,14 +39,16 @@ export class REST {
 				return true;
 			},
 		});
+
+        this.device = options.device
+        this.userAgent = `${this.device.deviceType} ${this.device.osVersion} (${this.device.screenDensity}x ${this.device.screenSize} ${this.device.model})`;
+        this.deviceInfo = "yay " + this.userAgent;
+        this.connectionType = "wifi";
+        this.clientIP = "";
+        this.connectionSpeed = "";
 	}
 
 	private async send(options: RequestOptions): Promise<any> {
-		// if (requireAuth) {
-
-		// 	headers?.Authorization
-		// }
-
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
@@ -77,6 +87,17 @@ export class REST {
 
     public async request(options: RequestOptions): Promise<any> {
         return await this.send(options);
+    }
+
+    public setHeaders(headers?: RequestHeaders) {
+        // if (!headers) {
+        //     this.headers = {
+        //         Host: BASE_API_URL,
+        //         "User-Agent": 
+        //     }
+        // } else {
+        //     this.headers = headers;
+        // }
     }
 
     public setAuthorizationHeader() {}

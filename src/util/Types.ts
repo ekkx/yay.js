@@ -7,6 +7,8 @@ export type RESTOptions = {
 	baseURL?: string,
     proxy?: AxiosProxyConfig,
     timeout?: number;
+    device: Device;
+    cookie?: CookieProps;
 };
 
 export type RequestOptions = {
@@ -78,31 +80,39 @@ export type ClientOptions = {
 	cookie_filename: string;
 };
 
-export type CookieOptions = {
-	authentication: CookieOptionsAuthentication;
-	user: CookieOptionsUser;
-	device: CookieOptionsDevice;
+export type CookieProps = {
+	authentication: CookiePropsAuthentication;
+	user: CookiePropsUser;
+	device: CookiePropsDevice;
 };
 
-export type CookieOptionsAuthentication = {
+export type CookiePropsAuthentication = {
 	accessToken: string;
 	refreshToken: string;
 };
 
-export type CookieOptionsUser = {
+export type CookiePropsUser = {
 	userId: number;
 	email: string;
 	uuid: string;
 };
 
-export type CookieOptionsDevice = {
+export type CookiePropsDevice = {
 	deviceUuid: string;
 };
+
+export type Device = {
+    deviceType: string;
+    osVersion: string;
+    screenDensity: string;
+    screenSize: string;
+    model: string;
+}
 
 /**
  * リクエストを送信する際のヘッダー情報
  */
-export interface RequestHeaders {
+export type RequestHeaders = {
 	Authorization?: string;
 	Host: string;
 	'User-Agent': string;

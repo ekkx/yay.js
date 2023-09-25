@@ -1,9 +1,10 @@
 import { RequestMethod } from '../util/Types';
 import { AuthenticationError } from '../lib/Errors';
+import {DEFAULT_DEVICE} from '../util/Constants';
 
 import { REST } from '../lib/Rest';
 
-const rest = new REST({});
+const rest = new REST({device: DEFAULT_DEVICE});
 
 async function getTimeline() {
 	try {

@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { promisify } from 'util';
-import { CookieOptions } from './Types';
+import { CookieProps } from './Types';
 
 const fileWriter = promisify(fs.writeFile);
 const fileReader = promisify(fs.readFile);
@@ -59,13 +59,13 @@ export class CookieManager {
 		}
 	}
 
-	public setCookie(options: CookieOptions) {
-		this.setEmail(options.user.email);
-		this.setUserId(options.user.userId);
-		this.setUuid(options.user.uuid);
-		this.setDeviceUuid(options.device.deviceUuid);
-		this.setAccessToken(options.authentication.accessToken);
-		this.setRefreshToken(options.authentication.refreshToken);
+	public setCookie(cookie: CookieProps) {
+		this.setEmail(cookie.user.email);
+		this.setUserId(cookie.user.userId);
+		this.setUuid(cookie.user.uuid);
+		this.setDeviceUuid(cookie.device.deviceUuid);
+		this.setAccessToken(cookie.authentication.accessToken);
+		this.setRefreshToken(cookie.authentication.refreshToken);
 	}
 
 	public setEmail(email: string) {
@@ -93,7 +93,7 @@ export class CookieManager {
 	}
 
 	public async saveCookie() {
-		const data: CookieOptions = {
+		const data: CookieProps = {
 			user: {
 				email: this.email,
 				userId: this.userId,
@@ -117,10 +117,10 @@ export class CookieManager {
 		}
 	}
 
-	public async loadCookie(): Promise<CookieOptions> {
+	public async loadCookie(): Promise<CookieProps> {
 		try {
 			const data = await fileReader(this.filePath, 'utf-8');
-			const cookie: CookieOptions = JSON.parse(data);
+			const cookie: CookieProps = JSON.parse(data);
 
 			if (this.encryptionKey) {
 				return {
