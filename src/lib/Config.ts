@@ -1,4 +1,4 @@
-import { REST } from '../util/Rest';
+import { REST } from './Rest';
 
 export class ConfigApi {
 	public constructor(private readonly rest: REST) {}

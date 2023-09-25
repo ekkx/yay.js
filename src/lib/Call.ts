@@ -1,5 +1,5 @@
 import { RequestMethod } from '../util/Types';
-import { REST } from '../util/Rest';
+import { REST } from './Rest';
 import {
 	PostResponse,
 	BgmsResponse,

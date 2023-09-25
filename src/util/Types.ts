@@ -4,7 +4,13 @@ import { AxiosProxyConfig } from 'axios';
  * RESTクラスのrequest関数の引数
  */
 export type RESTOptions = {
-	method: RequestMethod;
+	baseURL?: string,
+    proxy?: AxiosProxyConfig,
+    timeout?: number;
+};
+
+export type RequestOptions = {
+    method: RequestMethod;
 	route: string;
 	requireAuth: boolean;
 	params?: Record<string, any>;
@@ -12,7 +18,7 @@ export type RESTOptions = {
 	baseURL?: string;
 	accessToken?: string;
 	headers?: RequestHeaders;
-};
+}
 
 /**
  * Clientインスタンスを作成するときの引数

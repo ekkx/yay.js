@@ -1,9 +1,11 @@
-import axios, { AxiosInstance, AxiosProxyConfig, AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import camelcaseKeys from "camelcase-keys";
+import snakecaseKeys from "snakecase-keys";
 import { v4 as uuid } from 'uuid';
 
-import { RequestMethod } from './Types';
-import { RESTOptions, RequestHeaders } from './Types';
-import { BASE_API_URL } from './Constants';
+import { RequestOptions } from '../util/Types';
+import { RESTOptions } from '../util/Types';
+import { BASE_API_URL } from '../util/Constants';
 import {
 	AuthenticationError,
 	BadRequestError,
@@ -12,34 +14,26 @@ import {
 	NotFoundError,
 	RateLimitError,
 	ServerError,
-} from '../lib/Errors';
+} from './Errors';
 
 /**
  * Represents the class that manages handlers for endpoints
  */
 export class REST {
-	private host: string;
 	private api: AxiosInstance;
 
-	public constructor(
-		host: string = 'https://api.yay.space',
-		timeout: number = 30,
-		proxy?: AxiosProxyConfig,
-		headers?: AxiosHeaders,
-	) {
-		this.host = host;
+	public constructor(options: RESTOptions) {
 		this.api = axios.create({
-			baseURL: this.host,
-			proxy: proxy || undefined,
-			timeout: timeout * 1000,
-			headers: headers,
+			baseURL: options.baseURL ? options.baseURL : BASE_API_URL,
+			proxy: options.proxy,
+			timeout: options.timeout ? options.timeout : 30000,
 			validateStatus: function (status) {
 				return true;
 			},
 		});
 	}
 
-	public async request(options: RESTOptions): Promise<any> {
+	private async send(options: RequestOptions): Promise<any> {
 		// if (requireAuth) {
 
 		// 	headers?.Authorization
@@ -47,7 +41,7 @@ export class REST {
 
 		const config: AxiosRequestConfig = {
 			method: options.method,
-			url: this.host + options.route,
+			url: options.route,
 			params: options.params,
 			data: options.json,
 		};
@@ -80,4 +74,12 @@ export class REST {
 			throw error;
 		}
 	}
+
+    public async request(options: RequestOptions): Promise<any> {
+        return await this.send(options);
+    }
+
+    public setAuthorizationHeader() {}
+
+    public getAuthorizationHeader() {}
 }

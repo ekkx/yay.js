@@ -1,13 +1,13 @@
 import { RequestMethod } from '../util/Types';
 import { AuthenticationError } from '../lib/Errors';
 
-import { REST } from '../util/Rest';
+import { REST } from '../lib/Rest';
 
-const rest = new REST();
+const rest = new REST({});
 
 async function getTimeline() {
 	try {
-		const response = await rest.request(RequestMethod.GET, '/v2/posts/timeline', true, { number: 5 });
+		const response = await rest.request({ method: RequestMethod.GET, route: 'v2/posts/timeline', requireAuth: false, params: { number: 5 }});
 		console.log(response.posts[0].text);
 	} catch (error) {
 		if (error instanceof AuthenticationError) {

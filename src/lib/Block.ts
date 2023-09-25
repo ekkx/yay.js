@@ -1,4 +1,4 @@
-import { REST } from '../util/Rest';
+import { REST } from './Rest';
 import { RequestMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
