@@ -4,7 +4,7 @@ import { AxiosProxyConfig } from 'axios';
  * RESTクラスのrequest関数の引数
  */
 export type RESTOptions = {
-	baseURL?: string;
+	baseURL: string;
 	proxy?: AxiosProxyConfig;
 	timeout?: number;
 	device: Device;
@@ -114,17 +114,17 @@ export type Json = Record<string, any>;
  */
 export type RequestHeaders = {
 	Authorization?: string;
-	Host: string;
-	'User-Agent': string;
-	'X-Timestamp': string;
-	'X-App-Version': string;
-	'X-Device-Info': string;
-	'X-Device-UUID': string;
-	'X-Client-IP': string;
-	'X-Connection-Type': string;
-	'X-Connection-Speed': string;
-	'Accept-Language': string;
-	'Content-Type': string;
+	Host?: string;
+	'User-Agent'?: string;
+	'X-Timestamp'?: string;
+	'X-App-Version'?: string;
+	'X-Device-Info'?: string;
+	'X-Device-UUID'?: string;
+	'X-Client-IP'?: string;
+	'X-Connection-Type'?: string;
+	'X-Connection-Speed'?: string;
+	'Accept-Language'?: string;
+	'Content-Type'?: string;
 };
 
 /**

@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 
 import { Cookie, Device, RequestHeaders, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
-import { API_VERSION_NAME, BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
+import { API_VERSION_NAME, BASE_API_URL, BASE_HOST, DEFAULT_DEVICE, VERSION_NAME } from '../util/Constants';
 import {
 	AuthenticationError,
 	BadRequestError,
@@ -28,27 +28,50 @@ export class REST {
 	private device: Device;
 	private userAgent: string;
 	private deviceInfo: string;
-	private headers?: RequestHeaders;
+	private deviceUuid: string;
+	private uuid: string;
+	private defautHeaders?: RequestHeaders;
 
 	public constructor(options: RESTOptions) {
+		this.device = options.device;
+		this.userAgent = `${this.device.deviceType} ${this.device.osVersion} (${this.device.screenDensity}x ${this.device.screenSize} ${this.device.model})`;
+		this.deviceInfo = 'yay ' + VERSION_NAME + ' ' + this.userAgent;
+		this.deviceUuid = uuid();
+		this.uuid = uuid();
+		this.connectionType = 'wifi';
+		this.clientIP = '';
+		this.connectionSpeed = '0';
+		this.defautHeaders = {
+			Host: BASE_HOST,
+			'User-Agent': this.userAgent,
+			'X-Timestamp': Date.now().toString(),
+			'X-App-Version': API_VERSION_NAME,
+			'X-Device-Info': this.deviceInfo,
+			'X-Device-UUID': this.deviceUuid,
+			'X-Client-IP': this.clientIP,
+			'X-Connection-Type': this.connectionType,
+			'X-Connection-Speed': this.connectionSpeed,
+			'Accept-Language': 'ja',
+			'Content-Type': 'application/json;charset=UTF-8',
+		};
+
 		this.api = axios.create({
 			baseURL: options.baseURL ? options.baseURL : BASE_API_URL,
 			proxy: options.proxy,
 			timeout: options.timeout ? options.timeout : 30000,
+			headers: this.defautHeaders,
 			validateStatus: function (status) {
 				return true;
 			},
 		});
-
-		this.device = options.device;
-		this.userAgent = `${this.device.deviceType} ${this.device.osVersion} (${this.device.screenDensity}x ${this.device.screenSize} ${this.device.model})`;
-		this.deviceInfo = 'yay ' + this.userAgent;
-		this.connectionType = 'wifi';
-		this.clientIP = '';
-		this.connectionSpeed = '';
 	}
 
 	private async send(options: RequestOptions): Promise<any> {
+		let headers = { ...this.defautHeaders };
+		if (options.accessToken) {
+			headers.Authorization = 'Bearer ' + options.accessToken;
+		}
+
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
@@ -89,7 +112,13 @@ export class REST {
 		return await this.send(options);
 	}
 
-	public setHeaders(headers?: RequestHeaders) {}
+	public getUuid(): string {
+		return this.uuid;
+	}
+
+	public setUuid(uuid: string) {
+		this.uuid = uuid;
+	}
 
 	public setAuthorizationHeader() {}
 

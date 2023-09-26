@@ -39,7 +39,7 @@ export class Client extends BaseClient {
 	public readonly user: UserApi;
 
 	public constructor(options: ClientOptions) {
-		super();
+		super(options);
 		this.AIPaca = new AIPacaApi(this.rest);
 		this.block = new BlockApi(this.rest);
 		this.call = new CallApi(this.rest);
