@@ -1,3 +1,4 @@
+import { BookmarkPostResponse } from 'util/Responses';
 import { RequestMethod } from '../util/Types';
 import { REST } from './Rest';
 

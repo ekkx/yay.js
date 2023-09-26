@@ -26,12 +26,8 @@ export type RequestOptions = {
  * Clientインスタンスを作成するときの引数
  */
 export type ClientOptions = {
-	/**
-	 * APIのベースエンドポイント
-	 *
-	 * @defaultValue `https://api.yay.space`
-	 */
-	host: string;
+	email?: string;
+	password?: string;
 	/**
 	 * プロキシのアドレス
 	 */
@@ -41,43 +37,43 @@ export type ClientOptions = {
 	 *
 	 * @defaultValue `30` 秒
 	 */
-	timeout: number;
+	timeout?: number;
 	/**
 	 * リクエストの最大リトライ回数
 	 *
 	 * @defaultValue `3` 回
 	 */
-	max_retries: number;
+	max_retries?: number;
 	/**
 	 * リトライ待機時間の増加割合係数
 	 *
 	 * @defaultValue `1.5` 倍
 	 */
-	backoff_factor: number;
+	backoff_factor?: number;
 	/**
 	 * レート制限を待機するかどうか
 	 *
 	 * @defaultValue `true`
 	 */
-	wait_on_rate_limit: boolean;
+	wait_on_rate_limit?: boolean;
 	/**
 	 * クッキーを保存するかどうか
 	 *
 	 * @defaultValue `true`
 	 */
-	save_cookie_file: boolean;
+	save_cookie_file?: boolean;
 	/**
 	 * 保存するクッキーを暗号化するかどうか
 	 *
 	 * @defaultValue `true`
 	 */
-	encrypt_cookie: boolean;
+	encrypt_cookie?: boolean;
 	/**
 	 * 保存するクッキーのファイル名
 	 *
 	 * @defaultValue `'cookie'`
 	 */
-	cookie_filename: string;
+	cookie_filename?: string;
 };
 
 export type Cookie = {

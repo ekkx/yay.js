@@ -16,9 +16,10 @@ import { ReviewApi } from '../lib/Review';
 import { ThreadApi } from '../lib/Thread';
 import { UserApi } from '../lib/User';
 
-import { REST } from '../lib/Rest';
+import { BaseClient } from './BaseClient';
+import { ClientOptions } from 'util/Types';
 
-export class Client {
+export class Client extends BaseClient {
 	public readonly AIPaca: AIPacaApi;
 	public readonly block: BlockApi;
 	public readonly call: CallApi;
@@ -37,23 +38,37 @@ export class Client {
 	public readonly thread: ThreadApi;
 	public readonly user: UserApi;
 
-	public constructor(public readonly rest: REST) {
-		this.AIPaca = new AIPacaApi(rest);
-		this.block = new BlockApi(rest);
-		this.call = new CallApi(rest);
-		this.cassandra = new CassandraApi(rest);
-		this.chat = new ChatApi(rest);
-		this.config = new ConfigApi(rest);
-		this.game = new GameApi(rest);
-		this.gift = new GiftApi(rest);
-		this.group = new GroupApi(rest);
-		this.hidden = new HiddenApi(rest);
-		this.login = new LoginApi(rest);
-		this.misc = new MiscApi(rest);
-		this.muteKeyword = new MuteKeywordApi(rest);
-		this.post = new PostApi(rest);
-		this.review = new ReviewApi(rest);
-		this.thread = new ThreadApi(rest);
-		this.user = new UserApi(rest);
+	public constructor(options: ClientOptions) {
+		super();
+		this.AIPaca = new AIPacaApi(this.rest);
+		this.block = new BlockApi(this.rest);
+		this.call = new CallApi(this.rest);
+		this.cassandra = new CassandraApi(this.rest);
+		this.chat = new ChatApi(this.rest);
+		this.config = new ConfigApi(this.rest);
+		this.game = new GameApi(this.rest);
+		this.gift = new GiftApi(this.rest);
+		this.group = new GroupApi(this.rest);
+		this.hidden = new HiddenApi(this.rest);
+		this.login = new LoginApi(this.rest);
+		this.misc = new MiscApi(this.rest);
+		this.muteKeyword = new MuteKeywordApi(this.rest);
+		this.post = new PostApi(this.rest);
+		this.review = new ReviewApi(this.rest);
+		this.thread = new ThreadApi(this.rest);
+		this.user = new UserApi(this.rest);
 	}
 }
+
+// usage
+const main = async () => {
+	const client = new Client({
+		email: 'your_email',
+		password: 'your_password',
+	});
+
+	const bgms = await client.call.getBgms();
+	console.log(bgms);
+};
+
+main();

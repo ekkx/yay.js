@@ -89,16 +89,7 @@ export class REST {
 		return await this.send(options);
 	}
 
-	public setHeaders(headers?: RequestHeaders) {
-		if (!headers) {
-		    this.headers = {
-		        Host: BASE_API_URL,
-		        "User-Agent":
-		    }
-		} else {
-		    this.headers = headers;
-		}
-	}
+	public setHeaders(headers?: RequestHeaders) {}
 
 	public setAuthorizationHeader() {}
 

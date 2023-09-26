@@ -18,3 +18,4 @@ export interface UsersByTimestampResponse {}
 export interface CallStatusResponse {}
 export interface GamesResponse {}
 export interface GenresResponse {}
+export interface BookmarkPostResponse {}

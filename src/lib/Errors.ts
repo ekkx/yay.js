@@ -4,11 +4,8 @@ import { ErrorResponse } from '../util/Types';
  * Base exception for yay.js
  */
 export class YJSError extends Error {
-	readonly response: ErrorResponse;
-
-	constructor(response: ErrorResponse) {
-		super(JSON.stringify(response));
-		this.response = response;
+	constructor(message: string) {
+		super(message);
 	}
 }
 
@@ -19,7 +16,7 @@ export class HTTPError extends YJSError {
 	readonly response: ErrorResponse;
 
 	constructor(response: ErrorResponse) {
-		super(response);
+		super(response.message);
 		this.response = response;
 	}
 }
