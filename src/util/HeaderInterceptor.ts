@@ -39,6 +39,10 @@ export class HeaderInterceptor {
 			'Content-Type': 'application/json;charset=UTF-8',
 		};
 
+		if (this.clientIP.length > 0) {
+			headers['X-Client-IP'] = this.clientIP;
+		}
+
 		if (this.Authorization.length > 0) {
 			headers.Authorization = this.Authorization;
 		}

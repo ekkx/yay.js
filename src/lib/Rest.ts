@@ -1,11 +1,10 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
-import { v4 as uuid } from 'uuid';
 
-import { Cookie, Device, RequestHeaders, RequestOptions } from '../util/Types';
+import { Cookie, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
-import { API_VERSION_NAME, BASE_API_URL, BASE_HOST, DEFAULT_DEVICE, VERSION_NAME } from '../util/Constants';
+import { BASE_API_URL } from '../util/Constants';
 import {
 	AuthenticationError,
 	BadRequestError,
@@ -15,51 +14,23 @@ import {
 	RateLimitError,
 	ServerError,
 } from './Errors';
+import { HeaderInterceptor } from '../util/HeaderInterceptor';
 
 /**
  * Represents the class that manages handlers for endpoints
  */
 export class REST {
+	private headerInterceptor: HeaderInterceptor;
 	private api: AxiosInstance;
-	private clientIP: string;
-	private connectionSpeed: string;
-	private connectionType: string;
-	private cookie?: Cookie;
-	private device: Device;
-	private userAgent: string;
-	private deviceInfo: string;
-	private deviceUuid: string;
-	private uuid: string;
-	private defautHeaders?: RequestHeaders;
 
 	public constructor(options: RESTOptions) {
-		this.device = options.device;
-		this.userAgent = `${this.device.deviceType} ${this.device.osVersion} (${this.device.screenDensity}x ${this.device.screenSize} ${this.device.model})`;
-		this.deviceInfo = 'yay ' + VERSION_NAME + ' ' + this.userAgent;
-		this.deviceUuid = uuid();
-		this.uuid = uuid();
-		this.connectionType = 'wifi';
-		this.clientIP = '';
-		this.connectionSpeed = '0';
-		this.defautHeaders = {
-			Host: BASE_HOST,
-			'User-Agent': this.userAgent,
-			'X-Timestamp': Date.now().toString(),
-			'X-App-Version': API_VERSION_NAME,
-			'X-Device-Info': this.deviceInfo,
-			'X-Device-UUID': this.deviceUuid,
-			'X-Client-IP': this.clientIP,
-			'X-Connection-Type': this.connectionType,
-			'X-Connection-Speed': this.connectionSpeed,
-			'Accept-Language': 'ja',
-			'Content-Type': 'application/json;charset=UTF-8',
-		};
+		this.headerInterceptor = options.headerInterceptor;
 
 		this.api = axios.create({
 			baseURL: options.baseURL ? options.baseURL : BASE_API_URL,
 			proxy: options.proxy,
 			timeout: options.timeout ? options.timeout : 30000,
-			headers: this.defautHeaders,
+			headers: this.headerInterceptor.intercept(),
 			validateStatus: function (status) {
 				return true;
 			},
@@ -67,16 +38,14 @@ export class REST {
 	}
 
 	private async send(options: RequestOptions): Promise<any> {
-		let headers = { ...this.defautHeaders };
-		if (options.accessToken) {
-			headers.Authorization = 'Bearer ' + options.accessToken;
-		}
+		let headers = { ...this.headerInterceptor.intercept() };
 
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
 			params: options.params,
 			data: options.json,
+			headers: headers,
 		};
 
 		try {
@@ -111,16 +80,4 @@ export class REST {
 	public async request(options: RequestOptions): Promise<any> {
 		return await this.send(options);
 	}
-
-	public getUuid(): string {
-		return this.uuid;
-	}
-
-	public setUuid(uuid: string) {
-		this.uuid = uuid;
-	}
-
-	public setAuthorizationHeader() {}
-
-	public getAuthorizationHeader() {}
 }

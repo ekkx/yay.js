@@ -1,4 +1,5 @@
 import { AxiosProxyConfig } from 'axios';
+import { HeaderInterceptor } from './HeaderInterceptor';
 
 /**
  * RESTクラスのrequest関数の引数
@@ -9,6 +10,7 @@ export type RESTOptions = {
 	timeout?: number;
 	device: Device;
 	cookie?: Cookie;
+	headerInterceptor: HeaderInterceptor;
 };
 
 export type RequestOptions = {
@@ -43,37 +45,37 @@ export type ClientOptions = {
 	 *
 	 * @defaultValue `3` 回
 	 */
-	max_retries?: number;
+	maxRetries?: number;
 	/**
 	 * リトライ待機時間の増加割合係数
 	 *
 	 * @defaultValue `1.5` 倍
 	 */
-	backoff_factor?: number;
+	backoffFactor?: number;
 	/**
 	 * レート制限を待機するかどうか
 	 *
 	 * @defaultValue `true`
 	 */
-	wait_on_rate_limit?: boolean;
+	waitOnRateLimit?: boolean;
 	/**
 	 * クッキーを保存するかどうか
 	 *
 	 * @defaultValue `true`
 	 */
-	save_cookie_file?: boolean;
+	saveCookie?: boolean;
 	/**
-	 * 保存するクッキーを暗号化するかどうか
+	 * クッキーを暗号化して保存する際のパスワード
 	 *
 	 * @defaultValue `true`
 	 */
-	encrypt_cookie?: boolean;
+	cookiePassword?: string;
 	/**
-	 * 保存するクッキーのファイル名
+	 * クッキーファイルを保存する場所
 	 *
 	 * @defaultValue `'cookie'`
 	 */
-	cookie_filename?: string;
+	cookieFilePath?: string;
 };
 
 export type Cookie = {
@@ -108,6 +110,13 @@ export type Device = {
 export type Params = Record<string, any>;
 
 export type Json = Record<string, any>;
+
+export type LoginEmailUserRequest = {
+	apiKey: string;
+	email: string;
+	password: string;
+	uuid: string;
+};
 
 /**
  * リクエストを送信する際のヘッダー情報

@@ -1,11 +1,6 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
-import { promisify } from 'util';
 import { Cookie } from './Types';
-
-const fileWriter = promisify(fs.writeFile);
-const fileReader = promisify(fs.readFile);
-const unlink = promisify(fs.unlink);
 
 export class CookieManager {
 	private algorithm: string;
@@ -92,7 +87,11 @@ export class CookieManager {
 		this.refreshToken = refreshToken;
 	}
 
-	public async saveCookie() {
+	public exists(): boolean {
+		return fs.existsSync(this.filePath);
+	}
+
+	public saveCookie() {
 		const data: Cookie = {
 			user: {
 				email: this.email,
@@ -110,16 +109,12 @@ export class CookieManager {
 
 		const cookie = JSON.stringify(data);
 
-		try {
-			await fileWriter(this.filePath, cookie, 'utf-8');
-		} catch (error) {
-			throw new Error('クッキーデータの保存に失敗しました。');
-		}
+		fs.writeFileSync(this.filePath, cookie, 'utf-8');
 	}
 
-	public async loadCookie(): Promise<Cookie> {
+	public loadCookie(): Cookie {
 		try {
-			const data = await fileReader(this.filePath, 'utf-8');
+			const data = fs.readFileSync(this.filePath, 'utf-8');
 			const cookie: Cookie = JSON.parse(data);
 
 			if (this.encryptionKey) {
@@ -147,9 +142,9 @@ export class CookieManager {
 		}
 	}
 
-	public async deleteCookie() {
+	public deleteCookie() {
 		try {
-			await unlink(this.filePath);
+			fs.unlinkSync(this.filePath);
 		} catch (error) {
 			throw new Error('クッキーデータの削除に失敗しました。');
 		}

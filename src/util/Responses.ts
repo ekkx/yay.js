@@ -19,3 +19,25 @@ export interface CallStatusResponse {}
 export interface GamesResponse {}
 export interface GenresResponse {}
 export interface BookmarkPostResponse {}
+export interface UserTimestampResponse {
+	time: number;
+	ipAddress: string;
+	country: string;
+}
+export interface SnsInfo {
+	type: string;
+	uid: string;
+	nickname: string;
+	biography: string;
+	profileImage: string;
+	gender: string;
+}
+export interface LoginUserResponse {
+	userId: number;
+	username: string;
+	isNew: boolean;
+	snsInfo: SnsInfo;
+	accessToken: string;
+	refreshToken: string;
+	expiresIn: number;
+}
