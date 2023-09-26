@@ -12,6 +12,7 @@ const main = async () => {
 	const client = new Client({
 		email: 'your_email',
 		password: 'your_password',
+		saveCookie: true,
 	});
 
 	const bgms = await client.call.getBgms();

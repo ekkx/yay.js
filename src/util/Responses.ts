@@ -39,5 +39,7 @@ export interface LoginUserResponse {
 	snsInfo: SnsInfo;
 	accessToken: string;
 	refreshToken: string;
+	tokenType: string;
+	createdAt: number;
 	expiresIn: number;
 }

@@ -90,7 +90,7 @@ export class BaseClient {
 			this.headerInterceptor.setClientIP(ipAddress);
 		});
 
-		if (options.email && options.password) {
+		if (options.saveCookie && options.email && options.password) {
 			if (!options.cookieFilePath) {
 				options.cookieFilePath = './cookie.json';
 			}
@@ -109,7 +109,7 @@ export class BaseClient {
 						uuid: this.uuid,
 					})
 					.then((loginResponse: LoginUserResponse) => {
-						if (loginResponse.accessToken.length <= 0) {
+						if (!loginResponse.accessToken) {
 							throw new AuthenticationError({
 								result: 'error',
 								message: 'invalid email or password',
@@ -125,6 +125,12 @@ export class BaseClient {
 					});
 			}
 			this.headerInterceptor.setAuthHeader(this.cookie?.authentication.accessToken ?? '');
+			// なぜかクッキーの値が保存されない
+			if (this.cookie !== undefined) {
+				console.log(this.cookie);
+				this.cookieManager.setCookie(this.cookie);
+			}
+			this.cookieManager.saveCookie();
 		}
 	}
 }

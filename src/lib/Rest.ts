@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import camelcaseKeys from 'camelcase-keys';
 import snakecaseKeys from 'snakecase-keys';
 
-import { Cookie, RequestOptions } from '../util/Types';
+import { objectToCamel } from '../util/CaseConverter';
+import { Cookie, ErrorResponse, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
 import { BASE_API_URL } from '../util/Constants';
 import {
@@ -43,8 +43,8 @@ export class REST {
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
-			params: options.params,
-			data: options.json,
+			params: snakecaseKeys(options.params || {}, { deep: true }),
+			data: snakecaseKeys(options.json || {}, { deep: true }),
 			headers: headers,
 		};
 
@@ -52,24 +52,26 @@ export class REST {
 			const response: AxiosResponse = await this.api(config);
 			const { status, data } = response;
 
+			const camelCasedData = objectToCamel(data);
+
 			switch (status) {
 				case 400:
-					throw new BadRequestError(data);
+					throw new BadRequestError(camelCasedData as ErrorResponse);
 				case 401:
-					throw new AuthenticationError(data);
+					throw new AuthenticationError(camelCasedData as ErrorResponse);
 				case 403:
-					throw new ForbiddenError(data);
+					throw new ForbiddenError(camelCasedData as ErrorResponse);
 				case 404:
-					throw new NotFoundError(data);
+					throw new NotFoundError(camelCasedData as ErrorResponse);
 				case 429:
-					throw new RateLimitError(data);
+					throw new RateLimitError(camelCasedData as ErrorResponse);
 				case 500:
-					throw new ServerError(data);
+					throw new ServerError(camelCasedData as ErrorResponse);
 				default:
 					if (status >= 200 && status < 300) {
-						return data;
+						return camelCasedData;
 					} else {
-						throw new HTTPError(data);
+						throw new HTTPError(camelCasedData as ErrorResponse);
 					}
 			}
 		} catch (error) {
