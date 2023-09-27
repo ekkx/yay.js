@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { Cookie } from './Types';
+import { YJSError } from '../lib/Errors';
 
 export class CookieManager {
 	private algorithm: string;
@@ -87,14 +88,29 @@ export class CookieManager {
 		this.refreshToken = refreshToken;
 	}
 
-	public exists(): boolean {
-		return fs.existsSync(this.filePath);
+	private hash(str: string): string {
+		const sha256Hash = crypto.createHash('sha256');
+		sha256Hash.update(str);
+		return sha256Hash.digest('hex');
+	}
+
+	public exists(email: string): boolean {
+		try {
+			const exists = fs.existsSync(this.filePath);
+			if (!exists) {
+				return false;
+			}
+			this.loadCookie(email);
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 
 	public saveCookie() {
 		const data: Cookie = {
 			user: {
-				email: this.email,
+				email: this.hash(this.email),
 				userId: this.userId,
 				uuid: this.encryptionKey ? this.encrypt(this.uuid) : this.uuid,
 			},
@@ -112,34 +128,36 @@ export class CookieManager {
 		fs.writeFileSync(this.filePath, cookie, 'utf-8');
 	}
 
-	public loadCookie(): Cookie {
-		try {
-			const data = fs.readFileSync(this.filePath, 'utf-8');
-			const cookie: Cookie = JSON.parse(data);
+	public loadCookie(email: string): Cookie {
+		const data = fs.readFileSync(this.filePath, 'utf-8');
+		const cookie: Cookie = JSON.parse(data);
 
-			if (this.encryptionKey) {
-				return {
-					...cookie,
-					user: {
-						...cookie.user,
-						uuid: this.decrypt(cookie.user.uuid),
-					},
-					device: {
-						...cookie.device,
-						deviceUuid: this.decrypt(cookie.device.deviceUuid),
-					},
-					authentication: {
-						...cookie.authentication,
-						accessToken: this.decrypt(cookie.authentication.accessToken),
-						refreshToken: this.decrypt(cookie.authentication.refreshToken),
-					},
-				};
-			}
-
-			return cookie;
-		} catch (error) {
-			throw new Error('クッキーデータの読み込みに失敗しました。');
+		if (!(this.hash(email) === cookie.user.email)) {
+			throw new YJSError('メールアドレスが一致しませんでした。');
 		}
+
+		cookie['user']['email'] = email;
+
+		if (this.encryptionKey) {
+			return {
+				...cookie,
+				user: {
+					...cookie.user,
+					uuid: this.decrypt(cookie.user.uuid),
+				},
+				device: {
+					...cookie.device,
+					deviceUuid: this.decrypt(cookie.device.deviceUuid),
+				},
+				authentication: {
+					...cookie.authentication,
+					accessToken: this.decrypt(cookie.authentication.accessToken),
+					refreshToken: this.decrypt(cookie.authentication.refreshToken),
+				},
+			};
+		}
+
+		return cookie;
 	}
 
 	public deleteCookie() {

@@ -1,5 +1,5 @@
 import { API_VERSION_NAME, BASE_HOST, VERSION_NAME } from './Constants';
-import { Device, RequestHeaders } from './Types';
+import { Cookie, Device, RequestHeaders } from './Types';
 
 export class HeaderInterceptor {
 	private clientIP: string;
@@ -68,5 +68,10 @@ export class HeaderInterceptor {
 
 	public setAuthHeader(accessToken: string): void {
 		this.Authorization = 'Bearer ' + accessToken;
+	}
+
+	public setHeadersByCookie(cookie: Cookie): void {
+		this.setAuthHeader(cookie.authentication.accessToken);
+		this.deviceUuid = cookie.device.deviceUuid;
 	}
 }

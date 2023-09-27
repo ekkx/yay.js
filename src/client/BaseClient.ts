@@ -85,53 +85,63 @@ export class BaseClient {
 		this.thread = new ThreadApi(this);
 		this.user = new UserApi(this);
 
-		this.user.getTimestamp().then((userTimestampResponse: UserTimestampResponse) => {
-			const ipAddress = userTimestampResponse.ipAddress;
-			this.headerInterceptor.setClientIP(ipAddress);
-		});
+		this.user
+			.getTimestamp()
+			.then((userTimestampResponse) => {
+				const ipAddress = userTimestampResponse.ipAddress;
+				this.headerInterceptor.setClientIP(ipAddress);
 
-		if (options.saveCookie && options.email && options.password) {
-			if (!options.cookieFilePath) {
-				options.cookieFilePath = './cookie.json';
-			}
+				if (!options.cookieFilePath) {
+					options.cookieFilePath = './cookie.json';
+				}
 
-			this.cookieManager = new CookieManager(options.cookieFilePath, options.cookiePassword);
-			if (this.cookieManager.exists()) {
-				this.cookie = this.cookieManager.loadCookie();
-				this.deviceUuid = this.cookie.device.deviceUuid;
-				this.uuid = this.cookie.user.uuid;
-			} else {
-				this.login
-					.loginWithEmail({
-						apiKey: API_KEY,
-						email: options.email,
-						password: options.password,
-						uuid: this.uuid,
-					})
-					.then((loginResponse: LoginUserResponse) => {
-						if (!loginResponse.accessToken) {
-							throw new AuthenticationError({
-								result: 'error',
-								message: 'invalid email or password',
-								errorCode: ErrorCode.InvalidEmailOrPassword,
-								banUntil: null,
-							});
-						}
-						this.cookie = {
-							authentication: { accessToken: loginResponse.accessToken, refreshToken: loginResponse.refreshToken },
-							user: { userId: loginResponse.userId, email: options.email ?? '', uuid: this.uuid },
-							device: { deviceUuid: this.deviceUuid },
-						};
-					});
-			}
-			this.headerInterceptor.setAuthHeader(this.cookie?.authentication.accessToken ?? '');
-			// なぜかクッキーの値が保存されない
-			if (this.cookie !== undefined) {
-				console.log(this.cookie);
-				this.cookieManager.setCookie(this.cookie);
-			}
-			this.cookieManager.saveCookie();
-		}
+				this.cookieManager = new CookieManager(options.cookieFilePath, options.cookiePassword);
+
+				if (options.email && options.password) {
+					if (this.cookieManager.exists(options.email)) {
+						this.cookie = this.cookieManager.loadCookie(options.email);
+						this.deviceUuid = this.cookie.device.deviceUuid;
+						this.uuid = this.cookie.user.uuid;
+					} else {
+						return this.login.loginWithEmail({
+							apiKey: API_KEY,
+							email: options.email,
+							password: options.password,
+							uuid: this.uuid,
+						});
+					}
+				}
+			})
+			.then((loginResponse) => {
+				if (loginResponse) {
+					if (!loginResponse.accessToken) {
+						throw new AuthenticationError({
+							result: 'error',
+							message: 'invalid email or password',
+							errorCode: ErrorCode.InvalidEmailOrPassword,
+							banUntil: null,
+						});
+					}
+
+					this.cookie = {
+						authentication: { accessToken: loginResponse.accessToken, refreshToken: loginResponse.refreshToken },
+						user: { userId: loginResponse.userId, email: options.email ?? '', uuid: this.uuid },
+						device: { deviceUuid: this.deviceUuid },
+					};
+				}
+
+				if (this.cookieManager !== undefined && this.cookie !== undefined) {
+					this.headerInterceptor.setHeadersByCookie(this.cookie);
+					this.cookieManager.setCookie(this.cookie);
+					this.deviceUuid = this.cookie.device.deviceUuid;
+					this.uuid = this.cookie.user.uuid;
+
+					this.cookieManager.saveCookie();
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	}
 
 	public async request(options: RequestOptions): Promise<any> {
