@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
+import { v4 as uuid } from 'uuid';
 import { Cookie } from './Types';
 import { YJSError } from '../lib/Errors';
 
@@ -10,8 +11,8 @@ export class CookieManager {
 
 	private email: string = '';
 	private userId: number = 0;
-	private uuid: string = '';
-	private deviceUuid: string = '';
+	private uuid: string = uuid();
+	private deviceUuid: string = uuid();
 	private accessToken: string = '';
 	private refreshToken: string = '';
 
@@ -94,6 +95,14 @@ export class CookieManager {
 		return sha256Hash.digest('hex');
 	}
 
+	public getCookie(): Cookie {
+		return {
+			authentication: { accessToken: this.accessToken, refreshToken: this.refreshToken },
+			user: { email: this.email, userId: this.userId, uuid: this.uuid },
+			device: { deviceUuid: this.deviceUuid },
+		};
+	}
+
 	public exists(email: string): boolean {
 		try {
 			const exists = fs.existsSync(this.filePath);
@@ -156,6 +165,8 @@ export class CookieManager {
 				},
 			};
 		}
+
+		this.setCookie(cookie);
 
 		return cookie;
 	}

@@ -24,8 +24,6 @@ import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
 import { ClientOptions, Cookie, RequestOptions } from '../util/Types';
 
-import { v4 as uuid } from 'uuid';
-
 export class BaseClient {
 	public readonly AIPaca: AIPacaApi;
 	public readonly block: BlockApi;
@@ -45,18 +43,20 @@ export class BaseClient {
 	public readonly thread: ThreadApi;
 	public readonly user: UserApi;
 
-	private headerInterceptor: HeaderInterceptor;
-	private cookieManager?: CookieManager;
-	public cookie?: Cookie;
-	public deviceUuid: string;
-	public uuid: string;
 	private rest: REST;
+	private headerInterceptor: HeaderInterceptor;
+	private cookieManager: CookieManager;
+	public cookie: Cookie;
 
 	public constructor(options: ClientOptions) {
-		this.deviceUuid = uuid();
-		this.uuid = uuid();
+		if (!options.cookieFilePath) {
+			options.cookieFilePath = process.cwd() + '/cookie.json';
+		}
 
-		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.deviceUuid, 'ja');
+		this.cookieManager = new CookieManager(options.cookieFilePath, options.cookiePassword);
+		this.cookie = this.cookieManager.getCookie();
+
+		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie.device.deviceUuid, 'ja');
 		this.headerInterceptor.setConnectionSpeed('0');
 
 		this.rest = new REST({
@@ -84,12 +84,6 @@ export class BaseClient {
 		this.review = new ReviewApi(this);
 		this.thread = new ThreadApi(this);
 		this.user = new UserApi(this);
-
-		if (!options.cookieFilePath) {
-			options.cookieFilePath = process.cwd() + '/cookie.json';
-		}
-
-		this.cookieManager = new CookieManager(options.cookieFilePath, options.cookiePassword);
 
 		this.user.getTimestamp().then((userTimestampResponse: UserTimestampResponse) => {
 			const ipAddress = userTimestampResponse.ipAddress;

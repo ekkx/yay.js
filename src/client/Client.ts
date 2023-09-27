@@ -13,7 +13,7 @@ export class Client extends BaseClient {
 			apiKey: API_KEY,
 			email: email,
 			password: password,
-			uuid: this.uuid,
+			uuid: this.cookie.user.uuid,
 		});
 	};
 }
