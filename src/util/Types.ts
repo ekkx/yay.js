@@ -1,5 +1,4 @@
 import { AxiosProxyConfig } from 'axios';
-import { HeaderInterceptor } from './HeaderInterceptor';
 
 /**
  * RESTクラスのrequest関数の引数
@@ -150,8 +149,8 @@ export enum RequestMethod {
 export type ErrorResponse = {
 	result: string;
 	message: string;
-	error_code: number;
-	ban_until: number | null;
+	errorCode: number;
+	banUntil: number | null;
 };
 
 /**
@@ -164,7 +163,7 @@ export enum PostType {
 	video = 'video',
 	survey = 'survey',
 	call = 'call',
-	shareable_url = 'shareable_url',
+	shareableUrl = 'shareable_url',
 }
 
 /**

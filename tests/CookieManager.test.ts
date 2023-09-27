@@ -34,19 +34,19 @@ describe('CookieManager', () => {
 		},
 	};
 
-	it('クッキーデータをセットして保存する', async () => {
+	it('クッキーデータをセットして保存する', () => {
 		cookieManager.setCookie(testCookie);
-		await cookieManager.saveCookie();
+		cookieManager.saveCookie();
 
-		const loadedCookie = await cookieManager.loadCookie();
+		const loadedCookie = cookieManager.loadCookie();
 		expect(loadedCookie).toEqual(testCookie);
 	});
 
-	it('クッキーデータをセットし、暗号化して保存する', async () => {
+	it('クッキーデータをセットし、暗号化して保存する', () => {
 		cookieEncryptManager.setCookie(testCookie);
-		await cookieEncryptManager.saveCookie();
+		cookieEncryptManager.saveCookie();
 
-		const loadedCookie = await cookieEncryptManager.loadCookie();
+		const loadedCookie = cookieEncryptManager.loadCookie();
 		expect(loadedCookie).toEqual(testCookie);
 	});
 });

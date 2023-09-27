@@ -113,8 +113,8 @@ export class BaseClient {
 							throw new AuthenticationError({
 								result: 'error',
 								message: 'invalid email or password',
-								error_code: ErrorCode.InvalidEmailOrPassword,
-								ban_until: null,
+								errorCode: ErrorCode.InvalidEmailOrPassword,
+								banUntil: null,
 							});
 						}
 						this.cookie = {
