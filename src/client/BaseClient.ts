@@ -50,7 +50,7 @@ export class BaseClient {
 	public cookie?: Cookie;
 	public deviceUuid: string;
 	public uuid: string;
-	public rest: REST;
+	private rest: REST;
 
 	public constructor(options: ClientOptions) {
 		this.deviceUuid = uuid();
@@ -134,5 +134,12 @@ export class BaseClient {
 		}
 	}
 
-	public async request(options: RequestOptions): Promise<any> {}
+	public async request(options: RequestOptions): Promise<any> {
+		const defaultHeaders = { ...this.headerInterceptor.intercept() };
+		const customHeaders = { ...defaultHeaders, ...options.headers };
+
+		options.headers = customHeaders || defaultHeaders;
+
+		return await this.rest.request(options);
+	}
 }

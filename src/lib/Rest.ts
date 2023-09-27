@@ -37,49 +37,39 @@ export class REST {
 		});
 	}
 
-	private async send(options: RequestOptions): Promise<any> {
-		let headers = { ...this.headerInterceptor.intercept() };
-
+	public async request(options: RequestOptions): Promise<any> {
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
 			params: snakecaseKeys(options.params || {}, { deep: true }),
 			data: snakecaseKeys(options.json || {}, { deep: true }),
-			headers: headers,
+			headers: options.headers,
 		};
 
-		try {
-			const response: AxiosResponse = await this.api(config);
-			const { status, data } = response;
+        const response: AxiosResponse = await this.api(config);
+        const { status, data } = response;
 
-			const camelCasedData = objectToCamel(data);
+        const camelCasedData = objectToCamel(data);
 
-			switch (status) {
-				case 400:
-					throw new BadRequestError(camelCasedData as ErrorResponse);
-				case 401:
-					throw new AuthenticationError(camelCasedData as ErrorResponse);
-				case 403:
-					throw new ForbiddenError(camelCasedData as ErrorResponse);
-				case 404:
-					throw new NotFoundError(camelCasedData as ErrorResponse);
-				case 429:
-					throw new RateLimitError(camelCasedData as ErrorResponse);
-				case 500:
-					throw new ServerError(camelCasedData as ErrorResponse);
-				default:
-					if (status >= 200 && status < 300) {
-						return camelCasedData;
-					} else {
-						throw new HTTPError(camelCasedData as ErrorResponse);
-					}
-			}
-		} catch (error) {
-			throw error;
-		}
-	}
-
-	public async request(options: RequestOptions): Promise<any> {
-		return await this.send(options);
+        switch (status) {
+            case 400:
+                throw new BadRequestError(camelCasedData as ErrorResponse);
+            case 401:
+                throw new AuthenticationError(camelCasedData as ErrorResponse);
+            case 403:
+                throw new ForbiddenError(camelCasedData as ErrorResponse);
+            case 404:
+                throw new NotFoundError(camelCasedData as ErrorResponse);
+            case 429:
+                throw new RateLimitError(camelCasedData as ErrorResponse);
+            case 500:
+                throw new ServerError(camelCasedData as ErrorResponse);
+            default:
+                if (status >= 200 && status < 300) {
+                    return camelCasedData;
+                } else {
+                    throw new HTTPError(camelCasedData as ErrorResponse);
+                }
+        }
 	}
 }
