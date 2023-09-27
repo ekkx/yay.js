@@ -10,7 +10,7 @@ export type RESTOptions = {
 	timeout?: number;
 	device: Device;
 	cookie?: Cookie;
-	headerInterceptor: HeaderInterceptor;
+	defaultHeaders: RequestHeaders;
 };
 
 export type RequestOptions = {

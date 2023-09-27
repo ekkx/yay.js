@@ -64,7 +64,7 @@ export class BaseClient {
 			proxy: options.proxy,
 			timeout: options.timeout,
 			device: DEFAULT_DEVICE,
-			headerInterceptor: this.headerInterceptor,
+			defaultHeaders: this.headerInterceptor.intercept(),
 		});
 
 		this.AIPaca = new AIPacaApi(this);
