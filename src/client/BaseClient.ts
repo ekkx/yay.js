@@ -8,7 +8,7 @@ import { GameApi } from '../lib/Game';
 import { GiftApi } from '../lib/Gift';
 import { GroupApi } from '../lib/Group';
 import { HiddenApi } from '../lib/Hidden';
-import { LoginApi } from '../lib/Login';
+import { AuthApi } from '../lib/Auth';
 import { MiscApi } from '../lib/Misc';
 import { MuteKeywordApi } from '../lib/MuteKeyword';
 import { PostApi } from '../lib/Post';
@@ -37,7 +37,7 @@ export class BaseClient {
 	public readonly gift: GiftApi;
 	public readonly group: GroupApi;
 	public readonly hidden: HiddenApi;
-	public readonly login: LoginApi;
+	public readonly auth: AuthApi;
 	public readonly misc: MiscApi;
 	public readonly muteKeyword: MuteKeywordApi;
 	public readonly post: PostApi;
@@ -77,7 +77,7 @@ export class BaseClient {
 		this.gift = new GiftApi(this);
 		this.group = new GroupApi(this);
 		this.hidden = new HiddenApi(this);
-		this.login = new LoginApi(this);
+		this.auth = new AuthApi(this);
 		this.misc = new MiscApi(this);
 		this.muteKeyword = new MuteKeywordApi(this);
 		this.post = new PostApi(this);

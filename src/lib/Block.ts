@@ -5,25 +5,25 @@ import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses'
 export class BlockApi {
 	public constructor(private readonly base: BaseClient) {}
 
-	blockUser = async (user_id: number) => {
+	public blockUser = async (userId: number) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
-			route: `v1/users/${user_id}/block`,
+			route: `v1/users/${userId}/block`,
 			requireAuth: true,
 		});
 	};
 
-	getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
+	public getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
 		return await this.base.request({ method: RequestMethod.GET, route: `v1/users/block_ids`, requireAuth: true });
 	};
 
-	getBlockedUsers = async (
+	public getBlockedUsers = async (
 		nickname?: string,
 		username?: string,
 		biography?: string,
 		prefecture?: string,
 		gender?: number,
-		from_id?: number,
+		fromId?: number,
 	): Promise<BlockedUsersResponse> => {
 		const params: Params = {};
 
@@ -32,7 +32,7 @@ export class BlockApi {
 		if (biography) params.biography = biography;
 		if (prefecture) params.prefecture = prefecture;
 		if (gender) params.gender = gender;
-		if (from_id) params.from_id = from_id;
+		if (fromId) params.fromId = fromId;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -42,10 +42,10 @@ export class BlockApi {
 		});
 	};
 
-	unblockUser = async (user_id: number) => {
+	public unblockUser = async (userId: number) => {
 		return await this.base.request({
 			method: RequestMethod.GET,
-			route: `v2/users/${user_id}/unblock`,
+			route: `v2/users/${userId}/unblock`,
 			requireAuth: true,
 		});
 	};

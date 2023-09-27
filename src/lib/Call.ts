@@ -14,25 +14,25 @@ import {
 export class CallApi {
 	public constructor(private readonly base: BaseClient) {}
 
-	bumpCall = async (call_id: number, participant_limit?: number) => {
+	public bumpCall = async (callId: number, participantLimit?: number) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
-			route: `v1/calls/${call_id}/bump`,
+			route: `v1/calls/${callId}/bump`,
 			requireAuth: true,
-			params: { participant_limit: participant_limit },
+			params: { participantLimit: participantLimit },
 		});
 	};
 
-	getActiveCall = async (user_id: number): Promise<PostResponse> => {
+	public getActiveCall = async (userId: number): Promise<PostResponse> => {
 		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/posts/active_call`,
 			requireAuth: false,
-			params: { user_id: user_id },
+			params: { userId: userId },
 		});
 	};
 
-	getBgms = async (): Promise<BgmsResponse> => {
+	public getBgms = async (): Promise<BgmsResponse> => {
 		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/calls/bgm`,
@@ -40,47 +40,47 @@ export class CallApi {
 		});
 	};
 
-	getCall = async (call_id: number): Promise<ConferenceCallResponse> => {
+	public getCall = async (callId: number): Promise<ConferenceCallResponse> => {
 		return await this.base.request({
 			method: RequestMethod.GET,
-			route: `v1/calls/conferences/${call_id}`,
+			route: `v1/calls/conferences/${callId}`,
 			requireAuth: false,
 		});
 	};
 
-	getCallInvitableUsers = async (
-		call_id: number,
-		from_timestamp?: number,
+	public getCallInvitableUsers = async (
+		callId: number,
+		fromTimestamp?: number,
 		nickname?: string,
 	): Promise<UsersByTimestampResponse> => {
 		const params: Params = {};
 
-		if (from_timestamp) params.from_timestamp = from_timestamp;
+		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
 		if (nickname) params.nickname = nickname;
 
 		return await this.base.request({
 			method: RequestMethod.GET,
-			route: `v1/calls/conferences/${call_id}`,
+			route: `v1/calls/conferences/${callId}`,
 			requireAuth: false,
 			params: params,
 		});
 	};
 
-	getCallStatus = async (opponent_id: number): Promise<CallStatusResponse> => {
+	public getCallStatus = async (opponentId: number): Promise<CallStatusResponse> => {
 		return await this.base.request({
 			method: RequestMethod.GET,
-			route: `v1/calls/phone_status/${opponent_id}`,
+			route: `v1/calls/phone_status/${opponentId}`,
 			requireAuth: false,
 		});
 	};
 
-	getGames = async (number: number, ids: number[], from_id?: number): Promise<GamesResponse> => {
+	public getGames = async (number: number, ids: number[], fromId?: number): Promise<GamesResponse> => {
 		const params: Params = {};
 
 		params.number = number;
 		params['ids[]'] = ids;
 
-		if (from_id) params.from_id = from_id;
+		if (fromId) params.fromId = fromId;
 
 		return await this.base.request({
 			method: RequestMethod.GET,
@@ -90,7 +90,7 @@ export class CallApi {
 		});
 	};
 
-	getGenres = async (number: number, from: number): Promise<GenresResponse> => {
+	public getGenres = async (number: number, from: number): Promise<GenresResponse> => {
 		const params: Params = {};
 		params.number = number;
 
@@ -104,16 +104,16 @@ export class CallApi {
 		});
 	};
 
-	getGroupCalls = async (
+	public getGroupCalls = async (
 		number?: number,
-		group_category_id?: number,
-		from_timestamp?: number,
+		groupCategoryId?: number,
+		fromTimestamp?: number,
 		scope?: string,
 	): Promise<PostsResponse> => {
 		const params: Params = {};
 
-		if (from_timestamp) params.from_timestamp = from_timestamp;
-		if (group_category_id) params.group_category_id = group_category_id;
+		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+		if (groupCategoryId) params.groupCategoryId = groupCategoryId;
 		if (number) params.number = number;
 		if (scope) params.scope = scope;
 
@@ -125,30 +125,30 @@ export class CallApi {
 		});
 	};
 
-	inviteToCallBulk = async (call_id: number, group_id: number) => {
+	public inviteToCallBulk = async (callId: number, groupId: number) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
-			route: `v1/calls/${call_id}/bulk_invite`,
+			route: `v1/calls/${callId}/bulk_invite`,
 			requireAuth: true,
-			params: group_id ? { group_id: group_id } : {},
+			params: groupId ? { groupId: groupId } : {},
 		});
 	};
 
-	inviteUsersToCall = async (call_id: number, user_ids: number[]) => {
+	public inviteUsersToCall = async (callId: number, userIds: number[]) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
-			route: `v1/calls/conference_calls/${call_id}/invite`,
+			route: `v1/calls/conference_calls/${callId}/invite`,
 			requireAuth: true,
-			json: { 'user_ids[]': user_ids },
+			json: { 'userIds[]': userIds },
 		});
 	};
 
-	inviteUsersToChatCall = async (chat_room_id?: number, room_id?: number, room_url?: string) => {
+	public inviteUsersToChatCall = async (chatRoomId?: number, roomId?: number, roomUrl?: string) => {
 		const json: Json = {};
 
-		if (chat_room_id) json.chat_room_id = chat_room_id;
-		if (room_id) json.room_id = room_id;
-		if (room_url) json.room_url = room_url;
+		if (chatRoomId) json.chatRoomId = chatRoomId;
+		if (roomId) json.roomId = roomId;
+		if (roomUrl) json.roomUrl = roomUrl;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -158,81 +158,81 @@ export class CallApi {
 		});
 	};
 
-	kickAndBanFromCall = async (call_id: number, user_id: number) => {
+	public kickAndBanFromCall = async (callId: number, userId: number) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
-			route: `v1/calls/conference_calls/${call_id}/kick`,
+			route: `v1/calls/conference_calls/${callId}/kick`,
 			requireAuth: true,
-			json: { call_id: call_id, user_id: user_id },
+			json: { callId: callId, userId: userId },
 		});
 	};
 
-	notifyAnonymousUserLeaveAgoraChannel = async (conference_id: number, agora_uid: string) => {
+	public notifyAnonymousUserLeaveAgoraChannel = async (conferenceId: number, agoraUid: string) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/anonymous_calls/leave_agora_channel`,
 			requireAuth: false,
-			json: { conference_id: conference_id, agora_uid: agora_uid },
+			json: { conferenceId: conferenceId, agoraUid: agoraUid },
 		});
 	};
 
-	notifyUserLeaveAgoraChannel = async (conference_id: number, user_id: number) => {
+	public notifyUserLeaveAgoraChannel = async (conferenceId: number, userId: number) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/leave_agora_channel`,
 			requireAuth: false,
-			json: { conference_id: conference_id, user_id: user_id },
+			json: { conferenceId: conferenceId, userId: userId },
 		});
 	};
 
-	sendCallScreenshot = async (screenshot_filename: string, conference_id: number) => {
+	public sendCallScreenshot = async (screenshotFilename: string, conferenceId: number) => {
 		return await this.base.request({
 			method: RequestMethod.PUT,
 			route: `v1/calls/screenshot`,
 			requireAuth: false,
-			json: { screenshot_filename: screenshot_filename, conference_id: conference_id },
+			json: { screenshotFilename: screenshotFilename, conferenceId: conferenceId },
 		});
 	};
 
-	setCall = async (call_id: number, joinable_by: string, game_title?: string, category_id?: string) => {
+	public setCall = async (callId: number, joinableBy: string, gameTitle?: string, categoryId?: string) => {
 		const json: Json = {};
-		json.joinable_by = joinable_by;
+		json.joinableBy = joinableBy;
 
-		if (category_id) json.category_id = category_id;
-		if (game_title) json.game_title = game_title;
+		if (categoryId) json.categoryId = categoryId;
+		if (gameTitle) json.gameTitle = gameTitle;
 
 		return await this.base.request({
 			method: RequestMethod.PUT,
-			route: `v1/calls/${call_id}`,
+			route: `v1/calls/${callId}`,
 			requireAuth: true,
 			json: json,
 		});
 	};
 
-	setUserRole = async (call_id: number, user_id: number, role: string) => {
+	public setUserRole = async (callId: number, userId: number, role: string) => {
 		return await this.base.request({
 			method: RequestMethod.PUT,
-			route: `/v1/calls/${call_id}/users/${user_id}`,
+			route: `/v1/calls/${callId}/users/${userId}`,
 			requireAuth: true,
 			json: { role: role },
 		});
 	};
 
-	startCall = async (conference_id: number, call_sid: string): Promise<ConferenceCallResponse> => {
+	public startCall = async (conferenceId: number, callSid: string): Promise<ConferenceCallResponse> => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/calls/start_conference_call`,
 			requireAuth: false,
-			json: { conference_id: conference_id, call_sid: call_sid },
+			json: { conferenceId: conferenceId, callSid: callSid },
 		});
 	};
 
-	stopCall = async (conference_id: number, call_sid: string) => {
+	public stopCall = async (conferenceId: number, callSid: string) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/leave_conference_call`,
 			requireAuth: false,
-			json: { conference_id: conference_id, call_sid: call_sid },
+			json: { conferenceId: conferenceId, callSid: callSid },
 		});
 	};
 }
