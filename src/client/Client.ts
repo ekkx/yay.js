@@ -9,14 +9,9 @@ export class Client extends BaseClient {
 
 // usage
 const main = async () => {
-	const client = new Client({
-		email: 'your_email',
-		password: 'your_password',
-		saveCookie: true,
-	});
+	const client = new Client({ saveCookie: true });
 
-	const bgms = await client.call.getBgms();
-	console.log(bgms);
+	// await client.login()
 };
 
 main();
