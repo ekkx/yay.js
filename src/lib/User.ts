@@ -1,12 +1,12 @@
+import { BaseClient } from '../client/BaseClient';
 import { UserTimestampResponse } from '../util/Responses';
-import { REST } from './Rest';
 import { RequestMethod } from '../util/Types';
 
 export class UserApi {
-	public constructor(private readonly rest: REST) {}
+	public constructor(private readonly base: BaseClient) {}
 
 	getTimestamp = async (): Promise<UserTimestampResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v2/users/timestamp`,
 			requireAuth: false,

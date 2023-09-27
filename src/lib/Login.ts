@@ -1,12 +1,12 @@
+import { BaseClient } from '../client/BaseClient';
 import { LoginEmailUserRequest, RequestMethod } from '../util/Types';
-import { REST } from './Rest';
 import { LoginUserResponse } from '../util/Responses';
 
 export class LoginApi {
-	public constructor(private readonly rest: REST) {}
+	public constructor(private readonly base: BaseClient) {}
 
 	loginWithEmail = async (request: LoginEmailUserRequest): Promise<LoginUserResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v3/users/login_with_email`,
 			requireAuth: false,

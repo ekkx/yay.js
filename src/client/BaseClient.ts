@@ -22,7 +22,7 @@ import { CookieManager } from '../util/CookieManager';
 import { AuthenticationError, ErrorCode } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
-import { ClientOptions, Cookie } from '../util/Types';
+import { ClientOptions, Cookie, RequestOptions } from '../util/Types';
 
 import { v4 as uuid } from 'uuid';
 
@@ -67,23 +67,23 @@ export class BaseClient {
 			headerInterceptor: this.headerInterceptor,
 		});
 
-		this.AIPaca = new AIPacaApi(this.rest);
-		this.block = new BlockApi(this.rest);
-		this.call = new CallApi(this.rest);
-		this.cassandra = new CassandraApi(this.rest);
-		this.chat = new ChatApi(this.rest);
-		this.config = new ConfigApi(this.rest);
-		this.game = new GameApi(this.rest);
-		this.gift = new GiftApi(this.rest);
-		this.group = new GroupApi(this.rest);
-		this.hidden = new HiddenApi(this.rest);
-		this.login = new LoginApi(this.rest);
-		this.misc = new MiscApi(this.rest);
-		this.muteKeyword = new MuteKeywordApi(this.rest);
-		this.post = new PostApi(this.rest);
-		this.review = new ReviewApi(this.rest);
-		this.thread = new ThreadApi(this.rest);
-		this.user = new UserApi(this.rest);
+		this.AIPaca = new AIPacaApi(this);
+		this.block = new BlockApi(this);
+		this.call = new CallApi(this);
+		this.cassandra = new CassandraApi(this);
+		this.chat = new ChatApi(this);
+		this.config = new ConfigApi(this);
+		this.game = new GameApi(this);
+		this.gift = new GiftApi(this);
+		this.group = new GroupApi(this);
+		this.hidden = new HiddenApi(this);
+		this.login = new LoginApi(this);
+		this.misc = new MiscApi(this);
+		this.muteKeyword = new MuteKeywordApi(this);
+		this.post = new PostApi(this);
+		this.review = new ReviewApi(this);
+		this.thread = new ThreadApi(this);
+		this.user = new UserApi(this);
 
 		this.user.getTimestamp().then((userTimestampResponse: UserTimestampResponse) => {
 			const ipAddress = userTimestampResponse.ipAddress;
@@ -133,4 +133,6 @@ export class BaseClient {
 			this.cookieManager.saveCookie();
 		}
 	}
+
+	public async request(options: RequestOptions): Promise<any> {}
 }

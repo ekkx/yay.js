@@ -1,5 +1,5 @@
+import { BaseClient } from '../client/BaseClient';
 import { Json, Params, RequestMethod } from '../util/Types';
-import { REST } from './Rest';
 import {
 	PostResponse,
 	BgmsResponse,
@@ -12,10 +12,10 @@ import {
 } from '../util/Responses';
 
 export class CallApi {
-	public constructor(private readonly rest: REST) {}
+	public constructor(private readonly base: BaseClient) {}
 
 	bumpCall = async (call_id: number, participant_limit?: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/${call_id}/bump`,
 			requireAuth: true,
@@ -24,7 +24,7 @@ export class CallApi {
 	};
 
 	getActiveCall = async (user_id: number): Promise<PostResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/posts/active_call`,
 			requireAuth: false,
@@ -33,7 +33,7 @@ export class CallApi {
 	};
 
 	getBgms = async (): Promise<BgmsResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/calls/bgm`,
 			requireAuth: false,
@@ -41,7 +41,7 @@ export class CallApi {
 	};
 
 	getCall = async (call_id: number): Promise<ConferenceCallResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/calls/conferences/${call_id}`,
 			requireAuth: false,
@@ -58,7 +58,7 @@ export class CallApi {
 		if (from_timestamp) params.from_timestamp = from_timestamp;
 		if (nickname) params.nickname = nickname;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/calls/conferences/${call_id}`,
 			requireAuth: false,
@@ -67,7 +67,7 @@ export class CallApi {
 	};
 
 	getCallStatus = async (opponent_id: number): Promise<CallStatusResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/calls/phone_status/${opponent_id}`,
 			requireAuth: false,
@@ -82,7 +82,7 @@ export class CallApi {
 
 		if (from_id) params.from_id = from_id;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/games/apps`,
 			requireAuth: false,
@@ -96,7 +96,7 @@ export class CallApi {
 
 		if (from) params.from = from;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/genres`,
 			requireAuth: false,
@@ -117,7 +117,7 @@ export class CallApi {
 		if (number) params.number = number;
 		if (scope) params.scope = scope;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/posts/group_calls`,
 			requireAuth: false,
@@ -126,7 +126,7 @@ export class CallApi {
 	};
 
 	inviteToCallBulk = async (call_id: number, group_id: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/${call_id}/bulk_invite`,
 			requireAuth: true,
@@ -135,7 +135,7 @@ export class CallApi {
 	};
 
 	inviteUsersToCall = async (call_id: number, user_ids: number[]) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/conference_calls/${call_id}/invite`,
 			requireAuth: true,
@@ -150,7 +150,7 @@ export class CallApi {
 		if (room_id) json.room_id = room_id;
 		if (room_url) json.room_url = room_url;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/calls/invite`,
 			requireAuth: true,
@@ -159,7 +159,7 @@ export class CallApi {
 	};
 
 	kickAndBanFromCall = async (call_id: number, user_id: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/conference_calls/${call_id}/kick`,
 			requireAuth: true,
@@ -168,7 +168,7 @@ export class CallApi {
 	};
 
 	notifyAnonymousUserLeaveAgoraChannel = async (conference_id: number, agora_uid: string) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/anonymous_calls/leave_agora_channel`,
 			requireAuth: false,
@@ -177,7 +177,7 @@ export class CallApi {
 	};
 
 	notifyUserLeaveAgoraChannel = async (conference_id: number, user_id: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/leave_agora_channel`,
 			requireAuth: false,
@@ -186,7 +186,7 @@ export class CallApi {
 	};
 
 	sendCallScreenshot = async (screenshot_filename: string, conference_id: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.PUT,
 			route: `v1/calls/screenshot`,
 			requireAuth: false,
@@ -201,7 +201,7 @@ export class CallApi {
 		if (category_id) json.category_id = category_id;
 		if (game_title) json.game_title = game_title;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.PUT,
 			route: `v1/calls/${call_id}`,
 			requireAuth: true,
@@ -210,7 +210,7 @@ export class CallApi {
 	};
 
 	setUserRole = async (call_id: number, user_id: number, role: string) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.PUT,
 			route: `/v1/calls/${call_id}/users/${user_id}`,
 			requireAuth: true,
@@ -219,7 +219,7 @@ export class CallApi {
 	};
 
 	startCall = async (conference_id: number, call_sid: string): Promise<ConferenceCallResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/calls/start_conference_call`,
 			requireAuth: false,
@@ -228,7 +228,7 @@ export class CallApi {
 	};
 
 	stopCall = async (conference_id: number, call_sid: string) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/calls/leave_conference_call`,
 			requireAuth: false,

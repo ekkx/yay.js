@@ -1,12 +1,12 @@
-import { REST } from './Rest';
+import { BaseClient } from '../client/BaseClient';
 import { Params, RequestMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
 export class BlockApi {
-	public constructor(private readonly rest: REST) {}
+	public constructor(private readonly base: BaseClient) {}
 
 	blockUser = async (user_id: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/users/${user_id}/block`,
 			requireAuth: true,
@@ -14,7 +14,7 @@ export class BlockApi {
 	};
 
 	getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
-		return await this.rest.request({ method: RequestMethod.GET, route: `v1/users/block_ids`, requireAuth: true });
+		return await this.base.request({ method: RequestMethod.GET, route: `v1/users/block_ids`, requireAuth: true });
 	};
 
 	getBlockedUsers = async (
@@ -34,7 +34,7 @@ export class BlockApi {
 		if (gender) params.gender = gender;
 		if (from_id) params.from_id = from_id;
 
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/users/blocked`,
 			requireAuth: true,
@@ -43,7 +43,7 @@ export class BlockApi {
 	};
 
 	unblockUser = async (user_id: number) => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v2/users/${user_id}/unblock`,
 			requireAuth: true,

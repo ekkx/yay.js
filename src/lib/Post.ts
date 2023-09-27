@@ -1,12 +1,12 @@
+import { BaseClient } from '../client/BaseClient';
 import { BookmarkPostResponse } from 'util/Responses';
 import { RequestMethod } from '../util/Types';
-import { REST } from './Rest';
 
 export class PostApi {
-	public constructor(private readonly rest: REST) {}
+	public constructor(private readonly base: BaseClient) {}
 
 	addBookmark = async (userId: number, id: number): Promise<BookmarkPostResponse> => {
-		return await this.rest.request({
+		return await this.base.request({
 			method: RequestMethod.PUT,
 			route: `v1/users/${userId}/bookmarks/${id}`,
 			requireAuth: true,
