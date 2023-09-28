@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
 
-export class MiscApi {
+export class MiscAPI {
 	public constructor(private readonly base: BaseClient) {}
 }

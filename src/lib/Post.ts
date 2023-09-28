@@ -2,7 +2,7 @@ import { BaseClient } from '../client/BaseClient';
 import { BookmarkPostResponse } from 'util/Responses';
 import { RequestMethod } from '../util/Types';
 
-export class PostApi {
+export class PostAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	addBookmark = async (userId: number, id: number): Promise<BookmarkPostResponse> => {

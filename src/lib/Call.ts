@@ -11,7 +11,7 @@ import {
 	PostsResponse,
 } from '../util/Responses';
 
-export class CallApi {
+export class CallAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	public bumpCall = async (callId: number, participantLimit?: number) => {

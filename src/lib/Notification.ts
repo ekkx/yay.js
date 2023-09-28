@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
 
-export class CassandraApi {
+export class NotificationAPI {
 	public constructor(private readonly base: BaseClient) {}
 }

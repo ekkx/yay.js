@@ -2,7 +2,7 @@ import { BaseClient } from '../client/BaseClient';
 import { UserTimestampResponse } from '../util/Responses';
 import { RequestMethod } from '../util/Types';
 
-export class UserApi {
+export class UserAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	getTimestamp = async (): Promise<UserTimestampResponse> => {

@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
 
-export class ChatApi {
+export class ChatAPI {
 	public constructor(private readonly base: BaseClient) {}
 }

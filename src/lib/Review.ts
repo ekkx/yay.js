@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
 
-export class ReviewApi {
+export class ReviewAPI {
 	public constructor(private readonly base: BaseClient) {}
 }

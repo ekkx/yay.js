@@ -2,7 +2,7 @@ import { BaseClient } from '../client/BaseClient';
 import { LoginEmailUserRequest, RequestMethod } from '../util/Types';
 import { LoginUserResponse } from '../util/Responses';
 
-export class AuthApi {
+export class AuthAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	loginWithEmail = async (request: LoginEmailUserRequest): Promise<LoginUserResponse> => {

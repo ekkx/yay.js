@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
 
-export class GameApi {
+export class GameAPI {
 	public constructor(private readonly base: BaseClient) {}
 }

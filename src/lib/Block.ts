@@ -2,7 +2,7 @@ import { BaseClient } from '../client/BaseClient';
 import { Params, RequestMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
-export class BlockApi {
+export class BlockAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	public blockUser = async (userId: number) => {
