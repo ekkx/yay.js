@@ -22,12 +22,12 @@ import { Cookie } from '../util/Cookie';
 import { ErrorCode, ForbiddenError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
-import { ClientOptions, LoginEmailUserRequest, RequestOptions } from '../util/Types';
+import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 
 export class BaseClient {
 	private rest: REST;
+	private cookie: Cookie;
 	private headerInterceptor: HeaderInterceptor;
-	public cookie: Cookie;
 
 	public readonly aiPacaAPI: AIPacaAPI;
 	public readonly authAPI: AuthAPI;
@@ -88,13 +88,37 @@ export class BaseClient {
 		});
 	}
 
+	public get cookies(): CookieProps {
+		return this.cookie.get();
+	}
+
+	public get userId(): number {
+		return this.cookie.userId;
+	}
+
+	protected get accessToken(): string {
+		return this.cookie.accessToken;
+	}
+
+	protected get refreshToken(): string {
+		return this.cookie.refreshToken;
+	}
+
+	protected get uuid(): string {
+		return this.cookie.uuid;
+	}
+
+	protected get deviceUuid(): string {
+		return this.cookie.deviceUuid;
+	}
+
 	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		if (this.cookie.exists(options.email)) {
-			const cookie = this.cookie.load(options.email);
+			this.cookie.load(options.email);
 			return {
-				accessToken: cookie.authentication.accessToken,
-				refreshToken: cookie.authentication.refreshToken,
-				userId: cookie.user.userId,
+				accessToken: this.accessToken,
+				refreshToken: this.refreshToken,
+				userId: this.userId,
 			};
 		}
 		const res = await this.authAPI.loginWithEmail({
@@ -113,8 +137,8 @@ export class BaseClient {
 		}
 		this.cookie.set({
 			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
-			user: { userId: res.userId, email: options.email ?? '', uuid: this.cookie.uuid },
-			device: { deviceUuid: this.cookie.deviceUuid },
+			user: { userId: res.userId, email: options.email ?? '', uuid: this.uuid },
+			device: { deviceUuid: this.deviceUuid },
 		});
 		this.cookie.save();
 		return res;
