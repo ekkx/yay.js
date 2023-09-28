@@ -18,13 +18,17 @@ import { UserApi } from '../lib/User';
 import { REST } from '../lib/Rest';
 
 import { BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
-import { CookieManager } from '../util/CookieManager';
+import { Cookie } from '../util/Cookie';
 import { ErrorCode, ForbiddenError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
-import { ClientOptions, Cookie, LoginEmailUserRequest, RequestOptions } from '../util/Types';
+import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 
 export class BaseClient {
+	private rest: REST;
+	private headerInterceptor: HeaderInterceptor;
+	public cookie: Cookie;
+
 	public readonly AIPaca: AIPacaApi;
 	public readonly block: BlockApi;
 	public readonly call: CallApi;
@@ -43,27 +47,20 @@ export class BaseClient {
 	public readonly thread: ThreadApi;
 	public readonly user: UserApi;
 
-	private rest: REST;
-	private headerInterceptor: HeaderInterceptor;
-	private cookieManager: CookieManager;
-	public cookie: Cookie;
-
 	public constructor(options: ClientOptions) {
 		if (!options.cookieFilePath) {
 			options.cookieFilePath = process.cwd() + '/cookie.json';
 		}
 
-		this.cookieManager = new CookieManager(options.saveCookie ?? false, options.cookieFilePath, options.cookiePassword);
-		this.cookie = this.cookieManager.getCookie();
+		this.cookie = new Cookie(options.saveCookie ?? false, options.cookieFilePath, options.cookiePassword);
 
-		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie.device.deviceUuid, 'ja');
+		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie, 'ja');
 		this.headerInterceptor.setConnectionSpeed('0');
 
 		this.rest = new REST({
 			baseURL: BASE_API_URL,
 			proxy: options.proxy,
 			timeout: options.timeout,
-			device: DEFAULT_DEVICE,
 			defaultHeaders: this.headerInterceptor.intercept(),
 		});
 
@@ -101,12 +98,12 @@ export class BaseClient {
 	}
 
 	public async _authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
-		if (this.cookieManager.exists(options.email)) {
-			this.cookie = this.cookieManager.loadCookie(options.email);
+		if (this.cookie.exists(options.email)) {
+			const cookie = this.cookie.load(options.email);
 			return {
-				accessToken: this.cookie.authentication.accessToken,
-				refreshToken: this.cookie.authentication.refreshToken,
-				userId: this.cookie.user.userId,
+				accessToken: cookie.authentication.accessToken,
+				refreshToken: cookie.authentication.refreshToken,
+				userId: cookie.user.userId,
 			};
 		}
 		const res = await this.auth.loginWithEmail({
@@ -123,13 +120,12 @@ export class BaseClient {
 				banUntil: null,
 			});
 		}
-		this.cookieManager.setCookie({
+		this.cookie.set({
 			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
-			user: { userId: res.userId, email: options.email ?? '', uuid: this.cookie.user.uuid },
-			device: { deviceUuid: this.cookie.device.deviceUuid },
+			user: { userId: res.userId, email: options.email ?? '', uuid: this.cookie.uuid },
+			device: { deviceUuid: this.cookie.deviceUuid },
 		});
-		this.cookie = this.cookieManager.getCookie();
-		this.cookieManager.saveCookie();
+		this.cookie.save();
 		return res;
 	}
 }

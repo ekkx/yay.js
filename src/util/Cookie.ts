@@ -1,24 +1,24 @@
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { v4 as uuid } from 'uuid';
-import { Cookie } from './Types';
+import { CookieProps } from './Types';
 import { YJSError } from '../lib/Errors';
 
-export class CookieManager {
+export class Cookie {
 	private algorithm: string;
-	private saveCookies: boolean;
+	private saveCookie: boolean;
 	private filePath: string;
 	private encryptionKey: Buffer | undefined;
-	private email: string;
-	private userId: number;
-	private uuid: string;
-	private deviceUuid: string;
-	private accessToken: string;
-	private refreshToken: string;
+	public email: string;
+	public userId: number;
+	public uuid: string;
+	public deviceUuid: string;
+	public accessToken: string;
+	public refreshToken: string;
 
 	public constructor(saveCookie: boolean, filePath: string, password?: string) {
 		this.algorithm = 'aes-256-ctr';
-		this.saveCookies = saveCookie;
+		this.saveCookie = saveCookie;
 		this.filePath = filePath;
 		this.email = '';
 		this.userId = 0;
@@ -32,7 +32,7 @@ export class CookieManager {
 		}
 	}
 
-	private isEncrypted(cookie: Cookie): boolean {
+	private isEncrypted(cookie: CookieProps): boolean {
 		return cookie.authentication.accessToken.includes(':');
 	}
 
@@ -68,7 +68,7 @@ export class CookieManager {
 		}
 	}
 
-	private encryptCookie(cookie: Cookie): Cookie {
+	private encryptCookie(cookie: CookieProps): CookieProps {
 		return {
 			...cookie,
 			user: {
@@ -87,7 +87,7 @@ export class CookieManager {
 		};
 	}
 
-	private decryptCookie(cookie: Cookie): Cookie {
+	private decryptCookie(cookie: CookieProps): CookieProps {
 		return {
 			...cookie,
 			user: {
@@ -106,37 +106,13 @@ export class CookieManager {
 		};
 	}
 
-	public setCookie(cookie: Cookie): void {
-		this.setEmail(cookie.user.email);
-		this.setUserId(cookie.user.userId);
-		this.setUuid(cookie.user.uuid);
-		this.setDeviceUuid(cookie.device.deviceUuid);
-		this.setAccessToken(cookie.authentication.accessToken);
-		this.setRefreshToken(cookie.authentication.refreshToken);
-	}
-
-	public setEmail(email: string): void {
-		this.email = email;
-	}
-
-	public setUserId(userId: number): void {
-		this.userId = userId;
-	}
-
-	public setUuid(uuid: string): void {
-		this.uuid = uuid;
-	}
-
-	public setDeviceUuid(deviceUuid: string): void {
-		this.deviceUuid = deviceUuid;
-	}
-
-	public setAccessToken(accessToken: string): void {
-		this.accessToken = accessToken;
-	}
-
-	public setRefreshToken(refreshToken: string): void {
-		this.refreshToken = refreshToken;
+	public set(cookie: CookieProps): void {
+		this.email = cookie.user.email;
+		this.userId = cookie.user.userId;
+		this.uuid = cookie.user.uuid;
+		this.deviceUuid = cookie.device.deviceUuid;
+		this.accessToken = cookie.authentication.accessToken;
+		this.refreshToken = cookie.authentication.refreshToken;
 	}
 
 	private hash(str: string): string {
@@ -145,7 +121,7 @@ export class CookieManager {
 		return sha256Hash.digest('hex');
 	}
 
-	public getCookie(): Cookie {
+	public get(): CookieProps {
 		return {
 			authentication: { accessToken: this.accessToken, refreshToken: this.refreshToken },
 			user: { email: this.email, userId: this.userId, uuid: this.uuid },
@@ -159,20 +135,20 @@ export class CookieManager {
 			if (!exists) {
 				return false;
 			}
-			this.loadCookie(email);
+			this.load(email);
 			return true;
 		} catch (error) {
 			return false;
 		}
 	}
 
-	public saveCookie(cookie?: Cookie): void {
-		if (!this.saveCookies) {
+	public save(cookie?: CookieProps): void {
+		if (!this.saveCookie) {
 			return;
 		}
 
 		if (!cookie) {
-			cookie = this.getCookie();
+			cookie = this.get();
 			if (this.encryptionKey) {
 				cookie = this.encryptCookie(cookie);
 			}
@@ -182,9 +158,9 @@ export class CookieManager {
 		fs.writeFileSync(this.filePath, JSON.stringify(cookie), 'utf-8');
 	}
 
-	public loadCookie(email: string): Cookie {
+	public load(email: string): CookieProps {
 		const data = fs.readFileSync(this.filePath, 'utf-8');
-		let loadedCookie: Cookie = JSON.parse(data);
+		let loadedCookie: CookieProps = JSON.parse(data);
 
 		if (this.hash(email) !== loadedCookie.user.email) {
 			throw new YJSError('メールアドレスが一致しませんでした。');
@@ -195,17 +171,17 @@ export class CookieManager {
 		if (this.encryptionKey) {
 			if (!this.isEncrypted(loadedCookie)) {
 				loadedCookie = this.encryptCookie(loadedCookie);
-				this.saveCookie(loadedCookie);
+				this.save(loadedCookie);
 			}
 			loadedCookie = this.decryptCookie(loadedCookie);
 		}
 
-		this.setCookie(loadedCookie);
+		this.set(loadedCookie);
 
-		return this.getCookie();
+		return this.get();
 	}
 
-	public deleteCookie(): void {
+	public destroy(): void {
 		try {
 			fs.unlinkSync(this.filePath);
 		} catch (error) {

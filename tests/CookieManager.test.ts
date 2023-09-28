@@ -1,25 +1,25 @@
-import { CookieManager } from '../src/util/CookieManager';
-import { Cookie } from '../src/util/Types';
+import { Cookie } from '../src/util/Cookie';
+import { CookieProps } from '../src/util/Types';
 
 describe('CookieManager', () => {
-	let cookieManager: CookieManager;
+	let cookie: Cookie;
 	// 暗号化用
-	let cookieEncryptManager: CookieManager;
+	let cookieEncrypt: Cookie;
 
 	const testFilePath = './testCookie.json';
 	const testEncryptFilePath = './testEncryptCookie.json';
 
 	beforeAll(() => {
-		cookieManager = new CookieManager(testFilePath);
-		cookieEncryptManager = new CookieManager(testEncryptFilePath, 'test-password');
+		cookie = new Cookie(true, testFilePath);
+		cookieEncrypt = new Cookie(true, testEncryptFilePath, 'test-password');
 	});
 
 	afterAll(() => {
-		cookieManager.deleteCookie();
-		cookieEncryptManager.deleteCookie();
+		cookie.destroy();
+		cookieEncrypt.destroy();
 	});
 
-	const testCookie: Cookie = {
+	const testCookie: CookieProps = {
 		user: {
 			email: 'test@example.com',
 			userId: 123,
@@ -35,18 +35,18 @@ describe('CookieManager', () => {
 	};
 
 	it('クッキーデータをセットして保存する', () => {
-		cookieManager.setCookie(testCookie);
-		cookieManager.saveCookie();
+		cookie.set(testCookie);
+		cookie.save();
 
-		const loadedCookie = cookieManager.loadCookie();
+		const loadedCookie = cookie.load(testCookie.user.email);
 		expect(loadedCookie).toEqual(testCookie);
 	});
 
 	it('クッキーデータをセットし、暗号化して保存する', () => {
-		cookieEncryptManager.setCookie(testCookie);
-		cookieEncryptManager.saveCookie();
+		cookieEncrypt.set(testCookie);
+		cookieEncrypt.save();
 
-		const loadedCookie = cookieEncryptManager.loadCookie();
+		const loadedCookie = cookieEncrypt.load(testCookie.user.email);
 		expect(loadedCookie).toEqual(testCookie);
 	});
 });

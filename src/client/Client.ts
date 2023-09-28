@@ -13,7 +13,7 @@ export class Client extends BaseClient {
 			apiKey: API_KEY,
 			email: email,
 			password: password,
-			uuid: this.cookie.user.uuid,
+			uuid: this.cookie.uuid,
 		});
 	};
 }
@@ -23,7 +23,7 @@ const main = async () => {
 	const client = new Client({ saveCookie: true });
 	const res = await client.login('your_email', 'your_password');
 	console.log(res);
-	console.log(client.cookie);
+	console.log(client.cookie.get());
 };
 
 main();

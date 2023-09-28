@@ -7,8 +7,6 @@ export type RESTOptions = {
 	baseURL: string;
 	proxy?: AxiosProxyConfig;
 	timeout?: number;
-	device: Device;
-	cookie?: Cookie;
 	defaultHeaders: RequestHeaders;
 };
 
@@ -77,7 +75,7 @@ export type ClientOptions = {
 	cookieFilePath?: string;
 };
 
-export type Cookie = {
+export type CookieProps = {
 	authentication: CookieAuthentication;
 	user: CookieUser;
 	device: CookieDevice;
