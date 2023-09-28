@@ -22,7 +22,7 @@ import { Cookie } from '../util/Cookie';
 import { ErrorCode, ForbiddenError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
-import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
+import { ClientOptions, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 
 export class BaseClient {
 	private rest: REST;
@@ -88,16 +88,7 @@ export class BaseClient {
 		});
 	}
 
-	public async request(options: RequestOptions): Promise<any> {
-		const defaultHeaders = { ...this.headerInterceptor.intercept() };
-		const customHeaders = { ...defaultHeaders, ...options.headers };
-
-		options.headers = customHeaders || defaultHeaders;
-
-		return await this.rest.request(options);
-	}
-
-	public async _authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		if (this.cookie.exists(options.email)) {
 			const cookie = this.cookie.load(options.email);
 			return {
@@ -127,5 +118,14 @@ export class BaseClient {
 		});
 		this.cookie.save();
 		return res;
+	}
+
+	public async request(options: RequestOptions): Promise<any> {
+		const defaultHeaders = { ...this.headerInterceptor.intercept() };
+		const customHeaders = { ...defaultHeaders, ...options.headers };
+
+		options.headers = customHeaders || defaultHeaders;
+
+		return await this.rest.request(options);
 	}
 }

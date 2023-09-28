@@ -9,7 +9,7 @@ export class Client extends BaseClient {
 	}
 
 	public login = async (email: string, password: string): Promise<LoginUserResponse> => {
-		return await this._authenticate({
+		return await this.authenticate({
 			apiKey: API_KEY,
 			email: email,
 			password: password,
