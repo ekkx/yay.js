@@ -34,12 +34,12 @@ export interface SnsInfo {
 }
 export interface LoginUserResponse {
 	userId: number;
-	username: string;
-	isNew: boolean;
-	snsInfo: SnsInfo;
+	username?: string;
+	isNew?: boolean;
+	snsInfo?: SnsInfo;
 	accessToken: string;
 	refreshToken: string;
-	tokenType: string;
-	createdAt: number;
-	expiresIn: number;
+	tokenType?: string;
+	createdAt?: number;
+	expiresIn?: number;
 }

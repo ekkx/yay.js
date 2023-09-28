@@ -9,7 +9,7 @@ export class Client extends BaseClient {
 	}
 
 	public login = async (email: string, password: string): Promise<LoginUserResponse> => {
-		return await this.auth.loginWithEmail({
+		return await this._authenticate({
 			apiKey: API_KEY,
 			email: email,
 			password: password,
@@ -21,6 +21,9 @@ export class Client extends BaseClient {
 // usage
 const main = async () => {
 	const client = new Client({ saveCookie: true });
+	const res = await client.login('your_email', 'your_password');
+	console.log(res);
+	console.log(client.cookie);
 };
 
 main();

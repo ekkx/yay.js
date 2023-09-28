@@ -17,12 +17,12 @@ import { ThreadApi } from '../lib/Thread';
 import { UserApi } from '../lib/User';
 import { REST } from '../lib/Rest';
 
-import { API_KEY, BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
+import { BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
 import { CookieManager } from '../util/CookieManager';
-import { AuthenticationError, ErrorCode } from '../lib/Errors';
+import { ErrorCode, ForbiddenError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
-import { ClientOptions, Cookie, RequestOptions } from '../util/Types';
+import { ClientOptions, Cookie, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 
 export class BaseClient {
 	public readonly AIPaca: AIPacaApi;
@@ -53,7 +53,7 @@ export class BaseClient {
 			options.cookieFilePath = process.cwd() + '/cookie.json';
 		}
 
-		this.cookieManager = new CookieManager(options.cookieFilePath, options.cookiePassword);
+		this.cookieManager = new CookieManager(options.saveCookie ?? false, options.cookieFilePath, options.cookiePassword);
 		this.cookie = this.cookieManager.getCookie();
 
 		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie.device.deviceUuid, 'ja');
@@ -98,5 +98,38 @@ export class BaseClient {
 		options.headers = customHeaders || defaultHeaders;
 
 		return await this.rest.request(options);
+	}
+
+	public async _authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+		if (this.cookieManager.exists(options.email)) {
+			this.cookie = this.cookieManager.loadCookie(options.email);
+			return {
+				accessToken: this.cookie.authentication.accessToken,
+				refreshToken: this.cookie.authentication.refreshToken,
+				userId: this.cookie.user.userId,
+			};
+		}
+		const res = await this.auth.loginWithEmail({
+			apiKey: options.apiKey,
+			email: options.email,
+			password: options.password,
+			uuid: options.uuid,
+		});
+		if (!res.accessToken) {
+			throw new ForbiddenError({
+				result: 'error',
+				message: 'invalid email or password',
+				errorCode: ErrorCode.InvalidEmailOrPassword,
+				banUntil: null,
+			});
+		}
+		this.cookieManager.setCookie({
+			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
+			user: { userId: res.userId, email: options.email ?? '', uuid: this.cookie.user.uuid },
+			device: { deviceUuid: this.cookie.device.deviceUuid },
+		});
+		this.cookie = this.cookieManager.getCookie();
+		this.cookieManager.saveCookie();
+		return res;
 	}
 }
