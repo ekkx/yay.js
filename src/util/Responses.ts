@@ -45,3 +45,5 @@ export interface LoginUserResponse {
 }
 export interface UnreadStatusResponse {}
 export interface CreateChatRoomResponse {}
+export interface GifsDataResponse {}
+export interface ChatRoomsResponse {}

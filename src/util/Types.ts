@@ -115,6 +115,14 @@ export type LoginEmailUserRequest = {
 	uuid: string;
 };
 
+export type SearchCriteria = {
+	nickname?: string;
+	username?: string;
+	biography?: string;
+	prefecture?: string;
+	gender?: number;
+};
+
 /**
  * リクエストを送信する際のヘッダー情報
  */

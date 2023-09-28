@@ -1,6 +1,6 @@
-import { Json, Params, RequestMethod } from '../util/Types';
+import { Json, Params, RequestMethod, SearchCriteria } from '../util/Types';
 import { BaseClient } from '../client/BaseClient';
-import { CreateChatRoomResponse, UnreadStatusResponse } from '../util/Responses';
+import { ChatRoomsResponse, CreateChatRoomResponse, GifsDataResponse, UnreadStatusResponse } from '../util/Responses';
 
 export class ChatAPI {
 	public constructor(private readonly base: BaseClient) {}
@@ -94,6 +94,58 @@ export class ChatAPI {
 			route: `v3/chat_rooms/${id}/edit`,
 			requireAuth: false,
 			json: json,
+		});
+	};
+
+	public getChatableUsers = async (
+		// options?: SearchCriteria,
+		fromFollowId?: number,
+		fromTimestamp?: number,
+		orderBy?: string,
+	) => {
+		const params: Params = {};
+		if (fromFollowId) params.fromFollowId = fromFollowId;
+		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+		if (orderBy) params.orderBy = orderBy;
+
+		return await this.base.request({
+			method: RequestMethod.POST,
+			route: `v1/users/followings/chatable`,
+			requireAuth: false,
+			params: params,
+		});
+	};
+
+	public getGifsData = async (): Promise<GifsDataResponse> => {
+		return await this.base.request({
+			method: RequestMethod.GET,
+			route: `v1/users/gif_data`,
+			requireAuth: false,
+		});
+	};
+
+	public getHiddenChatRooms = async (number?: number, fromTimestamp?: number): Promise<ChatRoomsResponse> => {
+		const params: Params = {};
+		if (number) params.number = number;
+		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+
+		return await this.base.request({
+			method: RequestMethod.GET,
+			route: `/v1/hidden/chats`,
+			requireAuth: false,
+			params: params,
+		});
+	};
+
+	public getMainRooms = async (fromTimestamp?: number): Promise<ChatRoomsResponse> => {
+		const params: Params = {};
+		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+
+		return await this.base.request({
+			method: RequestMethod.GET,
+			route: `v1/chat_rooms/main_list`,
+			requireAuth: false,
+			params: params,
 		});
 	};
 }
