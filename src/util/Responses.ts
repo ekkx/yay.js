@@ -43,3 +43,5 @@ export interface LoginUserResponse {
 	createdAt?: number;
 	expiresIn?: number;
 }
+export interface UnreadStatusResponse {}
+export interface CreateChatRoomResponse {}
