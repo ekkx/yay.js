@@ -8,17 +8,22 @@ export class CookieManager {
 	private algorithm: string;
 	private filePath: string;
 	private encryptionKey: Buffer | undefined;
-
-	private email: string = '';
-	private userId: number = 0;
-	private uuid: string = uuid();
-	private deviceUuid: string = uuid();
-	private accessToken: string = '';
-	private refreshToken: string = '';
+	private email: string;
+	private userId: number;
+	private uuid: string;
+	private deviceUuid: string;
+	private accessToken: string;
+	private refreshToken: string;
 
 	public constructor(filePath: string, password?: string) {
 		this.algorithm = 'aes-256-ctr';
 		this.filePath = filePath;
+		this.email = '';
+		this.userId = 0;
+		this.uuid = uuid();
+		this.deviceUuid = uuid();
+		this.accessToken = '';
+		this.refreshToken = '';
 
 		if (password) {
 			this.encryptionKey = this.generateKey(password);
@@ -26,8 +31,9 @@ export class CookieManager {
 	}
 
 	private generateKey(password: string): Buffer {
-		const salt = crypto.randomBytes(16);
-		const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha256');
+		const key = Buffer.alloc(32);
+		const passwordBuffer = Buffer.from(password, 'utf8');
+		passwordBuffer.copy(key);
 		return key;
 	}
 
