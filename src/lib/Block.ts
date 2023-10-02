@@ -32,7 +32,7 @@ export class BlockAPI {
 		if (biography) params.biography = biography;
 		if (prefecture) params.prefecture = prefecture;
 		if (gender) params.gender = gender;
-		if (fromId) params.fromId = fromId;
+		if (fromId) params.from_id = fromId;
 
 		return await this.base.request({
 			method: RequestMethod.POST,

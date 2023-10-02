@@ -11,7 +11,7 @@ export class AuthAPI {
 			route: `v3/users/login_with_email`,
 			requireAuth: false,
 			json: {
-				apiKey: request.apiKey,
+				api_key: request.apiKey,
 				email: request.email,
 				password: request.password,
 				uuid: request.uuid,

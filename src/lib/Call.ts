@@ -19,7 +19,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/${callId}/bump`,
 			requireAuth: true,
-			params: { participantLimit: participantLimit },
+			params: { participant_limit: participantLimit },
 		});
 	};
 
@@ -28,7 +28,7 @@ export class CallAPI {
 			method: RequestMethod.GET,
 			route: `v1/posts/active_call`,
 			requireAuth: false,
-			params: { userId: userId },
+			params: { user_id: userId },
 		});
 	};
 
@@ -55,7 +55,7 @@ export class CallAPI {
 	): Promise<UsersByTimestampResponse> => {
 		const params: Params = {};
 
-		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+		if (fromTimestamp) params.from_timestamp = fromTimestamp;
 		if (nickname) params.nickname = nickname;
 
 		return await this.base.request({
@@ -80,7 +80,7 @@ export class CallAPI {
 		params.number = number;
 		params['ids[]'] = ids;
 
-		if (fromId) params.fromId = fromId;
+		if (fromId) params.from_id = fromId;
 
 		return await this.base.request({
 			method: RequestMethod.GET,
@@ -112,8 +112,8 @@ export class CallAPI {
 	): Promise<PostsResponse> => {
 		const params: Params = {};
 
-		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
-		if (groupCategoryId) params.groupCategoryId = groupCategoryId;
+		if (fromTimestamp) params.from_timestamp = fromTimestamp;
+		if (groupCategoryId) params.group_category_id = groupCategoryId;
 		if (number) params.number = number;
 		if (scope) params.scope = scope;
 
@@ -130,7 +130,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/${callId}/bulk_invite`,
 			requireAuth: true,
-			params: groupId ? { groupId: groupId } : {},
+			params: groupId ? { group_id: groupId } : {},
 		});
 	};
 
@@ -139,16 +139,16 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/conference_calls/${callId}/invite`,
 			requireAuth: true,
-			json: { 'userIds[]': userIds },
+			json: { 'user_ids[]': userIds },
 		});
 	};
 
 	public inviteUsersToChatCall = async (chatRoomId?: number, roomId?: number, roomUrl?: string) => {
 		const json: Json = {};
 
-		if (chatRoomId) json.chatRoomId = chatRoomId;
-		if (roomId) json.roomId = roomId;
-		if (roomUrl) json.roomUrl = roomUrl;
+		if (chatRoomId) json.chat_room_id = chatRoomId;
+		if (roomId) json.room_id = roomId;
+		if (roomUrl) json.room_url = roomUrl;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -163,7 +163,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/conference_calls/${callId}/kick`,
 			requireAuth: true,
-			json: { callId: callId, userId: userId },
+			json: { call_id: callId, user_id: userId },
 		});
 	};
 
@@ -172,7 +172,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/anonymous_calls/leave_agora_channel`,
 			requireAuth: false,
-			json: { conferenceId: conferenceId, agoraUid: agoraUid },
+			json: { conference_id: conferenceId, agora_uid: agoraUid },
 		});
 	};
 
@@ -181,7 +181,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/leave_agora_channel`,
 			requireAuth: false,
-			json: { conferenceId: conferenceId, userId: userId },
+			json: { conference_id: conferenceId, user_id: userId },
 		});
 	};
 
@@ -190,16 +190,16 @@ export class CallAPI {
 			method: RequestMethod.PUT,
 			route: `v1/calls/screenshot`,
 			requireAuth: false,
-			json: { screenshotFilename: screenshotFilename, conferenceId: conferenceId },
+			json: { screenshot_filename: screenshotFilename, conference_id: conferenceId },
 		});
 	};
 
 	public setCall = async (callId: number, joinableBy: string, gameTitle?: string, categoryId?: string) => {
 		const json: Json = {};
-		json.joinableBy = joinableBy;
+		json.joinable_by = joinableBy;
 
-		if (categoryId) json.categoryId = categoryId;
-		if (gameTitle) json.gameTitle = gameTitle;
+		if (gameTitle) json.game_title = gameTitle;
+		if (categoryId) json.category_id = categoryId;
 
 		return await this.base.request({
 			method: RequestMethod.PUT,
@@ -223,7 +223,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v2/calls/start_conference_call`,
 			requireAuth: false,
-			json: { conferenceId: conferenceId, callSid: callSid },
+			json: { conference_id: conferenceId, call_sid: callSid },
 		});
 	};
 
@@ -232,7 +232,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/leave_conference_call`,
 			requireAuth: false,
-			json: { conferenceId: conferenceId, callSid: callSid },
+			json: { conference_id: conferenceId, call_sid: callSid },
 		});
 	};
 }

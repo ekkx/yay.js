@@ -16,7 +16,7 @@ export class ChatAPI {
 
 	public checkUnreadStatus = async (fromTime?: number): Promise<UnreadStatusResponse> => {
 		const params: Params = {};
-		if (fromTime) params.fromTime = fromTime;
+		if (fromTime) params.from_time = fromTime;
 
 		return await this.base.request({
 			method: RequestMethod.GET,
@@ -36,8 +36,8 @@ export class ChatAPI {
 		json.name = name;
 		json['with_user_ids[]'] = withUserIds;
 
-		if (iconFilename) json.iconFilename = iconFilename;
-		if (backgroundFilename) json.backgroundFilename = backgroundFilename;
+		if (iconFilename) json.icon_filename = iconFilename;
+		if (backgroundFilename) json.background_filename = backgroundFilename;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -53,10 +53,10 @@ export class ChatAPI {
 		himaChat?: boolean,
 	): Promise<CreateChatRoomResponse> => {
 		const json: Json = {};
-		json.withUserId = withUserId;
+		json.with_user_id = withUserId;
 
-		if (matchingId) json.matchingId = matchingId;
-		if (himaChat) json.himaChat = himaChat;
+		if (matchingId) json.matching_id = matchingId;
+		if (himaChat) json.hima_chat = himaChat;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -86,8 +86,8 @@ export class ChatAPI {
 		const json: Json = {};
 		json.name = name;
 
-		if (iconFilename) json.iconFilename = iconFilename;
-		if (backgroundFilename) json.backgroundFilename = backgroundFilename;
+		if (iconFilename) json.icon_filename = iconFilename;
+		if (backgroundFilename) json.background_filename = backgroundFilename;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -104,9 +104,9 @@ export class ChatAPI {
 		orderBy?: string,
 	) => {
 		const params: Params = {};
-		if (fromFollowId) params.fromFollowId = fromFollowId;
-		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
-		if (orderBy) params.orderBy = orderBy;
+		if (fromFollowId) params.from_follow_id = fromFollowId;
+		if (fromTimestamp) params.from_timestamp = fromTimestamp;
+		if (orderBy) params.order_by = orderBy;
 
 		return await this.base.request({
 			method: RequestMethod.POST,
@@ -127,7 +127,7 @@ export class ChatAPI {
 	public getHiddenChatRooms = async (number?: number, fromTimestamp?: number): Promise<ChatRoomsResponse> => {
 		const params: Params = {};
 		if (number) params.number = number;
-		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+		if (fromTimestamp) params.from_timestamp = fromTimestamp;
 
 		return await this.base.request({
 			method: RequestMethod.GET,
@@ -139,7 +139,7 @@ export class ChatAPI {
 
 	public getMainRooms = async (fromTimestamp?: number): Promise<ChatRoomsResponse> => {
 		const params: Params = {};
-		if (fromTimestamp) params.fromTimestamp = fromTimestamp;
+		if (fromTimestamp) params.from_timestamp = fromTimestamp;
 
 		return await this.base.request({
 			method: RequestMethod.GET,
