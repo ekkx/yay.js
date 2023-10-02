@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
-import { Json, Params, RequestMethod } from '../util/Types';
+import { RequestMethod } from '../util/Types';
 import {
 	PostResponse,
 	BgmsResponse,
@@ -53,16 +53,11 @@ export class CallAPI {
 		fromTimestamp?: number,
 		nickname?: string,
 	): Promise<UsersByTimestampResponse> => {
-		const params: Params = {};
-
-		if (fromTimestamp) params.from_timestamp = fromTimestamp;
-		if (nickname) params.nickname = nickname;
-
 		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/calls/conferences/${callId}`,
 			requireAuth: false,
-			params: params,
+			params: { from_timestamp: fromTimestamp, nickname: nickname },
 		});
 	};
 
@@ -75,32 +70,20 @@ export class CallAPI {
 	};
 
 	public getGames = async (number: number, ids: number[], fromId?: number): Promise<GamesResponse> => {
-		const params: Params = {};
-
-		params.number = number;
-		params['ids[]'] = ids;
-
-		if (fromId) params.from_id = fromId;
-
 		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/games/apps`,
 			requireAuth: false,
-			params: params,
+			params: { number: number, 'ids[]': ids, from_id: fromId },
 		});
 	};
 
 	public getGenres = async (number: number, from: number): Promise<GenresResponse> => {
-		const params: Params = {};
-		params.number = number;
-
-		if (from) params.from = from;
-
 		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/genres`,
 			requireAuth: false,
-			params: params,
+			params: { number: number, from: from },
 		});
 	};
 
@@ -110,18 +93,11 @@ export class CallAPI {
 		fromTimestamp?: number,
 		scope?: string,
 	): Promise<PostsResponse> => {
-		const params: Params = {};
-
-		if (fromTimestamp) params.from_timestamp = fromTimestamp;
-		if (groupCategoryId) params.group_category_id = groupCategoryId;
-		if (number) params.number = number;
-		if (scope) params.scope = scope;
-
 		return await this.base.request({
 			method: RequestMethod.GET,
 			route: `v1/posts/group_calls`,
 			requireAuth: false,
-			params: params,
+			params: { from_timestamp: fromTimestamp, group_category_id: groupCategoryId, number: number, scope: scope },
 		});
 	};
 
@@ -130,7 +106,7 @@ export class CallAPI {
 			method: RequestMethod.POST,
 			route: `v1/calls/${callId}/bulk_invite`,
 			requireAuth: true,
-			params: groupId ? { group_id: groupId } : {},
+			params: { group_id: groupId },
 		});
 	};
 
@@ -144,17 +120,11 @@ export class CallAPI {
 	};
 
 	public inviteUsersToChatCall = async (chatRoomId?: number, roomId?: number, roomUrl?: string) => {
-		const json: Json = {};
-
-		if (chatRoomId) json.chat_room_id = chatRoomId;
-		if (roomId) json.room_id = roomId;
-		if (roomUrl) json.room_url = roomUrl;
-
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/calls/invite`,
 			requireAuth: true,
-			json: json,
+			json: { chat_room_id: chatRoomId, room_id: roomId, room_url: roomUrl },
 		});
 	};
 
@@ -195,17 +165,11 @@ export class CallAPI {
 	};
 
 	public setCall = async (callId: number, joinableBy: string, gameTitle?: string, categoryId?: string) => {
-		const json: Json = {};
-		json.joinable_by = joinableBy;
-
-		if (gameTitle) json.game_title = gameTitle;
-		if (categoryId) json.category_id = categoryId;
-
 		return await this.base.request({
 			method: RequestMethod.PUT,
 			route: `v1/calls/${callId}`,
 			requireAuth: true,
-			json: json,
+			json: { joinable_by: joinableBy, game_title: gameTitle, category_id: categoryId },
 		});
 	};
 

@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
-import { Params, RequestMethod } from '../util/Types';
+import { RequestMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
 export class BlockAPI {
@@ -25,20 +25,18 @@ export class BlockAPI {
 		gender?: number,
 		fromId?: number,
 	): Promise<BlockedUsersResponse> => {
-		const params: Params = {};
-
-		if (nickname) params.nickname = nickname;
-		if (username) params.username = username;
-		if (biography) params.biography = biography;
-		if (prefecture) params.prefecture = prefecture;
-		if (gender) params.gender = gender;
-		if (fromId) params.from_id = fromId;
-
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/users/blocked`,
 			requireAuth: true,
-			params: params,
+			params: {
+				nickname: nickname,
+				username: username,
+				biography: biography,
+				prefecture: prefecture,
+				gender: gender,
+				from_id: fromId,
+			},
 		});
 	};
 
