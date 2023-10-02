@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { objectToCamel } from '../util/CaseConverter';
-import { ErrorResponse, RequestOptions } from '../util/Types';
+import { ErrorResponse, RequestObject, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
 import { BASE_API_URL } from '../util/Constants';
 import {
@@ -32,12 +32,25 @@ export class REST {
 		});
 	}
 
+	private filterRequests(obj?: RequestObject): RequestObject | undefined {
+		if (!obj) {
+			return undefined;
+		}
+		const newObj: RequestObject = {};
+		for (const key in obj) {
+			if (obj[key] !== undefined) {
+				newObj[key] = obj[key];
+			}
+		}
+		return newObj;
+	}
+
 	public async request(options: RequestOptions): Promise<any> {
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
-			params: options.params,
-			data: options.json,
+			params: this.filterRequests(options.params),
+			data: this.filterRequests(options.json),
 			headers: options.headers,
 		};
 

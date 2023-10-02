@@ -46,4 +46,11 @@ export interface LoginUserResponse {
 export interface UnreadStatusResponse {}
 export interface CreateChatRoomResponse {}
 export interface GifsDataResponse {}
+export interface ChatRoomResponse {}
 export interface ChatRoomsResponse {}
+export interface MessageResponse {}
+export interface MessagesResponse {}
+export interface AdditionalSettingsResponse {}
+export interface NotificationSettingResponse {}
+export interface StickerPacksResponse {}
+export interface TotalChatRequestResponse {}

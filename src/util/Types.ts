@@ -104,9 +104,7 @@ export type Device = {
 	model: string;
 };
 
-export type Params = Record<string, unknown>;
-
-export type Json = Record<string, unknown>;
+export type RequestObject = Record<string, unknown>;
 
 export type LoginEmailUserRequest = {
 	apiKey: string;
