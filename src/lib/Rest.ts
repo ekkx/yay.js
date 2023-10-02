@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import snakecaseKeys from 'snakecase-keys';
 
 import { objectToCamel } from '../util/CaseConverter';
 import { ErrorResponse, RequestOptions } from '../util/Types';
@@ -37,8 +36,8 @@ export class REST {
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
-			params: snakecaseKeys(options.params || {}, { deep: true }),
-			data: snakecaseKeys(options.json || {}, { deep: true }),
+			params: options.params,
+			data: options.json,
 			headers: options.headers,
 		};
 
