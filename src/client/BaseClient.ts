@@ -82,7 +82,7 @@ export class BaseClient {
 		this.threadAPI = new ThreadAPI(this);
 		this.userAPI = new UserAPI(this);
 
-		this.userAPI.getTimestamp().then((userTimestampResponse: UserTimestampResponse) => {
+		this.userAPI.getTimestamp().then((userTimestampResponse) => {
 			const ipAddress = userTimestampResponse.ipAddress;
 			this.headerInterceptor.setClientIP(ipAddress);
 		});

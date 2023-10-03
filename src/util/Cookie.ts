@@ -51,7 +51,7 @@ export class Cookie {
 			encrypted = Buffer.concat([encrypted, cipher.final()]);
 			return iv.toString('hex') + ':' + encrypted.toString('hex');
 		} else {
-			throw new Error('パスワードが設定されていません。');
+			throw new YJSError('パスワードが設定されていません。');
 		}
 	}
 
@@ -64,7 +64,7 @@ export class Cookie {
 			decrypted += decipher.final('utf-8');
 			return decrypted;
 		} else {
-			throw new Error('パスワードが設定されていません。');
+			throw new YJSError('パスワードが設定されていません。');
 		}
 	}
 
@@ -121,6 +121,18 @@ export class Cookie {
 		return sha256Hash.digest('hex');
 	}
 
+	/**
+	 * クッキーのメールアドレスと比較して合っていればクッキーを返す
+	 */
+	private compare(email: string): CookieProps {
+		const data = fs.readFileSync(this.filePath, 'utf-8');
+		const loadedCookie: CookieProps = JSON.parse(data);
+		if (this.hash(email) !== loadedCookie.user.email) {
+			throw new YJSError('メールアドレスが一致しませんでした。');
+		}
+		return loadedCookie;
+	}
+
 	public get(): CookieProps {
 		return {
 			authentication: { accessToken: this.accessToken, refreshToken: this.refreshToken },
@@ -135,7 +147,7 @@ export class Cookie {
 			if (!exists) {
 				return false;
 			}
-			this.load(email);
+			this.compare(email);
 			return true;
 		} catch (error) {
 			return false;
@@ -159,12 +171,7 @@ export class Cookie {
 	}
 
 	public load(email: string): CookieProps {
-		const data = fs.readFileSync(this.filePath, 'utf-8');
-		let loadedCookie: CookieProps = JSON.parse(data);
-
-		if (this.hash(email) !== loadedCookie.user.email) {
-			throw new YJSError('メールアドレスが一致しませんでした。');
-		}
+		let loadedCookie: CookieProps = this.compare(email);
 
 		loadedCookie.user.email = email;
 
@@ -185,7 +192,7 @@ export class Cookie {
 		try {
 			fs.unlinkSync(this.filePath);
 		} catch (error) {
-			throw new Error('クッキーデータの削除に失敗しました。');
+			throw new YJSError('クッキーデータの削除に失敗しました。');
 		}
 	}
 }
