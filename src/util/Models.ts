@@ -320,3 +320,51 @@ export interface GifImage {
 	url?: string;
 	width?: number;
 }
+export interface ChatRoom {
+	background?: string;
+	id: number;
+	isGroup?: boolean;
+	isRequest?: boolean;
+	lastMessage?: Message;
+	members: User[];
+	name?: string;
+	owner?: User;
+	unreadCount?: number;
+	updatedAt?: number;
+	userSetting?: UserSetting;
+}
+export interface Message {
+	attachment?: string;
+	attachmentAndroid?: string;
+	attachmentReadCount?: number;
+	attachmentThumbnail?: string;
+	conferenceCall?: ConferenceCall;
+	createdAt?: number;
+	fontSize?: number;
+	gif?: GifImage;
+	id: number;
+	isError?: boolean;
+	isSent?: boolean;
+	messageType?: string;
+	parent?: Message;
+	refreshRetryCount?: number;
+	roomId?: number;
+	sticker?: Sticker;
+	text?: string;
+	userId?: number;
+	videoProcessed?: boolean;
+	videoThumbnailUrl?: string;
+	videoUrl?: string;
+}
+export interface UserSetting {
+	notificationChat: boolean;
+}
+export interface Sticker {
+	extension?: string;
+	height?: number;
+	id: number;
+	stickerPackId?: number;
+	url?: string;
+	width?: number;
+}
+export interface Settings {}

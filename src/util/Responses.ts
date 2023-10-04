@@ -1,12 +1,15 @@
+import { Settings } from 'http2';
 import {
 	Activity,
 	Bgm,
+	ChatRoom,
 	ConferenceCall,
 	Game,
 	Genre,
 	GifImageCategory,
 	GiftCount,
 	Group,
+	Message,
 	MessageTag,
 	Post,
 	Shareable,
@@ -155,10 +158,18 @@ export interface GifsDataResponse {
 	gifCategories: GifImageCategory[];
 }
 export interface ChatRoomResponse {}
-export interface ChatRoomsResponse {}
+export interface ChatRoomsResponse {
+	chatRooms: ChatRoom[];
+	nextPageValue?: number;
+	pinnedChats?: ChatRoom[];
+}
 export interface MessageResponse {}
-export interface MessagesResponse {}
-export interface AdditionalSettingsResponse {}
+export interface MessagesResponse {
+	messages: Message[];
+}
+export interface AdditionalSettingsResponse {
+	setting?: Settings;
+}
 export interface NotificationSettingResponse {}
 export interface StickerPacksResponse {}
 export interface TotalChatRequestResponse {}
