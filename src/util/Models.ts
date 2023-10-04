@@ -60,16 +60,16 @@ export interface User {
 	vipUntil?: number;
 }
 export interface GiftingAbility {
-	can_receive: boolean;
-	can_send: boolean;
+	canReceive?: boolean;
+	canSend?: boolean;
 	enabled: boolean;
-	user_id: number;
+	userId?: number;
 }
 export interface GroupUser {
 	user: User;
-	is_moderator: boolean;
-	pending_transfer: boolean;
-	pending_deputize: boolean;
+	isModerator: boolean;
+	pendingTransfer: boolean;
+	pendingDeputize: boolean;
 	title: string;
 }
 export interface ConferenceCall {}
