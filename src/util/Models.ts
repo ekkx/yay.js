@@ -279,3 +279,10 @@ export interface Post {
 	messageTags?: MessageTag[];
 	isFailToSend?: boolean;
 }
+export interface Bgm {
+    id: number;
+    musicUrl: string;
+    order?: number;
+    title: string;
+    
+}

@@ -1,4 +1,5 @@
 import {
+	Bgm,
 	ConferenceCall,
 	GiftCount,
 	Group,
@@ -78,7 +79,9 @@ export interface PostResponse {
 	isFailToSend?: boolean;
 }
 export interface PostsResponse {}
-export interface BgmsResponse {}
+export interface BgmsResponse {
+	bgm: Bgm[];
+}
 export interface ConferenceCallResponse {}
 export interface UsersByTimestampResponse {}
 export interface CallStatusResponse {}
