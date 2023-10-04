@@ -140,12 +140,12 @@ export interface SnsInfo {
 	gender: string;
 }
 export interface LoginUserResponse {
-	userId: number;
+	userId?: number;
 	username?: string;
 	isNew?: boolean;
 	snsInfo?: SnsInfo;
-	accessToken: string;
-	refreshToken: string;
+	accessToken?: string;
+	refreshToken?: string;
 	tokenType?: string;
 	createdAt?: number;
 	expiresIn?: number;
@@ -253,4 +253,25 @@ export interface HiddenResponse {
 	limit?: number;
 	nextPageValue?: string;
 	totalCount?: number;
+}
+export interface LoginUpdateResponse {
+	accessToken: string;
+	expiresIn?: number;
+	refreshToken: string;
+	userId?: number;
+	username?: string;
+}
+export interface TokenResponse {
+	accessToken: string;
+	createdAt?: number;
+	expiresIn?: number;
+	id?: number;
+	refreshToken: string;
+}
+export interface RegisterDeviceTokenResponse {
+	createdAt?: number;
+	id?: number;
+	serverDeviceId?: string;
+	updatedAt?: number;
+	uuid?: string;
 }
