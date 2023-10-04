@@ -432,3 +432,33 @@ export interface StickerPack {
 	order?: number;
 	stickers?: Sticker[];
 }
+export interface Application {
+	settings?: Config;
+}
+export interface Config {
+	adTesterUserIds?: string;
+	isChatWebsocketEnabled?: string;
+	isDirectVipPurchaseEnabled?: string;
+	isGiftFeaturesEnabled?: string;
+	isIdCardAndPhoneVerificationCheckForReviewEnabled?: string;
+	isIdCardCheckRequiredBlockerViewEnabled?: string;
+	isMaintenanced?: string;
+	isPhoneVerificationRequiredBlockerViewEnabled?: string;
+	isSpeedTestEnabled?: string;
+	isStarEnabled?: string;
+	latestAndroidAppVersion?: string;
+	lineOfficialAccountId?: string;
+	localizedMaintenanceUrl?: string;
+	localizedNewsTitle?: string;
+	localizedNewsUrl?: string;
+	maintenanceFeatures?: string;
+	maxImageFrameCount?: string;
+	minimumAndroidAppVersionRequired?: string;
+	minimumAndroidVersionSupported?: string;
+	newsVersion?: string;
+	promotionStickerPackIds?: string;
+	shouldAppendUserIdToNewsUrl?: string;
+	supportEmailAddress?: string;
+	twitterOfficialAccountId?: string;
+	useRandomMessageRefreshRate?: string;
+}

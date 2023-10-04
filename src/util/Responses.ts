@@ -1,6 +1,7 @@
 import { Settings } from 'http2';
 import {
 	Activity,
+	Application,
 	Bgm,
 	ChatRoom,
 	ConferenceCall,
@@ -117,7 +118,6 @@ export interface GenresResponse {
 	genres: Genre[];
 	nextPageValue?: number;
 }
-export interface BookmarkPostResponse {}
 export interface UserTimestampResponse {
 	time: number;
 	ipAddress: string;
@@ -185,4 +185,7 @@ export interface StickerPacksResponse {
 }
 export interface TotalChatRequestResponse {
 	total?: number;
+}
+export interface ApplicationConfigResponse {
+	app?: Application;
 }
