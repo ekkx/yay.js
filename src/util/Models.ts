@@ -357,7 +357,7 @@ export interface Message {
 	videoUrl?: string;
 }
 export interface UserSetting {
-	notificationChat: boolean;
+	notificationChat?: boolean;
 }
 export interface Sticker {
 	extension?: string;
@@ -423,4 +423,12 @@ export interface Settings {
 	privateUserTimeline?: boolean;
 	vipInvisibleFootprintMode?: boolean;
 	visibleOnSnsFriendRecommendation?: boolean;
+}
+export interface StickerPack {
+	cover?: string;
+	description?: string;
+	id: number;
+	name?: string;
+	order?: number;
+	stickers?: Sticker[];
 }

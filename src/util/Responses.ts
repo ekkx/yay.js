@@ -14,9 +14,11 @@ import {
 	Post,
 	Shareable,
 	SharedUrl,
+	StickerPack,
 	Survey,
 	ThreadInfo,
 	User,
+	UserSetting,
 	Video,
 } from './Models';
 
@@ -157,19 +159,30 @@ export interface FollowUsersResponse {
 export interface GifsDataResponse {
 	gifCategories: GifImageCategory[];
 }
-export interface ChatRoomResponse {}
+export interface ChatRoomResponse {
+	chat?: ChatRoom;
+}
 export interface ChatRoomsResponse {
 	chatRooms: ChatRoom[];
 	nextPageValue?: number;
 	pinnedChats?: ChatRoom[];
 }
-export interface MessageResponse {}
+export interface MessageResponse {
+	conferenceCall?: ConferenceCall;
+	id: number;
+}
 export interface MessagesResponse {
 	messages: Message[];
 }
 export interface AdditionalSettingsResponse {
 	setting?: Settings;
 }
-export interface NotificationSettingResponse {}
-export interface StickerPacksResponse {}
-export interface TotalChatRequestResponse {}
+export interface NotificationSettingResponse {
+	setting: UserSetting;
+}
+export interface StickerPacksResponse {
+	stickerPacks: StickerPack[];
+}
+export interface TotalChatRequestResponse {
+	total?: number;
+}
