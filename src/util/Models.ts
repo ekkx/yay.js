@@ -462,3 +462,13 @@ export interface Config {
 	twitterOfficialAccountId?: string;
 	useRandomMessageRefreshRate?: string;
 }
+export interface BanWord {
+	id: number;
+	type?: string;
+	word?: string;
+}
+export interface PopularWord {
+	id: number;
+	type: string;
+	word: string;
+}

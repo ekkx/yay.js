@@ -2,6 +2,7 @@ import { Settings } from 'http2';
 import {
 	Activity,
 	Application,
+	BanWord,
 	Bgm,
 	ChatRoom,
 	ConferenceCall,
@@ -12,6 +13,7 @@ import {
 	Group,
 	Message,
 	MessageTag,
+	PopularWord,
 	Post,
 	Shareable,
 	SharedUrl,
@@ -188,4 +190,10 @@ export interface TotalChatRequestResponse {
 }
 export interface ApplicationConfigResponse {
 	app?: Application;
+}
+export interface BanWordsResponse {
+	banWords: BanWord[];
+}
+export interface PopularWordsResponse {
+	popularWords: PopularWord[];
 }
