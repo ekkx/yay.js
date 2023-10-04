@@ -188,10 +188,40 @@ export interface Choice {
 	label: string;
 	votesCount?: number;
 }
-export interface Video {}
-export interface GiftCount {}
-export interface ThreadInfo {}
-export interface MessageTag {}
+export interface Video {
+	bitrate?: number;
+	completed?: boolean;
+	height?: number;
+	id: number;
+	thumbnailBigUrl?: string;
+	thumbnailUrl?: string;
+	videoUrl?: string;
+	viewsCount?: number;
+	width?: number;
+}
+export interface GiftCount {
+	id: number;
+	quantity?: number;
+}
+export interface ThreadInfo {
+	createdAt?: number;
+	id: number;
+	isJoined?: boolean;
+	lastPost?: Post;
+	newUpdates?: boolean;
+	owner?: User;
+	postsCount?: number;
+	threadIcon?: string;
+	title: string;
+	unreadCount?: number;
+	updatedAt?: number;
+}
+export interface MessageTag {
+	length?: number;
+	offset?: number;
+	type: string;
+	userId?: number;
+}
 export interface Post {
 	id?: number;
 	text?: string;
