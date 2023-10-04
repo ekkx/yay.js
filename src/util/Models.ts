@@ -80,7 +80,16 @@ export interface ConferenceCallUserRole {
 	role: string;
 	userId?: number;
 }
-export interface Game {}
+export interface Game {
+	iconUrl: string;
+	id: number;
+	platformDetails?: PlatformDetails;
+	title: string;
+}
+export interface PlatformDetails {
+	affiliateUrl?: string;
+	packageId: string;
+}
 export interface Genre {}
 export interface ConferenceCall {
 	active?: boolean;
