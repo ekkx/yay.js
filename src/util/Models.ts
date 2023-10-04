@@ -165,8 +165,18 @@ export interface Group {
 	viewsCount?: number;
 	walkthroughRequested?: boolean;
 }
-export interface Shareable {}
-export interface SharedUrl {}
+export interface Shareable {
+	group?: Group;
+	post?: Post;
+	// @SerializedName("posts/thread")
+	thread?: ThreadInfo;
+}
+export interface SharedUrl {
+    description?: string;
+    imageUrl?: string;
+    title?: string;
+    url: string;
+}
 export interface Survey {}
 export interface Video {}
 export interface GiftCount {}
