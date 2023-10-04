@@ -308,3 +308,15 @@ export interface Metadata {
 	title?: string;
 	url?: string;
 }
+export interface GifImageCategory {
+	gifs: GifImage[];
+	id: number;
+	language?: string;
+	name?: string;
+}
+export interface GifImage {
+	height?: number;
+	id: number;
+	url?: string;
+	width?: number;
+}

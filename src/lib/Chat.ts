@@ -5,6 +5,7 @@ import {
 	ChatRoomResponse,
 	ChatRoomsResponse,
 	CreateChatRoomResponse,
+	FollowUsersResponse,
 	GifsDataResponse,
 	MessageResponse,
 	MessagesResponse,
@@ -97,7 +98,7 @@ export class ChatAPI {
 		fromFollowId?: number,
 		fromTimestamp?: number,
 		orderBy?: string,
-	) => {
+	): Promise<FollowUsersResponse> => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v1/users/followings/chatable`,

@@ -4,6 +4,7 @@ import {
 	ConferenceCall,
 	Game,
 	Genre,
+	GifImageCategory,
 	GiftCount,
 	Group,
 	MessageTag,
@@ -140,9 +141,19 @@ export interface ActivitiesResponse {
 	activities: Activity[];
 	lastTimestamp?: number;
 }
-export interface UnreadStatusResponse {}
-export interface CreateChatRoomResponse {}
-export interface GifsDataResponse {}
+export interface UnreadStatusResponse {
+	isUnread?: boolean;
+}
+export interface CreateChatRoomResponse {
+	roomId: number;
+}
+export interface FollowUsersResponse {
+	lastFollowId?: number;
+	users: User[];
+}
+export interface GifsDataResponse {
+	gifCategories: GifImageCategory[];
+}
 export interface ChatRoomResponse {}
 export interface ChatRoomsResponse {}
 export interface MessageResponse {}
