@@ -145,12 +145,12 @@ export interface SnsInfo {
 	gender: string;
 }
 export interface LoginUserResponse {
-	userId?: number;
+	userId: number;
 	username?: string;
 	isNew?: boolean;
 	snsInfo?: SnsInfo;
-	accessToken?: string;
-	refreshToken?: string;
+	accessToken: string;
+	refreshToken: string;
 	tokenType?: string;
 	createdAt?: number;
 	expiresIn?: number;

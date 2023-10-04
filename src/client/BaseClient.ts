@@ -21,7 +21,7 @@ import { BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
 import { Cookie } from '../util/Cookie';
 import { ErrorCode, ForbiddenError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
-import { LoginUserResponse, UserTimestampResponse } from '../util/Responses';
+import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 
 export class BaseClient {
@@ -113,35 +113,36 @@ export class BaseClient {
 	}
 
 	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
-		if (this.cookie.exists(options.email)) {
+		try {
 			this.cookie.load(options.email);
 			return {
 				accessToken: this.accessToken,
 				refreshToken: this.refreshToken,
 				userId: this.userId,
 			};
-		}
-		const res = await this.authAPI.loginWithEmail({
-			apiKey: options.apiKey,
-			email: options.email,
-			password: options.password,
-			uuid: options.uuid,
-		});
-		if (!res.accessToken) {
-			throw new ForbiddenError({
-				result: 'error',
-				message: 'invalid email or password',
-				errorCode: ErrorCode.InvalidEmailOrPassword,
-				banUntil: null,
+		} catch (error) {
+			const res = await this.authAPI.loginWithEmail({
+				apiKey: options.apiKey,
+				email: options.email,
+				password: options.password,
+				uuid: options.uuid,
 			});
+			if (!res.accessToken) {
+				throw new ForbiddenError({
+					result: 'error',
+					message: 'invalid email or password',
+					errorCode: ErrorCode.InvalidEmailOrPassword,
+					banUntil: null,
+				});
+			}
+			this.cookie.set({
+				authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
+				user: { userId: res.userId, email: options.email ?? '', uuid: this.uuid },
+				device: { deviceUuid: this.deviceUuid },
+			});
+			this.cookie.save();
+			return res;
 		}
-		this.cookie.set({
-			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
-			user: { userId: res.userId, email: options.email ?? '', uuid: this.uuid },
-			device: { deviceUuid: this.deviceUuid },
-		});
-		this.cookie.save();
-		return res;
 	}
 
 	public async request(options: RequestOptions): Promise<any> {

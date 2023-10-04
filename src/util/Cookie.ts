@@ -121,37 +121,12 @@ export class Cookie {
 		return sha256Hash.digest('hex');
 	}
 
-	/**
-	 * クッキーのメールアドレスと比較して合っていればクッキーを返す
-	 */
-	private compare(email: string): CookieProps {
-		const data = fs.readFileSync(this.filePath, 'utf-8');
-		const loadedCookie: CookieProps = JSON.parse(data);
-		if (this.hash(email) !== loadedCookie.user.email) {
-			throw new YJSError('メールアドレスが一致しませんでした。');
-		}
-		return loadedCookie;
-	}
-
 	public get(): CookieProps {
 		return {
 			authentication: { accessToken: this.accessToken, refreshToken: this.refreshToken },
 			user: { email: this.email, userId: this.userId, uuid: this.uuid },
 			device: { deviceUuid: this.deviceUuid },
 		};
-	}
-
-	public exists(email: string): boolean {
-		try {
-			const exists = fs.existsSync(this.filePath);
-			if (!exists) {
-				return false;
-			}
-			this.compare(email);
-			return true;
-		} catch (error) {
-			return false;
-		}
 	}
 
 	public save(cookie?: CookieProps): void {
@@ -171,7 +146,12 @@ export class Cookie {
 	}
 
 	public load(email: string): CookieProps {
-		let loadedCookie: CookieProps = this.compare(email);
+		const data = fs.readFileSync(this.filePath, 'utf-8');
+		let loadedCookie: CookieProps = JSON.parse(data);
+
+		if (this.hash(email) !== loadedCookie.user.email) {
+			throw new YJSError('メールアドレスが一致しませんでした。');
+		}
 
 		loadedCookie.user.email = email;
 
