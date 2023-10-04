@@ -72,7 +72,30 @@ export interface GroupUser {
 	pendingDeputize: boolean;
 	title: string;
 }
-export interface ConferenceCall {}
+export interface BumpParams {}
+export interface ConferenceCallUserRole {}
+export interface Game {}
+export interface Genre {}
+export interface ConferenceCall {
+	active?: boolean;
+	agoraChannel?: string;
+	agoraToken?: string;
+	anonymousCallUsersCount?: number;
+	bumpParams?: BumpParams;
+	callType?: string;
+	conferenceCallUserRoles?: ConferenceCallUserRole[];
+	conferenceCallUsers?: User[];
+	conferenceCallUsersCount?: number;
+	duration?: number;
+	game?: Game;
+	genre?: Genre;
+	groupId?: number;
+	id: number;
+	joinableBy?: string;
+	maxParticipants?: number;
+	postId?: number;
+	server?: string;
+}
 export interface Group {}
 export interface Shareable {}
 export interface SharedUrl {}
