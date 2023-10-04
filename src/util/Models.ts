@@ -483,3 +483,20 @@ export interface Gift {
 	price?: number;
 	title: string;
 }
+export interface GroupCategory {
+	icon?: string;
+	id: number;
+	name?: string;
+	rank?: number;
+	gameIdSupportedCategoryIds?: unknown;
+}
+export interface CreateGroupQuota {
+	remainingQuota?: number;
+	usedQuota?: number;
+}
+export interface GroupSetting {
+	notificationGroupJoin?: boolean;
+	notificationGroupMessageTagAll?: boolean;
+	notificationGroupPost?: boolean;
+	notificationGroupRequest?: boolean;
+}

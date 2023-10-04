@@ -6,6 +6,7 @@ import {
 	Bgm,
 	ChatRoom,
 	ConferenceCall,
+	CreateGroupQuota,
 	Game,
 	Genre,
 	GifImageCategory,
@@ -13,6 +14,9 @@ import {
 	GiftCount,
 	GiftingAbility,
 	Group,
+	GroupCategory,
+	GroupSetting,
+	GroupUser,
 	Message,
 	MessageTag,
 	PopularWord,
@@ -120,7 +124,7 @@ export interface GamesResponse {
 }
 export interface GenresResponse {
 	genres: Genre[];
-	nextPageValue?: number;
+	nextPageValue?: string;
 }
 export interface UserTimestampResponse {
 	time: number;
@@ -168,7 +172,7 @@ export interface ChatRoomResponse {
 }
 export interface ChatRoomsResponse {
 	chatRooms: ChatRoom[];
-	nextPageValue?: number;
+	nextPageValue?: string;
 	pinnedChats?: ChatRoom[];
 }
 export interface MessageResponse {
@@ -210,4 +214,37 @@ export interface GiftsResponse {
 export interface GiftSendersResponse {
 	senders: User[];
 	totalSendersCount?: number;
+}
+export interface CreateGroupResponse {
+	groupId?: number;
+}
+export interface UsersResponse {
+	nextPageValue?: string;
+	users: User[];
+}
+export interface GroupCategoriesResponse {
+	groupCategories: GroupCategory[];
+}
+export interface CreateQuotaResponse {
+	create: CreateGroupQuota;
+}
+export interface GroupResponse {
+	group?: Group;
+}
+export interface GroupNotificationSettingsResponse {
+	setting?: GroupSetting;
+}
+export interface GroupsResponse {
+	groups?: Group[];
+	pinnedGroups?: Group[];
+}
+export interface GroupUserResponse {
+	groupUser?: GroupUser;
+}
+export interface GroupUsersResponse {
+	groupUsers?: GroupUser[];
+}
+export interface GroupsRelatedResponse {
+	groups: Group[];
+	nextPageValue?: string;
 }
