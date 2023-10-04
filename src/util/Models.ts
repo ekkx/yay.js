@@ -500,3 +500,14 @@ export interface GroupSetting {
 	notificationGroupPost?: boolean;
 	notificationGroupRequest?: boolean;
 }
+export interface PresignedUrl {
+	filename: string;
+	url: string;
+}
+export interface Promotion {
+	id: number;
+	imageUrl: string;
+	order?: number;
+	promotionUrl: string;
+	title: string;
+}

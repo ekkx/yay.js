@@ -21,6 +21,8 @@ import {
 	MessageTag,
 	PopularWord,
 	Post,
+	PresignedUrl,
+	Promotion,
 	Shareable,
 	SharedUrl,
 	StickerPack,
@@ -274,4 +276,33 @@ export interface RegisterDeviceTokenResponse {
 	serverDeviceId?: string;
 	updatedAt?: number;
 	uuid?: string;
+}
+export interface EmailVerificationPresignedUrlResponse {
+	url: string;
+}
+export interface PresignedUrlsResponse {
+	presignedUrls: PresignedUrl;
+}
+export interface IdCheckerPresignedUrlResponse {
+	presignedUrl: string;
+}
+export interface PresignedUrlResponse {
+	presignedUrl: string;
+}
+export interface PolicyAgreementsResponse {
+	latestPrivacyPolicyAgreed?: boolean;
+	latestTermsOfUseAgreed?: boolean;
+}
+export interface PromotionsResponse {
+	promotions: Promotion[];
+}
+export interface VipGameRewardUrlResponse {
+	url: string;
+}
+export interface WebSocketTokenResponse {
+	token: string;
+}
+export interface VerifyDeviceResponse {
+	verified?: boolean;
+	verifiedAt: string;
 }
