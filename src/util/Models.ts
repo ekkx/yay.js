@@ -511,3 +511,8 @@ export interface Promotion {
 	promotionUrl: string;
 	title: string;
 }
+export interface MuteKeyword {
+	context: string[];
+	id: number;
+	word: string;
+}

@@ -19,6 +19,7 @@ import {
 	GroupUser,
 	Message,
 	MessageTag,
+	MuteKeyword,
 	PopularWord,
 	Post,
 	PresignedUrl,
@@ -305,4 +306,10 @@ export interface WebSocketTokenResponse {
 export interface VerifyDeviceResponse {
 	verified?: boolean;
 	verifiedAt: string;
+}
+export interface CreateMuteKeywordResponse {
+	hiddenWord: MuteKeyword;
+}
+export interface MuteKeywordResponse {
+	hiddenWords: MuteKeyword[];
 }
