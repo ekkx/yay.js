@@ -90,7 +90,11 @@ export interface PlatformDetails {
 	affiliateUrl?: string;
 	packageId: string;
 }
-export interface Genre {}
+export interface Genre {
+	iconUrl: string;
+	id: number;
+	title: string;
+}
 export interface ConferenceCall {
 	active?: boolean;
 	agoraChannel?: string;
@@ -111,7 +115,56 @@ export interface ConferenceCall {
 	postId?: number;
 	server?: string;
 }
-export interface Group {}
+export interface Group {
+	allowMembersToPostImageAndVideo?: boolean;
+	allowMembersToPostUrl?: boolean;
+	allowOwnershipTransfer?: boolean;
+	allowThreadCreationBy?: string;
+	callTimelineDisplay?: boolean;
+	coverImage?: string;
+	coverImageThumbnail?: string;
+	description?: string;
+	gender?: number;
+	generationGroupsLimit?: number;
+	groupCategoryId?: number;
+	groupIcon?: string;
+	groupIconThumbnail?: string;
+	groupsUsersCount?: number;
+	guidelines?: string;
+	hideConferenceCall?: boolean;
+	hideFromGameEight?: boolean;
+	hideReportedPosts?: boolean;
+	highlightedCount?: number;
+	id: number;
+	invitedToJoin?: boolean;
+	isJoined?: boolean;
+	isPending?: boolean;
+	isPrivate?: boolean;
+	isRelated?: boolean;
+	moderatorIds?: number[];
+	onlyMobileVerified?: boolean;
+	onlyVerifiedAge?: boolean;
+	owner?: User;
+	pendingCount?: number;
+	pendingDeputizeIds?: number[];
+	pendingTransferId?: number;
+	postsCount?: number;
+	relatedCount?: number;
+	safeMode?: boolean;
+	secret?: boolean;
+	seizable?: boolean;
+	seizableBefore?: number;
+	subCategoryId?: number;
+	threadsCount?: number;
+	title?: string;
+	topic?: string;
+	unreadCounts?: number;
+	unreadThreadsCount?: number;
+	updatedAt?: number;
+	userId?: number;
+	viewsCount?: number;
+	walkthroughRequested?: boolean;
+}
 export interface Shareable {}
 export interface SharedUrl {}
 export interface Survey {}
