@@ -1,4 +1,3 @@
-import { Settings } from 'http2';
 import {
 	Activity,
 	Application,
@@ -7,6 +6,7 @@ import {
 	ChatRoom,
 	ConferenceCall,
 	CreateGroupQuota,
+	Footprint,
 	Game,
 	Genre,
 	GifImageCategory,
@@ -25,14 +25,18 @@ import {
 	PostTag,
 	PresignedUrl,
 	Promotion,
+	RefreshCounterRequest,
 	Review,
+	Settings,
 	Shareable,
 	SharedUrl,
 	StickerPack,
 	Survey,
 	ThreadInfo,
+	TimelineSettings,
 	User,
 	UserSetting,
+	UserWrapper,
 	Video,
 } from './Models';
 
@@ -341,4 +345,50 @@ export interface VoteSurveyResponse {
 export interface ReviewsResponse {
 	pinnedReviews: Review[];
 	reviews: Review[];
+}
+export interface GroupThreadListResponse {
+	nextPageValue?: string;
+	threads: ThreadInfo[];
+}
+export interface CreateUserResponse {
+	accessToken: string;
+	expiresIn?: number;
+	id: number;
+	refreshToken: string;
+}
+export interface ActiveFollowingsResponse {
+	lastLoggedinAt?: number;
+	users: User[];
+}
+export interface DefaultSettingsResponse {
+	timelineSettings?: TimelineSettings;
+}
+export interface FollowRecommendationsResponse {
+	next?: number;
+	total?: number;
+	users: User[];
+}
+export interface FollowRequestCountResponse {
+	usersCount?: number;
+}
+export interface FootprintsResponse {
+	footprints: Footprint[];
+}
+export interface HimaUsersResponse {
+	himaUsers: UserWrapper[];
+}
+export interface RefreshCounterRequestsResponse {
+	resetCounterRequests: RefreshCounterRequest;
+}
+export interface UserCustomDefinitionsResponse {
+	age?: number;
+	createdAt?: number;
+	followersCount?: number;
+	followingsCount?: number;
+	lastLoggedinAt?: number;
+	reportedCount?: number;
+	status?: string;
+}
+export interface UserEmailResponse {
+	email?: string;
 }

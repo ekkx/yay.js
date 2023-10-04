@@ -530,3 +530,23 @@ export interface Review {
 	reviewer?: User;
 	user?: User;
 }
+export interface TimelineSettings {
+	favesFilter?: boolean;
+	hideHotPost?: boolean;
+	hideReplyFollowingTimeline?: boolean;
+	hideReplyPublicTimeline?: boolean;
+}
+export interface Footprint {
+	id: number;
+	user?: User;
+	visitedAt?: number;
+}
+export interface UserWrapper {
+	id: number;
+	user?: User;
+}
+export interface RefreshCounterRequest {
+	counter: string;
+	lastRequestedAt?: number;
+	status: string;
+}
