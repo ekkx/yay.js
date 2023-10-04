@@ -472,3 +472,14 @@ export interface PopularWord {
 	type: string;
 	word: string;
 }
+export interface Walkthrough {
+	title: string;
+	url: string;
+}
+export interface Gift {
+	icon: string;
+	iconThumbnail: string;
+	id: number;
+	price?: number;
+	title: string;
+}

@@ -9,7 +9,9 @@ import {
 	Game,
 	Genre,
 	GifImageCategory,
+	Gift,
 	GiftCount,
+	GiftingAbility,
 	Group,
 	Message,
 	MessageTag,
@@ -196,4 +198,16 @@ export interface BanWordsResponse {
 }
 export interface PopularWordsResponse {
 	popularWords: PopularWord[];
+}
+export interface GiftingAbilitiesResponse {
+	giftingAbilities: GiftingAbility[];
+}
+export interface GiftsResponse {
+	gifts: Gift[];
+	nextPageValue?: string;
+	totalCount?: number;
+}
+export interface GiftSendersResponse {
+	senders: User[];
+	totalSendersCount?: number;
 }
