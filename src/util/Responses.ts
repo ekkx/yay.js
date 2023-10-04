@@ -25,6 +25,7 @@ import {
 	PostTag,
 	PresignedUrl,
 	Promotion,
+	Review,
 	Shareable,
 	SharedUrl,
 	StickerPack,
@@ -336,4 +337,8 @@ export interface ValidationPostResponse {
 }
 export interface VoteSurveyResponse {
 	survey?: Survey;
+}
+export interface ReviewsResponse {
+	pinnedReviews: Review[];
+	reviews: Review[];
 }

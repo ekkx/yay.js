@@ -521,3 +521,12 @@ export interface PostTag {
 	postHashtagsCount?: number;
 	tag?: string;
 }
+export interface Review {
+	comment: string;
+	createdAt?: number;
+	id: number;
+	mutualReview?: boolean;
+	reportedCount?: number;
+	reviewer?: User;
+	user?: User;
+}
