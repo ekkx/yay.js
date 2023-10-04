@@ -75,7 +75,11 @@ export interface GroupUser {
 export interface BumpParams {
 	participantLimit: number;
 }
-export interface ConferenceCallUserRole {}
+export interface ConferenceCallUserRole {
+	id?: number;
+	role: string;
+	userId?: number;
+}
 export interface Game {}
 export interface Genre {}
 export interface ConferenceCall {
