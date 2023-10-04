@@ -22,6 +22,7 @@ import {
 	MuteKeyword,
 	PopularWord,
 	Post,
+	PostTag,
 	PresignedUrl,
 	Promotion,
 	Shareable,
@@ -312,4 +313,27 @@ export interface CreateMuteKeywordResponse {
 }
 export interface MuteKeywordResponse {
 	hiddenWords: MuteKeyword[];
+}
+export interface BookmarkPostResponse {
+	bookmarked?: boolean;
+}
+export interface CreatePostResponse {
+	conferenceCall?: ConferenceCall;
+	post?: Post;
+}
+export interface PostLikersResponse {
+	lastId?: number;
+	users: User[];
+}
+export interface PostTagsResponse {
+	tags: PostTag;
+}
+export interface LikePostsResponse {
+	likeIds: number[];
+}
+export interface ValidationPostResponse {
+	result?: boolean;
+}
+export interface VoteSurveyResponse {
+	survey?: Survey;
 }

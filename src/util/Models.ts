@@ -516,3 +516,8 @@ export interface MuteKeyword {
 	id: number;
 	word: string;
 }
+export interface PostTag {
+	id?: number;
+	postHashtagsCount?: number;
+	tag?: string;
+}
