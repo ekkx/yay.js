@@ -72,7 +72,9 @@ export interface GroupUser {
 	pendingDeputize: boolean;
 	title: string;
 }
-export interface BumpParams {}
+export interface BumpParams {
+	participantLimit: number;
+}
 export interface ConferenceCallUserRole {}
 export interface Game {}
 export interface Genre {}
