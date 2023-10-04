@@ -1,6 +1,8 @@
 import {
 	Bgm,
 	ConferenceCall,
+	Game,
+	Genre,
 	GiftCount,
 	Group,
 	MessageTag,
@@ -78,15 +80,36 @@ export interface PostResponse {
 	messageTags?: MessageTag[];
 	isFailToSend?: boolean;
 }
-export interface PostsResponse {}
+export interface PostsResponse {
+	hasMoreHotPosts?: boolean;
+	nextPageValue?: string;
+	pinnedPosts?: Post[];
+	posts: Post[];
+}
 export interface BgmsResponse {
 	bgm: Bgm[];
 }
-export interface ConferenceCallResponse {}
-export interface UsersByTimestampResponse {}
-export interface CallStatusResponse {}
-export interface GamesResponse {}
-export interface GenresResponse {}
+export interface ConferenceCallResponse {
+	conferenceCall?: ConferenceCall;
+	conferenceCallUserUuid?: string;
+}
+export interface UsersByTimestampResponse {
+	lastTimestamp?: number;
+	users: User[];
+}
+export interface CallStatusResponse {
+	phoneStatus?: boolean;
+	roomUrl?: string;
+	videoStatus?: boolean;
+}
+export interface GamesResponse {
+	fromId?: number;
+	games: Game[];
+}
+export interface GenresResponse {
+	genres: Genre[];
+	nextPageValue?: number;
+}
 export interface BookmarkPostResponse {}
 export interface UserTimestampResponse {
 	time: number;
