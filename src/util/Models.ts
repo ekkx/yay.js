@@ -172,12 +172,22 @@ export interface Shareable {
 	thread?: ThreadInfo;
 }
 export interface SharedUrl {
-    description?: string;
-    imageUrl?: string;
-    title?: string;
-    url: string;
+	description?: string;
+	imageUrl?: string;
+	title?: string;
+	url: string;
 }
-export interface Survey {}
+export interface Survey {
+	choices: Choice[];
+	id: number;
+	voted?: boolean;
+	votesCount?: number;
+}
+export interface Choice {
+	id: number;
+	label: string;
+	votesCount?: number;
+}
 export interface Video {}
 export interface GiftCount {}
 export interface ThreadInfo {}
