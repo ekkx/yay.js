@@ -1,4 +1,5 @@
 import {
+	Activity,
 	Bgm,
 	ConferenceCall,
 	Game,
@@ -134,6 +135,10 @@ export interface LoginUserResponse {
 	tokenType?: string;
 	createdAt?: number;
 	expiresIn?: number;
+}
+export interface ActivitiesResponse {
+	activities: Activity[];
+	lastTimestamp?: number;
 }
 export interface UnreadStatusResponse {}
 export interface CreateChatRoomResponse {}

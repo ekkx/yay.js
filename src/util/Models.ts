@@ -280,9 +280,31 @@ export interface Post {
 	isFailToSend?: boolean;
 }
 export interface Bgm {
-    id: number;
-    musicUrl: string;
-    order?: number;
-    title: string;
-    
+	id: number;
+	musicUrl: string;
+	order?: number;
+	title: string;
+}
+export interface Activity {
+	birthdayUsers?: User[];
+	birthdayUsersCount?: number;
+	createdAt?: number;
+	followers?: User[];
+	followersCount?: number;
+	fromPost?: Post;
+	fromPostIds?: number[];
+	group?: Group;
+	id: number;
+	metadata?: Metadata;
+	toPost?: Post;
+	type?: string;
+	user?: User;
+	vipReward?: number;
+}
+export interface Metadata {
+	body?: string;
+	bulkInvitation?: boolean;
+	contentPreview?: string;
+	title?: string;
+	url?: string;
 }
