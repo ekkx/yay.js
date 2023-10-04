@@ -248,3 +248,9 @@ export interface GroupsRelatedResponse {
 	groups: Group[];
 	nextPageValue?: string;
 }
+export interface HiddenResponse {
+	hiddenUsers: User[];
+	limit?: number;
+	nextPageValue?: string;
+	totalCount?: number;
+}
