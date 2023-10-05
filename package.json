@@ -1,7 +1,7 @@
 {
   "name": "yay.js",
   "version": "0.1.0",
-  "description": "",
+  "description": "Simple and intuitive, yet full featured API wrapper for https://yay.space written in TypeScript/JavaScript.",
   "source": "./src/index.ts",
   "main": "./build/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "nanameue"
   ],
   "author": "qvco",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/qvco/yay.js/issues"
   },
