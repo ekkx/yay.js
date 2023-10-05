@@ -1,13 +1,15 @@
 import { AxiosProxyConfig } from 'axios';
+import { YJSLogger } from './Logger';
 
 /**
  * RESTクラスのrequest関数の引数
  */
 export type RESTOptions = {
+	logger: YJSLogger;
 	baseURL: string;
 	proxy?: AxiosProxyConfig;
 	timeout?: number;
-	defaultHeaders: RequestHeaders;
+	defaultHeaders: Record<string, any>;
 };
 
 export type RequestOptions = {
@@ -18,7 +20,7 @@ export type RequestOptions = {
 	json?: Record<string, any>;
 	baseURL?: string;
 	accessToken?: string;
-	headers?: RequestHeaders;
+	headers?: Record<string, any>;
 };
 
 /**
@@ -129,24 +131,6 @@ export type SearchCriteria = {
 	biography?: string;
 	prefecture?: string;
 	gender?: number;
-};
-
-/**
- * リクエストを送信する際のヘッダー情報
- */
-export type RequestHeaders = {
-	Authorization?: string;
-	Host?: string;
-	'User-Agent'?: string;
-	'X-Timestamp'?: string;
-	'X-App-Version'?: string;
-	'X-Device-Info'?: string;
-	'X-Device-UUID'?: string;
-	'X-Client-IP'?: string;
-	'X-Connection-Type'?: string;
-	'X-Connection-Speed'?: string;
-	'Accept-Language'?: string;
-	'Content-Type'?: string;
 };
 
 /**

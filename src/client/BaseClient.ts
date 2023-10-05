@@ -32,23 +32,23 @@ export class BaseClient {
 	private cookie: Cookie;
 	private headerInterceptor: HeaderInterceptor;
 
-	public readonly aiPacaAPI: AIPacaAPI;
-	public readonly authAPI: AuthAPI;
-	public readonly blockAPI: BlockAPI;
-	public readonly callAPI: CallAPI;
-	public readonly chatAPI: ChatAPI;
-	public readonly configAPI: ConfigAPI;
-	public readonly gameAPI: GameAPI;
-	public readonly giftAPI: GiftAPI;
-	public readonly groupAPI: GroupAPI;
-	public readonly hiddenAPI: HiddenAPI;
-	public readonly miscAPI: MiscAPI;
-	public readonly muteKeywordAPI: MuteKeywordAPI;
-	public readonly notificationAPI: NotificationAPI;
-	public readonly postAPI: PostAPI;
-	public readonly reviewAPI: ReviewAPI;
-	public readonly threadAPI: ThreadAPI;
-	public readonly userAPI: UserAPI;
+	protected readonly aiPacaAPI: AIPacaAPI;
+	protected readonly authAPI: AuthAPI;
+	protected readonly blockAPI: BlockAPI;
+	protected readonly callAPI: CallAPI;
+	protected readonly chatAPI: ChatAPI;
+	protected readonly configAPI: ConfigAPI;
+	protected readonly gameAPI: GameAPI;
+	protected readonly giftAPI: GiftAPI;
+	protected readonly groupAPI: GroupAPI;
+	protected readonly hiddenAPI: HiddenAPI;
+	protected readonly miscAPI: MiscAPI;
+	protected readonly muteKeywordAPI: MuteKeywordAPI;
+	protected readonly notificationAPI: NotificationAPI;
+	protected readonly postAPI: PostAPI;
+	protected readonly reviewAPI: ReviewAPI;
+	protected readonly threadAPI: ThreadAPI;
+	protected readonly userAPI: UserAPI;
 
 	protected logger: YJSLogger;
 
@@ -59,6 +59,7 @@ export class BaseClient {
 		this.headerInterceptor.setConnectionSpeed('0');
 
 		this.rest = new REST({
+			logger: this.logger,
 			baseURL: BASE_API_URL,
 			proxy: options.proxy,
 			timeout: options.timeout,

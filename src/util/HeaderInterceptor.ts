@@ -1,6 +1,6 @@
 import { API_VERSION_NAME, BASE_HOST, VERSION_NAME } from './Constants';
 import { Cookie } from './Cookie';
-import { Device, RequestHeaders } from './Types';
+import { Device } from './Types';
 
 export class HeaderInterceptor {
 	private clientIP: string;
@@ -23,8 +23,8 @@ export class HeaderInterceptor {
 		this.connectionSpeed = '';
 	}
 
-	public intercept(): RequestHeaders {
-		const headers: RequestHeaders = {
+	public intercept(): Record<string, any> {
+		const headers: Record<string, any> = {
 			Host: BASE_HOST,
 			'User-Agent': this.userAgent,
 			'X-Timestamp': Date.now().toString(),

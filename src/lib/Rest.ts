@@ -13,14 +13,17 @@ import {
 	RateLimitError,
 	ServerError,
 } from './Errors';
+import { YJSLogger } from '../util/Logger';
 
 /**
  * Represents the class that manages handlers for endpoints
  */
 export class REST {
+	private logger: YJSLogger;
 	private api: AxiosInstance;
 
 	public constructor(options: RESTOptions) {
+		this.logger = options.logger;
 		this.api = axios.create({
 			baseURL: options.baseURL ? options.baseURL : BASE_API_URL,
 			proxy: options.proxy,
@@ -54,10 +57,24 @@ export class REST {
 			headers: options.headers,
 		};
 
+		const requestDetails: string =
+			'Making API request:\n\n' +
+			`${JSON.stringify(config.method)}: ${JSON.stringify(config.url)}\n\n` +
+			`Parameters: ${JSON.stringify(config.params)}\n\n` +
+			`Headers: ${JSON.stringify(config.headers)}\n\n` +
+			`Body: ${JSON.stringify(config.data)}\n`;
+
+		this.logger.debug(requestDetails);
+
 		const response: AxiosResponse = await this.api(config);
 		const { status, data } = response;
 
 		const camelCasedResponse = objectToCamel(data);
+
+		const responseDetails: string =
+			'Received API response:\n\n' + `Status code: ${status}\n\n` + `Response: ${JSON.stringify(camelCasedResponse)}`;
+
+		this.logger.debug(responseDetails);
 
 		switch (status) {
 			case 400:
