@@ -52,7 +52,9 @@ export class BaseClient {
 
 	protected logger: YJSLogger;
 
-	public constructor(options: ClientOptions) {
+	public constructor(options?: ClientOptions) {
+		options = options || {};
+
 		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
 		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie);
@@ -83,11 +85,6 @@ export class BaseClient {
 		this.reviewAPI = new ReviewAPI(this);
 		this.threadAPI = new ThreadAPI(this);
 		this.userAPI = new UserAPI(this);
-
-		this.userAPI.getTimestamp().then((userTimestampResponse) => {
-			const ipAddress = userTimestampResponse.ipAddress;
-			this.headerInterceptor.setClientIP(ipAddress);
-		});
 	}
 
 	public get cookies(): CookieProps {

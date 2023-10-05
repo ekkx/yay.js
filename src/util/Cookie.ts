@@ -18,7 +18,7 @@ export class Cookie {
 	public accessToken: string;
 	public refreshToken: string;
 
-	public constructor(saveCookie: boolean = false, filePath: string = defaultFilePath, password?: string) {
+	public constructor(saveCookie: boolean = true, filePath: string = defaultFilePath, password?: string) {
 		this.algorithm = 'aes-256-ctr';
 		this.saveCookie = saveCookie;
 		this.filePath = filePath;
