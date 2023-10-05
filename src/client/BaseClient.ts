@@ -161,6 +161,12 @@ export class BaseClient {
 	}
 
 	public async request(options: RequestOptions): Promise<any> {
+		// X-Client-IPがヘッダーになければ設定する
+		if (!this.headerInterceptor.getClientIP() && options.route !== 'v2/users/timestamp') {
+			const res = await this.userAPI.getTimestamp();
+			this.headerInterceptor.setClientIP(res.ipAddress);
+		}
+
 		const defaultHeaders = { ...this.headerInterceptor.intercept() };
 		const customHeaders = { ...defaultHeaders, ...options.headers };
 
