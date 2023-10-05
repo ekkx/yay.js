@@ -1,7 +1,7 @@
 import { BaseClient } from './BaseClient';
 import { ClientOptions } from '../util/Types';
 import { API_KEY } from '../util/Constants';
-import { LoginUserResponse } from '../util/Responses';
+import { LoginUserResponse, PolicyAgreementsResponse } from '../util/Responses';
 import { Post, SharedUrl } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
 
@@ -11,12 +11,31 @@ export class Client extends BaseClient {
 	}
 
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
-		return await this.authenticate({
+		const loginResponse = await this.authenticate({
 			apiKey: API_KEY,
 			email: options.email,
 			password: options.password,
 			uuid: this.uuid,
 		});
+
+		// 利用規約に同意する
+		const policyResponse = await this.getPolicyAgreements();
+		if (!policyResponse.latestPrivacyPolicyAgreed) {
+			this.acceptPolicyAgreement({ type: 'privacy_policy' });
+		}
+		if (!policyResponse.latestTermsOfUseAgreed) {
+			this.acceptPolicyAgreement({ type: 'terms_of_use' });
+		}
+
+		return loginResponse;
+	};
+
+	public acceptPolicyAgreement = async (options: { type: string }) => {
+		return await this.miscAPI.acceptPolicyAgreement({ type: options.type });
+	};
+
+	public getPolicyAgreements = async (): Promise<PolicyAgreementsResponse> => {
+		return await this.miscAPI.getPolicyAgreements();
 	};
 
 	public getWebSocketToken = async (): Promise<string> => {
