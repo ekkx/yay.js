@@ -23,6 +23,9 @@ import { ErrorCode, ForbiddenError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
+import { YJSLogger } from '../util/Logger';
+
+import * as pkg from '../../package.json';
 
 export class BaseClient {
 	private rest: REST;
@@ -47,14 +50,12 @@ export class BaseClient {
 	public readonly threadAPI: ThreadAPI;
 	public readonly userAPI: UserAPI;
 
+	protected logger: YJSLogger;
+
 	public constructor(options: ClientOptions) {
-		if (!options.cookieFilePath) {
-			options.cookieFilePath = process.cwd() + '/cookie.json';
-		}
-
-		this.cookie = new Cookie(options.saveCookie ?? false, options.cookieFilePath, options.cookiePassword);
-
-		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie, 'ja');
+		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
+		this.logger = new YJSLogger(options.debugMode, options.disableLog);
+		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie);
 		this.headerInterceptor.setConnectionSpeed('0');
 
 		this.rest = new REST({
@@ -115,6 +116,7 @@ export class BaseClient {
 	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
+			this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
 			return {
 				accessToken: this.accessToken,
 				refreshToken: this.refreshToken,
@@ -141,6 +143,7 @@ export class BaseClient {
 				device: { deviceUuid: this.deviceUuid },
 			});
 			this.cookie.save();
+			this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
 			return res;
 		}
 	}

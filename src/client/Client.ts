@@ -18,12 +18,4 @@ export class Client extends BaseClient {
 	};
 }
 
-// usage
-const main = async () => {
-	const client = new Client({ saveCookie: true });
-	const res = await client.login('your_email', 'your_password');
-	console.log(res);
-	console.log(client.cookies);
-};
-
-main();
+export default Client;

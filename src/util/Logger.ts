@@ -74,10 +74,3 @@ export class YJSLogger {
 		this.disableLog = disableLog;
 	}
 }
-
-const logger = new YJSLogger(false, false);
-
-logger.info('hello');
-logger.info('hello');
-logger.info('hello');
-logger.info('hello');

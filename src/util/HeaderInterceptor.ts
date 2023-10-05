@@ -12,7 +12,7 @@ export class HeaderInterceptor {
 	private cookie: Cookie;
 	private locale: string;
 
-	public constructor(device: Device, cookie: Cookie, locale: string) {
+	public constructor(device: Device, cookie: Cookie, locale: string = 'ja') {
 		this.device = device;
 		this.locale = locale;
 		this.userAgent = `${this.device.deviceType} ${this.device.osVersion} (${this.device.screenDensity}x ${this.device.screenSize} ${this.device.model})`;

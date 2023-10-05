@@ -4,6 +4,8 @@ import { v4 as uuid } from 'uuid';
 import { CookieProps } from './Types';
 import { YJSError } from '../lib/Errors';
 
+const defaultFilePath = process.cwd() + '/cookie.json';
+
 export class Cookie {
 	private algorithm: string;
 	private saveCookie: boolean;
@@ -16,7 +18,7 @@ export class Cookie {
 	public accessToken: string;
 	public refreshToken: string;
 
-	public constructor(saveCookie: boolean, filePath: string, password?: string) {
+	public constructor(saveCookie: boolean = false, filePath: string = defaultFilePath, password?: string) {
 		this.algorithm = 'aes-256-ctr';
 		this.saveCookie = saveCookie;
 		this.filePath = filePath;

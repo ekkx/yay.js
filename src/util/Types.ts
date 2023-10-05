@@ -25,8 +25,6 @@ export type RequestOptions = {
  * Clientインスタンスを作成するときの引数
  */
 export type ClientOptions = {
-	email?: string;
-	password?: string;
 	/**
 	 * プロキシのアドレス
 	 */
@@ -73,6 +71,18 @@ export type ClientOptions = {
 	 * @defaultValue `'cookie'`
 	 */
 	cookieFilePath?: string;
+	/**
+	 * ログのデバッグモードをオンにするか
+	 *
+	 * @defaultValue `false`
+	 */
+	debugMode?: boolean;
+	/**
+	 * ログを非表示にするか
+	 *
+	 * @defaultValue `false`
+	 */
+	disableLog?: boolean;
 };
 
 export type CookieProps = {
