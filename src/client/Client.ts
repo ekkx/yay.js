@@ -3,6 +3,7 @@ import { ClientOptions } from '../util/Types';
 import { API_KEY } from '../util/Constants';
 import { LoginUserResponse } from '../util/Responses';
 import { Post, SharedUrl } from '../util/Models';
+import { objectToSnake } from '../util/CaseConverter';
 
 export class Client extends BaseClient {
 	public constructor(options?: ClientOptions) {
@@ -30,7 +31,6 @@ export class Client extends BaseClient {
 			color?: number;
 			inReplyTo?: number;
 			groupId?: number;
-			postType?: string;
 			mentionIds?: number[];
 			choices?: string[];
 			sharedUrl?: string;
@@ -46,9 +46,10 @@ export class Client extends BaseClient {
 			videoFileName?: string;
 		} = {},
 	): Promise<Post> => {
+		const postType = this.getPostType(options);
 		let sharedUrlObj: SharedUrl | undefined = undefined;
 		if (options.sharedUrl) {
-			sharedUrlObj = await this.getUrlMetadata({ url: options.sharedUrl });
+			sharedUrlObj = objectToSnake(await this.getUrlMetadata({ url: options.sharedUrl }));
 		}
 		const res = await this.postAPI.createPost({
 			jwt: await this.getWebSocketToken(),
@@ -57,7 +58,7 @@ export class Client extends BaseClient {
 			color: options.color,
 			inReplyTo: options.inReplyTo,
 			groupId: options.groupId,
-			postType: options.postType,
+			postType: postType,
 			mentionIds: options.mentionIds,
 			choices: options.choices,
 			sharedUrl: sharedUrlObj,

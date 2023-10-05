@@ -146,6 +146,20 @@ export class BaseClient {
 		}
 	}
 
+	protected getPostType(options: Record<string, any>): string {
+		if (options.choices) {
+			return 'survey';
+		} else if (options.sharedUrl) {
+			return 'shareable_url';
+		} else if (options.videoFileName) {
+			return 'video';
+		} else if (options.attachmentFileName) {
+			return 'image';
+		} else {
+			return 'text';
+		}
+	}
+
 	public async request(options: RequestOptions): Promise<any> {
 		const defaultHeaders = { ...this.headerInterceptor.intercept() };
 		const customHeaders = { ...defaultHeaders, ...options.headers };
