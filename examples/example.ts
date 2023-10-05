@@ -4,8 +4,8 @@ const main = async () => {
 	const client = new Client();
 
 	await client.login({
-		email: 'aid935@instaddr.uk',
-		password: 'abc123',
+		email: 'your_email',
+		password: 'your_password',
 	});
 
 	await client.createPost({
