@@ -17,5 +17,3 @@ export class Client extends BaseClient {
 		});
 	};
 }
-
-export default Client;
