@@ -5,7 +5,7 @@ import { LoginUserResponse } from '../util/Responses';
 export class AuthAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	loginWithEmail = async (request: LoginEmailUserRequest): Promise<LoginUserResponse> => {
+	public loginWithEmail = async (request: LoginEmailUserRequest): Promise<LoginUserResponse> => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v3/users/login_with_email`,

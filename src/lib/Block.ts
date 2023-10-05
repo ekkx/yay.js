@@ -5,10 +5,10 @@ import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses'
 export class BlockAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	public blockUser = async (userId: number) => {
+	public blockUser = async (options: { userId: number }) => {
 		return await this.base.request({
 			method: RequestMethod.POST,
-			route: `v1/users/${userId}/block`,
+			route: `v1/users/${options.userId}/block`,
 			requireAuth: true,
 		});
 	};
@@ -18,24 +18,26 @@ export class BlockAPI {
 	};
 
 	public getBlockedUsers = async (
-		nickname?: string,
-		username?: string,
-		biography?: string,
-		prefecture?: string,
-		gender?: number,
-		fromId?: number,
+		options: {
+			nickname?: string;
+			username?: string;
+			biography?: string;
+			prefecture?: string;
+			gender?: number;
+			fromId?: number;
+		} = {},
 	): Promise<BlockedUsersResponse> => {
 		return await this.base.request({
 			method: RequestMethod.POST,
 			route: `v2/users/blocked`,
 			requireAuth: true,
 			params: {
-				nickname: nickname,
-				username: username,
-				biography: biography,
-				prefecture: prefecture,
-				gender: gender,
-				from_id: fromId,
+				nickname: options.nickname,
+				username: options.username,
+				biography: options.biography,
+				prefecture: options.prefecture,
+				gender: options.gender,
+				from_id: options.fromId,
 			},
 		});
 	};

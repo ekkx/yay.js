@@ -22,6 +22,7 @@ export class Client extends BaseClient {
 		return (await this.miscAPI.getWebSocketToken()).token;
 	};
 
+	// messageTags
 	public createPost = async (
 		options: {
 			text?: string;
@@ -49,33 +50,35 @@ export class Client extends BaseClient {
 		if (options.sharedUrl) {
 			sharedUrlObj = await this.getUrlMetadata({ url: options.sharedUrl });
 		}
-		return await this.postAPI.createPost(
-			await this.getWebSocketToken(),
-			options.text,
-			options.fontSize,
-			options.color,
-			options.inReplyTo,
-			options.groupId,
-			options.postType,
-			options.mentionIds,
-			options.choices,
-			sharedUrlObj,
-			undefined,
-			options.attachmentFilename,
-			options.attachment2Filename,
-			options.attachment3Filename,
-			options.attachment4Filename,
-			options.attachment5Filename,
-			options.attachment6Filename,
-			options.attachment7Filename,
-			options.attachment8Filename,
-			options.attachment9Filename,
-			options.videoFileName,
-		);
+		const res = await this.postAPI.createPost({
+			jwt: await this.getWebSocketToken(),
+			text: options.text,
+			fontSize: options.fontSize,
+			color: options.color,
+			inReplyTo: options.inReplyTo,
+			groupId: options.groupId,
+			postType: options.postType,
+			mentionIds: options.mentionIds,
+			choices: options.choices,
+			sharedUrl: sharedUrlObj,
+			messageTags: undefined,
+			attachmentFilename: options.attachmentFilename,
+			attachment2Filename: options.attachment2Filename,
+			attachment3Filename: options.attachment3Filename,
+			attachment4Filename: options.attachment4Filename,
+			attachment5Filename: options.attachment5Filename,
+			attachment6Filename: options.attachment6Filename,
+			attachment7Filename: options.attachment7Filename,
+			attachment8Filename: options.attachment8Filename,
+			attachment9Filename: options.attachment9Filename,
+			videoFileName: options.videoFileName,
+		});
+		this.logger.info('投稿を作成しました。');
+		return res;
 	};
 
 	public getUrlMetadata = async (options: { url: string }): Promise<SharedUrl> => {
-		return await this.postAPI.getUrlMetadata(options.url);
+		return await this.postAPI.getUrlMetadata({ url: options.url });
 	};
 }
 
