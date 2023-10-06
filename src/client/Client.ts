@@ -1,7 +1,7 @@
 import { BaseClient } from './BaseClient';
 import { ClientOptions } from '../util/Types';
 import { API_KEY } from '../util/Constants';
-import { LoginUserResponse, PolicyAgreementsResponse } from '../util/Responses';
+import { LoginUserResponse, PolicyAgreementsResponse, TokenResponse } from '../util/Responses';
 import { Post, SharedUrl } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
 
@@ -9,6 +9,20 @@ export class Client extends BaseClient {
 	public constructor(options?: ClientOptions) {
 		super(options);
 	}
+
+	public getToken = async (options: {
+		grantType: string;
+		email?: string;
+		password?: string;
+		refreshToken?: string;
+	}): Promise<TokenResponse> => {
+		return await this.authAPI.getToken({
+			grantType: options.grantType,
+			email: options.email,
+			password: options.password,
+			refreshToken: options.refreshToken,
+		});
+	};
 
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
 		const loginResponse = await this.authenticate({

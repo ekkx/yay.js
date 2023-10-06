@@ -177,11 +177,6 @@ export class BaseClient {
 			this.headerInterceptor.setClientIP(res.ipAddress);
 		}
 
-		const defaultHeaders = { ...this.headerInterceptor.intercept() };
-		const customHeaders = { ...defaultHeaders, ...options.headers };
-
-		options.headers = customHeaders || defaultHeaders;
-
 		let response: AxiosResponse | null = null;
 		let backoffDuration: number = 0;
 		let authRetryCount: number = 0;
@@ -193,11 +188,16 @@ export class BaseClient {
 				await new Promise((resolve) => setTimeout(resolve, backoffDuration));
 			}
 
+			const defaultHeaders = { ...this.headerInterceptor.intercept() };
+			const customHeaders = { ...options.headers, ...defaultHeaders };
+
+			options.headers = customHeaders || defaultHeaders;
+
 			try {
 				response = await this.rest.request(options);
 			} catch (error) {
 				// アクセストークンの有効期限が切れたらリフレッシュする
-				if (error instanceof AuthenticationError && error.response.errorCode === ErrorCode.AccessTokenExpired) {
+				if (error instanceof AuthenticationError && this.isAccessTokenExpiredError(error)) {
 					if (options.route === 'api/v1/oauth/token') {
 						throw new AuthenticationError(error.response);
 					}
@@ -205,7 +205,8 @@ export class BaseClient {
 					authRetryCount++;
 
 					if (authRetryCount < maxAuthRetries) {
-						this.refreshTokens();
+						await this.refreshTokens();
+						continue;
 					} else {
 						this.cookie.destroy();
 						error.response.message = '認証の再試行に失敗しました。再ログインしてください。';
@@ -258,9 +259,24 @@ export class BaseClient {
 		return response;
 	}
 
+	private isAccessTokenExpiredError(error: AuthenticationError): boolean {
+		return (
+			error.response.errorCode === ErrorCode.AccessTokenExpired ||
+			error.response.errorCode === ErrorCode.AccessTokenInvalid
+		);
+	}
+
 	private isRateLimit(options: { response: Record<string, any> }): boolean {
 		return false;
 	}
 
-	private refreshTokens(): void {}
+	private async refreshTokens(): Promise<void> {
+		const res = await this.authAPI.getToken({ grantType: 'refresh_token', refreshToken: this.refreshToken });
+
+		this.cookie.set({
+			...this.cookies,
+			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
+		});
+		this.cookie.save();
+	}
 }
