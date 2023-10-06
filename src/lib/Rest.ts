@@ -71,8 +71,9 @@ export class REST {
 
 		const camelCasedResponse = objectToCamel(data);
 
-		const responseDetails: string =
-			'Received API response:\n\n' + `Status code: ${status}\n\n` + `Response: ${JSON.stringify(camelCasedResponse)}`;
+		const responseDetails: string = `Received API response:\n\nStatus code: ${status}\n\nResponse: ${JSON.stringify(
+			camelCasedResponse,
+		)}`;
 
 		this.logger.debug(responseDetails);
 

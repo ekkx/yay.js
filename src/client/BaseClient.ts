@@ -156,20 +156,6 @@ export class BaseClient {
 		}
 	}
 
-	protected getPostType(options: Record<string, any>): string {
-		if (options.choices) {
-			return 'survey';
-		} else if (options.sharedUrl) {
-			return 'shareable_url';
-		} else if (options.videoFileName) {
-			return 'video';
-		} else if (options.attachmentFileName) {
-			return 'image';
-		} else {
-			return 'text';
-		}
-	}
-
 	public async request(options: RequestOptions): Promise<any> {
 		// X-Client-IPがヘッダーになければ設定する
 		if (!this.headerInterceptor.getClientIP() && options.route !== 'v2/users/timestamp') {
@@ -215,7 +201,7 @@ export class BaseClient {
 				}
 				// レート制限の場合は待機する
 				if ((error instanceof RateLimitError || error instanceof BadRequestError) && this.waitOnRateLimit) {
-					if (this.isRateLimit({ response: error.response })) {
+					if (this.isRateLimit(error)) {
 						let rateLimitRetryCount: number = 1;
 
 						while (rateLimitRetryCount < maxRateLimitRetries) {
@@ -227,11 +213,10 @@ export class BaseClient {
 
 						options.headers['X-Timestamp'] = Date.now().toString();
 
-						const res = await this.request(options);
-
-						if (!this.isRateLimit({ response: res })) {
+						try {
+							await this.request(options);
 							break;
-						}
+						} catch (error) {}
 
 						rateLimitRetryCount++;
 
@@ -266,7 +251,13 @@ export class BaseClient {
 		);
 	}
 
-	private isRateLimit(options: { response: Record<string, any> }): boolean {
+	private isRateLimit(error: RateLimitError | BadRequestError): boolean {
+		if (error instanceof RateLimitError) {
+			return true;
+		}
+		if (error.response && error.response.errorCode === ErrorCode.QuotaLimitExceeded) {
+			return true;
+		}
 		return false;
 	}
 
@@ -278,5 +269,19 @@ export class BaseClient {
 			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
 		});
 		this.cookie.save();
+	}
+
+	protected getPostType(options: Record<string, any>): string {
+		if (options.choices) {
+			return 'survey';
+		} else if (options.sharedUrl) {
+			return 'shareable_url';
+		} else if (options.videoFileName) {
+			return 'video';
+		} else if (options.attachmentFileName) {
+			return 'image';
+		} else {
+			return 'text';
+		}
 	}
 }
