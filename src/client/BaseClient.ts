@@ -19,18 +19,23 @@ import { REST } from '../lib/Rest';
 
 import { BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
 import { Cookie } from '../util/Cookie';
-import { ErrorCode, ForbiddenError } from '../lib/Errors';
+import { AuthenticationError, BadRequestError, ErrorCode, ForbiddenError, RateLimitError } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
 
 import * as pkg from '../../package.json';
+import { AxiosResponse } from 'axios';
 
 export class BaseClient {
 	private rest: REST;
 	private cookie: Cookie;
 	private headerInterceptor: HeaderInterceptor;
+	private maxRetries: number;
+	private backoffFactor: number;
+	private waitOnRateLimit: boolean;
+	private retryStatuses: number[];
 
 	protected readonly aiPacaAPI: AIPacaAPI;
 	protected readonly authAPI: AuthAPI;
@@ -54,6 +59,11 @@ export class BaseClient {
 
 	public constructor(options?: ClientOptions) {
 		options = options || {};
+
+		this.maxRetries = options.maxRetries ?? 3;
+		this.backoffFactor = options.backoffFactor ?? 1.5;
+		this.waitOnRateLimit = options.waitOnRateLimit ?? true;
+		this.retryStatuses = [500, 502, 503, 504];
 
 		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
@@ -172,6 +182,85 @@ export class BaseClient {
 
 		options.headers = customHeaders || defaultHeaders;
 
-		return await this.rest.request(options);
+		let response: AxiosResponse | null = null;
+		let backoffDuration: number = 0;
+		let authRetryCount: number = 0;
+		const maxAuthRetries: number = 2;
+		const maxRateLimitRetries: number = 15;
+
+		for (let i = 0; i < this.maxRetries; i++) {
+			if (backoffDuration > 0) {
+				await new Promise((resolve) => setTimeout(resolve, backoffDuration));
+			}
+
+			try {
+				response = await this.rest.request(options);
+			} catch (error) {
+				// アクセストークンの有効期限が切れたらリフレッシュする
+				if (error instanceof AuthenticationError && error.response.errorCode === ErrorCode.AccessTokenExpired) {
+					if (options.route === 'api/v1/oauth/token') {
+						throw new AuthenticationError(error.response);
+					}
+
+					authRetryCount++;
+
+					if (authRetryCount < maxAuthRetries) {
+						this.refreshTokens();
+					} else {
+						this.cookie.destroy();
+						error.response.message = '認証の再試行に失敗しました。再ログインしてください。';
+						throw new AuthenticationError(error.response);
+					}
+				}
+				// レート制限の場合は待機する
+				if ((error instanceof RateLimitError || error instanceof BadRequestError) && this.waitOnRateLimit) {
+					if (this.isRateLimit({ response: error.response })) {
+						let rateLimitRetryCount: number = 1;
+
+						while (rateLimitRetryCount < maxRateLimitRetries) {
+							const retryAfter: number = 60 * 5;
+							this.logger.warn(`レート制限に達しました。再試行まで ${retryAfter}秒 待機します。`);
+
+							await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
+						}
+
+						options.headers['X-Timestamp'] = Date.now().toString();
+
+						const res = await this.request(options);
+
+						if (!this.isRateLimit({ response: res })) {
+							break;
+						}
+
+						rateLimitRetryCount++;
+
+						if (rateLimitRetryCount >= maxRateLimitRetries) {
+							error.response.message = 'レート制限の最大再試行回数に達しました。';
+							throw new RateLimitError(error.response);
+						}
+					}
+				}
+			}
+
+			if (response && !this.retryStatuses.includes(response.status)) {
+				break;
+			}
+
+			if (response) {
+				this.logger.error(`リクエストに失敗しました。再試行しています。[code: ${response.status}]`);
+			} else {
+				this.logger.error('リクエストに失敗しました。再試行しています。');
+			}
+
+			backoffDuration = this.backoffFactor * Math.pow(2, i);
+		}
+
+		return response;
 	}
+
+	private isRateLimit(options: { response: Record<string, any> }): boolean {
+		return false;
+	}
+
+	private refreshTokens(): void {}
 }
