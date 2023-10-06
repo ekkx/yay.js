@@ -1,12 +1,21 @@
 {
   "name": "yay.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple and intuitive, yet full featured API wrapper for https://yay.space written in TypeScript/JavaScript.",
+  "type": "commonjs",
   "source": "./src/index.ts",
   "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/src/index.d.ts",
+      "import": "./build/index.js",
+      "default": "./build/index.js"
+    }
+  },
   "scripts": {
     "build": "rimraf ./lib && swc src --config-file .swcrc -d build && tsc --emitDeclarationOnly",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": "https://github.com/qvco/yay.js",
   "keywords": [
@@ -21,6 +30,9 @@
     "url": "https://github.com/qvco/yay.js/issues"
   },
   "homepage": "https://github.com/qvco/yay.js#readme",
+  "files": [
+    "build"
+  ],
   "dependencies": {
     "axios": "^1.5.0",
     "colors": "^1.4.0",
