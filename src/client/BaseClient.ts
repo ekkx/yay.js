@@ -172,7 +172,7 @@ export class BaseClient {
 			this.headerInterceptor.setClientIP(res.ipAddress);
 		}
 
-		let response: AxiosResponse | null = null;
+		let response: AxiosResponse | undefined = undefined;
 		let backoffDuration: number = 0;
 		let authRetryCount: number = 0;
 		const maxAuthRetries: number = 2;
@@ -188,52 +188,50 @@ export class BaseClient {
 
 			options.headers = customHeaders || defaultHeaders;
 
-			try {
-				response = await this.rest.request(options);
-			} catch (error) {
-				// アクセストークンの有効期限が切れたらリフレッシュする
-				if (error instanceof AuthenticationError && this.isAccessTokenExpiredError(error)) {
-					if (options.route === 'api/v1/oauth/token') {
-						throw new AuthenticationError(error.response);
-					}
+			response = await this.rest.request(options);
 
-					authRetryCount++;
-
-					if (authRetryCount < maxAuthRetries) {
-						await this.refreshTokens();
-						continue;
-					} else {
-						this.cookie.destroy();
-						error.response.message = '認証の再試行に失敗しました。再ログインしてください。';
-						throw new AuthenticationError(error.response);
-					}
+			// アクセストークンの有効期限が切れたらリフレッシュする
+			if (this.isAccessTokenExpiredError(response)) {
+				if (options.route === 'api/v1/oauth/token') {
+					throw new AuthenticationError(response.data);
 				}
-				// レート制限の場合は待機する
-				if ((error instanceof RateLimitError || error instanceof BadRequestError) && this.waitOnRateLimit) {
-					if (this.isRateLimit(error)) {
-						let rateLimitRetryCount: number = 1;
 
-						while (rateLimitRetryCount < maxRateLimitRetries) {
-							const retryAfter: number = 60 * 5;
-							this.logger.warn(`レート制限に達しました。再試行まで ${retryAfter}秒 待機します。`);
+				authRetryCount++;
 
-							await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
-						}
+				if (authRetryCount < maxAuthRetries) {
+					await this.refreshTokens();
+					continue;
+				} else {
+					this.cookie.destroy();
+					response.data.message = '認証の再試行に失敗しました。再ログインしてください。';
+					throw new AuthenticationError(response.data);
+				}
+			}
 
-						options.headers['X-Timestamp'] = Date.now().toString();
+			// レート制限の場合は待機する
+			if (this.waitOnRateLimit && this.isRateLimit(response)) {
+				let rateLimitRetryCount: number = 1;
 
-						try {
-							await this.request(options);
-							break;
-						} catch (error) {}
+				while (rateLimitRetryCount < maxRateLimitRetries) {
+					const retryAfter: number = 60 * 5;
+					this.logger.warn(`レート制限に達しました。再試行まで ${retryAfter}秒 待機します。`);
 
-						rateLimitRetryCount++;
+					await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
+				}
 
-						if (rateLimitRetryCount >= maxRateLimitRetries) {
-							error.response.message = 'レート制限の最大再試行回数に達しました。';
-							throw new RateLimitError(error.response);
-						}
-					}
+				options.headers['X-Timestamp'] = Date.now().toString();
+
+				const response = await this.rest.request(options);
+
+				if (!this.isRateLimit(response)) {
+					break;
+				}
+
+				rateLimitRetryCount++;
+
+				if (rateLimitRetryCount >= maxRateLimitRetries) {
+					response.data.message = 'レート制限の最大再試行回数に達しました。';
+					throw new RateLimitError(response.data);
 				}
 			}
 
@@ -250,22 +248,27 @@ export class BaseClient {
 			backoffDuration = this.backoffFactor * Math.pow(2, i);
 		}
 
-		return response;
+		if (response) {
+			return this.handleResponse(response);
+		}
 	}
 
-	private isAccessTokenExpiredError(error: AuthenticationError): boolean {
+	private isAccessTokenExpiredError(response: AxiosResponse): boolean {
 		return (
-			error.response.errorCode === ErrorCode.AccessTokenExpired ||
-			error.response.errorCode === ErrorCode.AccessTokenInvalid
+			response.status === 401 &&
+			(response.data.errorCode === ErrorCode.AccessTokenExpired ||
+				response.data.errorCode === ErrorCode.AccessTokenInvalid)
 		);
 	}
 
-	private isRateLimit(error: RateLimitError | BadRequestError): boolean {
-		if (error instanceof RateLimitError) {
+	private isRateLimit(response: AxiosResponse): boolean {
+		if (response.status === 429) {
 			return true;
 		}
-		if (error.response && error.response.errorCode === ErrorCode.QuotaLimitExceeded) {
-			return true;
+		if (response.status === 400) {
+			if (response.data.errorCode === ErrorCode.QuotaLimitExceeded) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -280,7 +283,7 @@ export class BaseClient {
 		this.cookie.save();
 	}
 
-	private handleResponse(response: AxiosResponse): AxiosResponse {
+	private handleResponse(response: AxiosResponse): any {
 		const { status, data } = response;
 		switch (status) {
 			case 400:
