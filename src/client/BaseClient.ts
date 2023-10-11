@@ -19,10 +19,19 @@ import { REST } from '../lib/Rest';
 
 import { BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
 import { Cookie } from '../util/Cookie';
-import { AuthenticationError, BadRequestError, ErrorCode, ForbiddenError, RateLimitError } from '../lib/Errors';
+import {
+	AuthenticationError,
+	BadRequestError,
+	ErrorCode,
+	ForbiddenError,
+	HTTPError,
+	NotFoundError,
+	RateLimitError,
+	ServerError,
+} from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { LoginUserResponse } from '../util/Responses';
-import { ClientOptions, CookieProps, LoginEmailUserRequest, RequestOptions } from '../util/Types';
+import { ClientOptions, CookieProps, ErrorResponse, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
 
 import * as pkg from '../../package.json';
@@ -269,6 +278,30 @@ export class BaseClient {
 			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
 		});
 		this.cookie.save();
+	}
+
+	private handleResponse(response: AxiosResponse): AxiosResponse {
+		const { status, data } = response;
+		switch (status) {
+			case 400:
+				throw new BadRequestError(data as ErrorResponse);
+			case 401:
+				throw new AuthenticationError(data as ErrorResponse);
+			case 403:
+				throw new ForbiddenError(data as ErrorResponse);
+			case 404:
+				throw new NotFoundError(data as ErrorResponse);
+			case 429:
+				throw new RateLimitError(data as ErrorResponse);
+			case 500:
+				throw new ServerError(data as ErrorResponse);
+			default:
+				if (status >= 200 && status < 300) {
+					return data;
+				} else {
+					throw new HTTPError(data as ErrorResponse);
+				}
+		}
 	}
 
 	protected getPostType(options: Record<string, any>): string {

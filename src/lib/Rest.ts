@@ -48,7 +48,7 @@ export class REST {
 		return newObj;
 	}
 
-	public async request(options: RequestOptions): Promise<any> {
+	public async request(options: RequestOptions): Promise<AxiosResponse> {
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
@@ -67,35 +67,16 @@ export class REST {
 		this.logger.debug(requestDetails);
 
 		const response: AxiosResponse = await this.api(config);
+
 		const { status, data } = response;
 
-		const camelCasedResponse = objectToCamel(data);
+		response.data = objectToCamel(data);
 
-		const responseDetails: string = `Received API response:\n\nStatus code: ${status}\n\nResponse: ${JSON.stringify(
-			camelCasedResponse,
-		)}`;
+		const responseDetails: string =
+			'Received API response:\n\n' + `Status code: ${status}\n\n` + `Response: ${JSON.stringify(response.data)}`;
 
 		this.logger.debug(responseDetails);
 
-		switch (status) {
-			case 400:
-				throw new BadRequestError(camelCasedResponse as ErrorResponse);
-			case 401:
-				throw new AuthenticationError(camelCasedResponse as ErrorResponse);
-			case 403:
-				throw new ForbiddenError(camelCasedResponse as ErrorResponse);
-			case 404:
-				throw new NotFoundError(camelCasedResponse as ErrorResponse);
-			case 429:
-				throw new RateLimitError(camelCasedResponse as ErrorResponse);
-			case 500:
-				throw new ServerError(camelCasedResponse as ErrorResponse);
-			default:
-				if (status >= 200 && status < 300) {
-					return camelCasedResponse;
-				} else {
-					throw new HTTPError(camelCasedResponse as ErrorResponse);
-				}
-		}
+		return response;
 	}
 }
