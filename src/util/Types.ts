@@ -23,9 +23,6 @@ export type RequestOptions = {
 	headers?: Record<string, any>;
 };
 
-/**
- * Clientインスタンスを作成するときの引数
- */
 export type ClientOptions = {
 	/**
 	 * プロキシのアドレス
@@ -73,6 +70,12 @@ export type ClientOptions = {
 	 * @defaultValue `'cookie'`
 	 */
 	cookieFilePath?: string;
+	/**
+	 * 取得するWebSocketイベント
+	 *
+	 * @defaultValue `'undefined'`
+	 */
+	intents?: string[];
 	/**
 	 * ログのデバッグモードをオンにするか
 	 *
@@ -150,6 +153,11 @@ export type ErrorResponse = {
 	errorCode: number;
 	banUntil: number | null;
 };
+
+export enum GatewayIntents {
+	ChatMessage = 'ChatRoomChannel',
+	GroupUpdates = 'GroupUpdatesChannel',
+}
 
 /**
  * 投稿のタイプ

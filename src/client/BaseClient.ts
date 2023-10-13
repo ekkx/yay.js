@@ -30,14 +30,16 @@ import {
 	ServerError,
 } from '../lib/Errors';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
+import { WebSocketInteractor } from '../util/WebSocketInteractor';
 import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, ErrorResponse, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
 
 import * as pkg from '../../package.json';
 import { AxiosResponse } from 'axios';
+import EventEmitter from 'node:events';
 
-export class BaseClient {
+export class BaseClient extends EventEmitter {
 	private rest: REST;
 	private cookie: Cookie;
 	private headerInterceptor: HeaderInterceptor;
@@ -45,6 +47,8 @@ export class BaseClient {
 	private backoffFactor: number;
 	private waitOnRateLimit: boolean;
 	private retryStatuses: number[];
+	private intents: string[];
+	protected wsToken: string;
 
 	protected readonly aiPacaAPI: AIPacaAPI;
 	protected readonly authAPI: AuthAPI;
@@ -64,20 +68,27 @@ export class BaseClient {
 	protected readonly threadAPI: ThreadAPI;
 	protected readonly userAPI: UserAPI;
 
+	protected webSocketInteractor: WebSocketInteractor;
 	protected logger: YJSLogger;
 
 	public constructor(options?: ClientOptions) {
+		super();
+
 		options = options || {};
 
 		this.maxRetries = options.maxRetries ?? 3;
 		this.backoffFactor = options.backoffFactor ?? 1.5;
 		this.waitOnRateLimit = options.waitOnRateLimit ?? true;
 		this.retryStatuses = [500, 502, 503, 504];
+		this.intents = options.intents ?? [];
+		this.wsToken = '';
 
 		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
 		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie);
 		this.headerInterceptor.setConnectionSpeed('0');
+
+		this.webSocketInteractor = new WebSocketInteractor(this);
 
 		this.rest = new REST({
 			logger: this.logger,
@@ -130,10 +141,9 @@ export class BaseClient {
 		return this.cookie.deviceUuid;
 	}
 
-	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+	private async tryAuthenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
-			this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
 			return {
 				accessToken: this.accessToken,
 				refreshToken: this.refreshToken,
@@ -160,9 +170,25 @@ export class BaseClient {
 				device: { deviceUuid: this.deviceUuid },
 			});
 			this.cookie.save();
-			this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
 			return res;
 		}
+	}
+
+	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+		const res = await this.tryAuthenticate(options);
+		this.wsToken = (await this.miscAPI.getWebSocketToken()).token;
+
+		if (this.intents.length) {
+			await this.webSocketInteractor.connect(this.wsToken);
+
+			// for (const intent of this.intents) {
+			// 	this.webSocketInteractor.subscribe(intent);
+			// }
+		}
+
+		this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
+
+		return res;
 	}
 
 	public async request(options: RequestOptions): Promise<any> {
