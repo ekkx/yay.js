@@ -136,6 +136,28 @@ export type SearchCriteria = {
 	gender?: number;
 };
 
+export interface ChannelCommand {
+	command?: string;
+	identifier?: string;
+}
+
+export interface ChannelMessage {
+	identifier?: string;
+	message?: EventMessage;
+	type?: string;
+	sid?: string;
+}
+
+export interface Identifier {
+	channel?: string;
+}
+
+export interface EventMessage {
+	data?: Record<string, any>;
+	message?: Record<string, any>;
+	event?: string;
+}
+
 /**
  * リクエストを送信する際のAPIメソッド
  */

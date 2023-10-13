@@ -71,7 +71,7 @@ export class BaseClient extends EventEmitter {
 	protected wsToken: string;
 	protected ws: WebSocketInteractor;
 
-	protected logger: YJSLogger;
+	public logger: YJSLogger;
 
 	public constructor(options?: ClientOptions) {
 		super();
@@ -183,6 +183,8 @@ export class BaseClient extends EventEmitter {
 		this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
 
 		if (this.intents.length) {
+			this.logger.info('Connecting to Gateway.');
+
 			await this.ws.connect(this.wsToken);
 
 			this.on(Events.ClientReady, async () => {
@@ -191,7 +193,12 @@ export class BaseClient extends EventEmitter {
 				}
 			});
 
-			this.logger.info('Connected to Gateway');
+			this.on(Events.WebSocketTokenExpiredError, async () => {
+				this.logger.debug('WebSocket token expired.');
+
+				this.wsToken = (await this.miscAPI.getWebSocketToken()).token;
+				await this.ws.connect(this.wsToken);
+			});
 		}
 
 		return res;

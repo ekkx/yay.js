@@ -16,8 +16,9 @@ client.on('ready', () => {
 client.on('messageCreate', async (message) => {
 	if (message.text === 'ping') {
 		await client.reply({
-			chatRoomId: message.roomId,
 			text: 'pong',
+			messageId: message.id,
+			chatRoomId: message.roomId,
 		});
 	}
 });
