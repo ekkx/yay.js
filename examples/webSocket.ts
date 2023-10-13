@@ -1,7 +1,7 @@
 import { Client, GatewayIntents } from 'yay.js';
 
 const client = new Client({
-    // イベントを取得する範囲を指定
+	// イベントを取得する範囲を指定
 	intents: [
         GatewayIntents.ChatMessage,
         GatewayIntents.GroupUpdates
@@ -14,19 +14,20 @@ client.on('ready', () => {
 
 // メッセージのイベントを取得
 client.on('messageCreate', async (message) => {
-    if (message.text === 'ping') {
-        await client.reply({
-            chatRoomId: message.roomId, text: 'pong'
-        });
-    }
+	if (message.text === 'ping') {
+		await client.reply({
+			chatRoomId: message.roomId,
+			text: 'pong',
+		});
+	}
 });
 
 // サークル更新のイベントを取得
 client.on('groupUpdate', async (groupId) => {
-    console.log(groupId)
+	console.log(groupId);
 });
 
 client.login({
 	email: 'yourEmail',
-    password: 'yourPassword',
+	password: 'yourPassword',
 });
