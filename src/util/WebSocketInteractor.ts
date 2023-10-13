@@ -1,12 +1,14 @@
+import EventEmitter from 'node:events';
 import WebSocket from 'ws';
 import { VERSION_NAME, WEB_SOCKET_URL } from './Constants';
 import { BaseClient } from '../client/BaseClient';
 
-export class WebSocketInteractor {
+export class WebSocketInteractor extends EventEmitter {
 	private base: BaseClient;
 	private ws: WebSocket | undefined;
 
 	public constructor(base: BaseClient) {
+		super();
 		this.base = base;
 		this.ws = undefined;
 	}
@@ -15,7 +17,7 @@ export class WebSocketInteractor {
 		this.ws = new WebSocket(`${WEB_SOCKET_URL}?token=${wsToken}&app_version=${VERSION_NAME}`);
 
 		this.ws.on('open', () => {
-			console.log('Connected to gateway.');
+			this.base.emit('ready');
 		});
 
 		this.ws.on('message', (message: string) => {
@@ -29,20 +31,18 @@ export class WebSocketInteractor {
 
 	public async subscribe(intent: string) {
 		if (!this.ws) return;
-
 		const channelJSON = {
 			command: 'subscribe',
-			identifier: intent,
+			identifier: JSON.stringify({ channel: intent }),
 		};
 		this.ws.send(JSON.stringify(channelJSON));
 	}
 
 	public async unsubscribe(intent: string) {
 		if (!this.ws) return;
-
 		const channelJSON = {
 			command: 'unsubscribe',
-			identifier: intent,
+			identifier: JSON.stringify({ channel: intent }),
 		};
 		this.ws.send(JSON.stringify(channelJSON));
 	}
