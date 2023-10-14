@@ -68,7 +68,6 @@ export class BaseClient extends EventEmitter {
 	protected readonly threadAPI: ThreadAPI;
 	protected readonly userAPI: UserAPI;
 
-	protected wsToken: string;
 	protected ws: WebSocketInteractor;
 
 	public logger: YJSLogger;
@@ -83,7 +82,6 @@ export class BaseClient extends EventEmitter {
 		this.waitOnRateLimit = options.waitOnRateLimit ?? true;
 		this.retryStatuses = [500, 502, 503, 504];
 		this.intents = options.intents ?? [];
-		this.wsToken = '';
 
 		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
@@ -178,20 +176,20 @@ export class BaseClient extends EventEmitter {
 
 	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		const res = await this.tryAuthenticate(options);
-		this.wsToken = (await this.miscAPI.getWebSocketToken()).token;
 
 		this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
 
 		if (this.intents.length) {
 			this.logger.info('Connecting to Gateway.');
 
-			this.ws.connect(this.wsToken, this.intents);
+			const wsToken = (await this.miscAPI.getWebSocketToken()).token;
+			this.ws.connect(wsToken, this.intents);
 
-			this.on(Events.WebSocketTokenExpiredError, async () => {
+			this.on(Events.WebSocketTokenExpire, async () => {
 				this.logger.debug('WebSocket token expired.');
 
-				this.wsToken = (await this.miscAPI.getWebSocketToken()).token;
-				this.ws.connect(this.wsToken, this.intents);
+				const wsToken = (await this.miscAPI.getWebSocketToken()).token;
+				this.ws.connect(wsToken, this.intents);
 			});
 		}
 

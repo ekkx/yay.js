@@ -4,5 +4,5 @@ export const Events = {
 	ClientReady: 'ready',
 	MessageCreate: 'messageCreate',
 	GroupUpdate: 'groupUpdate',
-	WebSocketTokenExpiredError: 'webSocketTokenExpiredError',
+	WebSocketTokenExpire: 'webSocketTokenExpire',
 };

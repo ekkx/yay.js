@@ -4,6 +4,7 @@ import { VERSION_NAME, WEB_SOCKET_URL } from './Constants';
 import { Events } from './Events';
 import { BaseClient } from '../client/BaseClient';
 import { ChannelCommand, ChannelMessage, GatewayIntents, Identifier } from './Types';
+import { objectToCamel } from './CaseConverter';
 
 export class WebSocketInteractor extends EventEmitter {
 	private base: BaseClient;
@@ -48,7 +49,9 @@ export class WebSocketInteractor extends EventEmitter {
 					case GatewayIntents.ChatMessage:
 						switch (content.event) {
 							case 'new_message':
-								this.base.emit(Events.MessageCreate, content.message);
+								if (content.message) {
+									this.base.emit(Events.MessageCreate, objectToCamel(content.message));
+								}
 								break;
 							case 'chat_deleted':
 								this.base.emit(Events.ChatRoomDelete, content.data?.room_id);
@@ -69,7 +72,7 @@ export class WebSocketInteractor extends EventEmitter {
 
 		this.ws.on('close', (code, reason) => {
 			if (reason.toString().toLowerCase() === 'auth failed') {
-				this.base.emit(Events.WebSocketTokenExpiredError);
+				this.base.emit(Events.WebSocketTokenExpire);
 			}
 			this.base.logger.debug(`WebSocket closed with code: ${code}`);
 			this.base.logger.debug(`Reason: ${reason.toString()}`);
@@ -83,7 +86,7 @@ export class WebSocketInteractor extends EventEmitter {
 	private sendChannelCommand(command: string, intent: string) {
 		if (!this.ws) return;
 		const channelJSON: ChannelCommand = {
-			command,
+			command: command,
 			identifier: JSON.stringify({ channel: intent }),
 		};
 		this.ws.send(JSON.stringify(channelJSON));
