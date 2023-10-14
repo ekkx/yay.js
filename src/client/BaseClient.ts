@@ -185,19 +185,13 @@ export class BaseClient extends EventEmitter {
 		if (this.intents.length) {
 			this.logger.info('Connecting to Gateway.');
 
-			await this.ws.connect(this.wsToken);
-
-			this.on(Events.ClientReady, async () => {
-				for (const intent of this.intents) {
-					await this.ws.subscribe(intent);
-				}
-			});
+			this.ws.connect(this.wsToken, this.intents);
 
 			this.on(Events.WebSocketTokenExpiredError, async () => {
 				this.logger.debug('WebSocket token expired.');
 
 				this.wsToken = (await this.miscAPI.getWebSocketToken()).token;
-				await this.ws.connect(this.wsToken);
+				this.ws.connect(this.wsToken, this.intents);
 			});
 		}
 
