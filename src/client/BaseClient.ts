@@ -36,7 +36,7 @@ import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, ErrorResponse, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
 
-import * as pkg from '../../package.json';
+import { packageVersion } from '../version';
 import { AxiosResponse } from 'axios';
 import EventEmitter from 'node:events';
 
@@ -177,7 +177,7 @@ export class BaseClient extends EventEmitter {
 	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		const res = await this.tryAuthenticate(options);
 
-		this.logger.info(`yay.js v${pkg.version} - UID: ${this.userId}`);
+		this.logger.info(`yay.js v${packageVersion} - UID: ${this.userId}`);
 
 		if (this.intents.length) {
 			this.logger.info('Connecting to Gateway.');

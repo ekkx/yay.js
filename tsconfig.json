@@ -1,4 +1,5 @@
 {
+    "files": ["src/version.ts"],
 	"compilerOptions": {
 		"target": "es2020",
 		"lib": ["esnext"],
@@ -12,6 +13,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"baseUrl": "src",
+        "rootDir": "src",
 		"outDir": "build"
 	},
 	"include": ["src/**/*.ts"],
