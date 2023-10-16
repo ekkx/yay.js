@@ -24,6 +24,8 @@
 - 非同期処理に対応
 - 認証情報を暗号化
 
+### ※ 開発途中です。現在はインストールできません。
+
 ## Installation
 
 **Node.js 16.17.0 以上のバージョンが必要です。**
@@ -90,8 +92,8 @@ client.login({
 
 ## Links
 
-- [Documentation](https:github.com/qvco/yay.js)
-- [GitHub](https:github.com/qvco/yay.js)
+- [Documentation](https://github.com/qvco/yay.js)
+- [GitHub](https://github.com/qvco/yay.js)
 - [npm](https://www.npmjs.com/package/yay.js)
 - [Discord Server](https://discord.gg/Y8f2K74URa)
 
