@@ -11,8 +11,8 @@
 		<a href="https://www.npmjs.com/package/yay.js"><img src="https://img.shields.io/npm/dt/yay.js.svg?maxAge=3600" alt="npm downloads" /></a>
 	</p>
     <p>
-        <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" height=26px>
-        <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height=26px>
+        <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" height=30px>
+        <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height=30px>
     </p>
 </div>
 
