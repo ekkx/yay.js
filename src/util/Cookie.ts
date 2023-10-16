@@ -157,8 +157,14 @@ export class Cookie {
 
 		loadedCookie.user.email = email;
 
+		const isEncrypted = this.isEncrypted(loadedCookie);
+
+		if (isEncrypted && !this.encryptionKey) {
+			throw new YJSError('このクッキーは暗号化されています。');
+		}
+
 		if (this.encryptionKey) {
-			if (!this.isEncrypted(loadedCookie)) {
+			if (!isEncrypted) {
 				loadedCookie = this.encryptCookie(loadedCookie);
 				this.save(loadedCookie);
 			}
