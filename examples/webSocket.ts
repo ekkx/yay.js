@@ -15,10 +15,9 @@ client.on('ready', () => {
 // メッセージのイベントを取得
 client.on('messageCreate', async (message) => {
 	if (message.text === 'ping') {
-		await client.reply({
+		await client.sendMessage({
 			text: 'pong',
-			messageId: message.id,
-			chatRoomId: message.roomId,
+			id: message.roomId,
 		});
 	}
 });
