@@ -4,7 +4,7 @@ export const SHARED_KEY = 'yayZ1';
 export const SHARED_STORE_KEY = 'yayZ1payment';
 export const API_VERSION_KEY = 'dc4708802e1c443eb4f3922ab352de5f';
 export const API_VERSION_NAME = '3.26';
-export const VERSION_NAME = '3.26.0';
+export const VERSION_NAME = '3.26.1';
 
 export const BASE_HOST = 'api.yay.space';
 export const BASE_API_URL = `https://${BASE_HOST}/`;
