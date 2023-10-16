@@ -1,7 +1,7 @@
 <div align="center">
     <br />
     <p>
-        <a href="https://github.com/qvco/yay.js"><img src="https://github.com/qvco/yay.js/raw/master/.github/logo-black.svg" width="546" alt="yay.js" /></a>
+        <a href="https://github.com/qvco/yay.js"><img src="https://github.com/qvco/yay.js/raw/master/.github/logo.svg" width="546" alt="yay.js" /></a>
     </p>
     <br />
     <p>
