@@ -29,7 +29,7 @@ export class Client extends BaseClient {
 	// AuthAPI
 
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
-		const loginResponse = await this.authenticate({
+		const loginResponse = await this.prepare({
 			apiKey: API_KEY,
 			email: options.email,
 			password: options.password,

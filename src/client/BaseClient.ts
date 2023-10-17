@@ -141,7 +141,7 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.deviceUuid;
 	}
 
-	private async tryAuthenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+	private async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
 			return {
@@ -174,8 +174,8 @@ export class BaseClient extends EventEmitter {
 		}
 	}
 
-	protected async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
-		const res = await this.tryAuthenticate(options);
+	protected async prepare(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+		const res = await this.authenticate(options);
 
 		this.logger.info(`yay.js v${packageVersion} - UID: ${this.userId}`);
 
@@ -240,7 +240,7 @@ export class BaseClient extends EventEmitter {
 			}
 
 			// レート制限の場合は待機する
-			if (this.waitOnRateLimit && this.isRateLimit(response)) {
+			if (this.waitOnRateLimit && this.isRateLimitError(response)) {
 				let rateLimitRetryCount: number = 1;
 
 				while (rateLimitRetryCount < maxRateLimitRetries) {
@@ -254,7 +254,7 @@ export class BaseClient extends EventEmitter {
 
 				const response = await this.rest.request(options);
 
-				if (!this.isRateLimit(response)) {
+				if (!this.isRateLimitError(response)) {
 					break;
 				}
 
@@ -292,7 +292,7 @@ export class BaseClient extends EventEmitter {
 		);
 	}
 
-	private isRateLimit(response: AxiosResponse): boolean {
+	private isRateLimitError(response: AxiosResponse): boolean {
 		if (response.status === 429) {
 			return true;
 		}
