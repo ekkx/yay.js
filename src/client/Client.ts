@@ -3,6 +3,8 @@ import { ClientOptions } from '../util/Types';
 import { API_KEY } from '../util/Constants';
 import {
 	AdditionalSettingsResponse,
+	ApplicationConfigResponse,
+	BanWordsResponse,
 	BgmsResponse,
 	BlockedUserIdsResponse,
 	BlockedUsersResponse,
@@ -20,6 +22,7 @@ import {
 	MessagesResponse,
 	NotificationSettingResponse,
 	PolicyAgreementsResponse,
+	PopularWordsResponse,
 	PostResponse,
 	PostsResponse,
 	StickerPacksResponse,
@@ -28,7 +31,7 @@ import {
 	UnreadStatusResponse,
 	UsersByTimestampResponse,
 } from '../util/Responses';
-import { Post, SharedUrl } from '../util/Models';
+import { Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
 
 export class Client extends BaseClient {
@@ -87,7 +90,7 @@ export class Client extends BaseClient {
 			fromId?: number;
 		} = {},
 	): Promise<BlockedUsersResponse> => {
-		return this.blockAPI.getBlockedUsers(options);
+		return await this.blockAPI.getBlockedUsers(options);
 	};
 
 	public unblockUser = async (options: { userId: number }) => {
@@ -367,7 +370,27 @@ export class Client extends BaseClient {
 
 	// ConfigAPI
 
+	public getAppConfig = async (): Promise<ApplicationConfigResponse> => {
+		return await this.configAPI.getAppConfig();
+	};
+
+	public getBanWords = async (options: { countryApiValue: string }): Promise<BanWordsResponse> => {
+		return await this.configAPI.getBanWords(options);
+	};
+
+	public getPopularWords = async (options: { countryApiValue: string }): Promise<PopularWordsResponse> => {
+		return await this.configAPI.getPopularWords(options);
+	};
+
 	// GameAPI
+
+	public getWalkthroughs = async (options: { appId: number }): Promise<Walkthrough[]> => {
+		return await this.gameAPI.getWalkthroughs(options);
+	};
+
+	public requestWalkthrough = async (options: { groupId: number }) => {
+		return await this.gameAPI.requestWalkthrough(options);
+	};
 
 	// GiftAPI
 
