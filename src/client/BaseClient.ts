@@ -166,7 +166,7 @@ export class BaseClient extends EventEmitter {
 			}
 			this.cookie.set({
 				authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
-				user: { userId: res.userId, email: options.email ?? '', uuid: this.uuid },
+				user: { userId: res.userId, email: options?.email, uuid: this.uuid },
 				device: { deviceUuid: this.deviceUuid },
 			});
 			this.cookie.save();
