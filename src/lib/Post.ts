@@ -1,6 +1,6 @@
 import { BaseClient } from '../client/BaseClient';
 import { BookmarkPostResponse } from 'util/Responses';
-import { RequestMethod } from '../util/Types';
+import { HttpMethod } from '../util/Types';
 import { MessageTag, Post, SharedUrl } from '../util/Models';
 
 export class PostAPI {
@@ -8,7 +8,7 @@ export class PostAPI {
 
 	public addBookmark = async (options: { userId: number; id: number }): Promise<BookmarkPostResponse> => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/users/${options.userId}/bookmarks/${options.id}`,
 			requireAuth: true,
 		});
@@ -19,7 +19,7 @@ export class PostAPI {
 		postId: number;
 	}): Promise<BookmarkPostResponse> => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/groups/${options.groupId}/highlights/${options.postId}`,
 			requireAuth: false,
 		});
@@ -27,7 +27,7 @@ export class PostAPI {
 
 	public createGroupCallPost = async (): Promise<BookmarkPostResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/posts/new_conference_call`,
 			requireAuth: false,
 			json: {},
@@ -58,7 +58,7 @@ export class PostAPI {
 		videoFileName?: string;
 	}): Promise<Post> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v3/posts/new`,
 			requireAuth: true,
 			json: {
@@ -89,7 +89,7 @@ export class PostAPI {
 
 	public getUrlMetadata = async (options: { url: string }): Promise<SharedUrl> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/posts/url_metadata`,
 			requireAuth: false,
 			params: { url: options.url },

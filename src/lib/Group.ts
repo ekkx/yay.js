@@ -1,4 +1,4 @@
-import { RequestMethod } from '../util/Types';
+import { HttpMethod } from '../util/Types';
 import { BaseClient } from '../client/BaseClient';
 
 export class GroupAPI {
@@ -6,7 +6,7 @@ export class GroupAPI {
 
 	public acceptModeratorOffer = async (options: { id: number }) => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/groups/${options.id}/deputize`,
 			requireAuth: false,
 		});
@@ -14,7 +14,7 @@ export class GroupAPI {
 
 	public acceptOwnershipOffer = async (options: { id: number }) => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/groups/${options.id}/transfer`,
 			requireAuth: false,
 		});
@@ -22,7 +22,7 @@ export class GroupAPI {
 
 	public acceptUserRequest = async (options: { id: number; userId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/groups/${options.id}/accept/${options.userId}`,
 			requireAuth: false,
 		});
@@ -30,7 +30,7 @@ export class GroupAPI {
 
 	public addRelatedGroups = async (options: { id: number; relatedGroupId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/groups/v${options.id}/related`,
 			params: { 'related_group_id[]': options.relatedGroupId },
 			requireAuth: false,
@@ -39,7 +39,7 @@ export class GroupAPI {
 
 	public banUser = async (options: { id: number; userId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/groups/${options.id}/ban/${options.userId}`,
 			requireAuth: false,
 		});

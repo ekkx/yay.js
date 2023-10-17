@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
-import { RequestMethod } from '../util/Types';
+import { HttpMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
 export class BlockAPI {
@@ -7,14 +7,14 @@ export class BlockAPI {
 
 	public blockUser = async (options: { userId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/users/${options.userId}/block`,
 			requireAuth: true,
 		});
 	};
 
 	public getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
-		return await this.base.request({ method: RequestMethod.GET, route: `v1/users/block_ids`, requireAuth: true });
+		return await this.base.request({ method: HttpMethod.GET, route: `v1/users/block_ids`, requireAuth: true });
 	};
 
 	public getBlockedUsers = async (
@@ -28,7 +28,7 @@ export class BlockAPI {
 		} = {},
 	): Promise<BlockedUsersResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/users/blocked`,
 			requireAuth: true,
 			params: {
@@ -44,7 +44,7 @@ export class BlockAPI {
 
 	public unblockUser = async (userId: number) => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/users/${userId}/unblock`,
 			requireAuth: true,
 		});

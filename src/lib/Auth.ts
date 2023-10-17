@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
-import { LoginEmailUserRequest, RequestMethod } from '../util/Types';
+import { LoginEmailUserRequest, HttpMethod } from '../util/Types';
 import { LoginUserResponse, TokenResponse } from '../util/Responses';
 
 export class AuthAPI {
@@ -12,7 +12,7 @@ export class AuthAPI {
 		refreshToken?: string;
 	}): Promise<TokenResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `api/v1/oauth/token`,
 			requireAuth: false,
 			json: {
@@ -26,7 +26,7 @@ export class AuthAPI {
 
 	public loginWithEmail = async (request: LoginEmailUserRequest): Promise<LoginUserResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v3/users/login_with_email`,
 			requireAuth: false,
 			json: {

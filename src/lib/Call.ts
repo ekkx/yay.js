@@ -1,5 +1,5 @@
 import { BaseClient } from '../client/BaseClient';
-import { RequestMethod } from '../util/Types';
+import { HttpMethod } from '../util/Types';
 import {
 	PostResponse,
 	BgmsResponse,
@@ -16,7 +16,7 @@ export class CallAPI {
 
 	public bumpCall = async (options: { callId: number; participantLimit?: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/calls/${options.callId}/bump`,
 			requireAuth: true,
 			params: { participant_limit: options.participantLimit },
@@ -25,7 +25,7 @@ export class CallAPI {
 
 	public getActiveCall = async (options: { userId: number }): Promise<PostResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/posts/active_call`,
 			requireAuth: false,
 			params: { user_id: options.userId },
@@ -34,7 +34,7 @@ export class CallAPI {
 
 	public getBgms = async (): Promise<BgmsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/calls/bgm`,
 			requireAuth: false,
 		});
@@ -42,7 +42,7 @@ export class CallAPI {
 
 	public getCall = async (options: { callId: number }): Promise<ConferenceCallResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/calls/conferences/${options.callId}`,
 			requireAuth: false,
 		});
@@ -54,7 +54,7 @@ export class CallAPI {
 		nickname?: string;
 	}): Promise<UsersByTimestampResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/calls/conferences/${options.callId}`,
 			requireAuth: false,
 			params: { from_timestamp: options.fromTimestamp, nickname: options.nickname },
@@ -63,7 +63,7 @@ export class CallAPI {
 
 	public getCallStatus = async (options: { opponentId: number }): Promise<CallStatusResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/calls/phone_status/${options.opponentId}`,
 			requireAuth: false,
 		});
@@ -71,7 +71,7 @@ export class CallAPI {
 
 	public getGames = async (options: { number: number; ids: number[]; fromId?: number }): Promise<GamesResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/games/apps`,
 			requireAuth: false,
 			params: { number: options.number, 'ids[]': options.ids, from_id: options.fromId },
@@ -80,7 +80,7 @@ export class CallAPI {
 
 	public getGenres = async (options: { number: number; from: number }): Promise<GenresResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/genres`,
 			requireAuth: false,
 			params: { number: options.number, from: options.from },
@@ -91,7 +91,7 @@ export class CallAPI {
 		options: { number?: number; groupCategoryId?: number; fromTimestamp?: number; scope?: string } = {},
 	): Promise<PostsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/posts/group_calls`,
 			requireAuth: false,
 			params: {
@@ -105,7 +105,7 @@ export class CallAPI {
 
 	public inviteToCallBulk = async (options: { callId: number; groupId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/calls/${options.callId}/bulk_invite`,
 			requireAuth: true,
 			params: { group_id: options.groupId },
@@ -114,7 +114,7 @@ export class CallAPI {
 
 	public inviteUsersToCall = async (options: { callId: number; userIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/calls/conference_calls/${options.callId}/invite`,
 			requireAuth: true,
 			json: { 'user_ids[]': options.userIds },
@@ -123,7 +123,7 @@ export class CallAPI {
 
 	public inviteUsersToChatCall = async (options: { chatRoomId?: number; roomId?: number; roomUrl?: string } = {}) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/calls/invite`,
 			requireAuth: true,
 			json: { chat_room_id: options.chatRoomId, room_id: options.roomId, room_url: options.roomUrl },
@@ -132,7 +132,7 @@ export class CallAPI {
 
 	public kickAndBanFromCall = async (options: { callId: number; userId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/calls/conference_calls/${options.callId}/kick`,
 			requireAuth: true,
 			json: { call_id: options.callId, user_id: options.userId },
@@ -141,7 +141,7 @@ export class CallAPI {
 
 	public notifyAnonymousUserLeaveAgoraChannel = async (options: { conferenceId: number; agoraUid: string }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/anonymous_calls/leave_agora_channel`,
 			requireAuth: false,
 			json: { conference_id: options.conferenceId, agora_uid: options.agoraUid },
@@ -150,7 +150,7 @@ export class CallAPI {
 
 	public notifyUserLeaveAgoraChannel = async (options: { conferenceId: number; userId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/calls/leave_agora_channel`,
 			requireAuth: false,
 			json: { conference_id: options.conferenceId, user_id: options.userId },
@@ -159,7 +159,7 @@ export class CallAPI {
 
 	public sendCallScreenshot = async (options: { screenshotFilename: string; conferenceId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/calls/screenshot`,
 			requireAuth: false,
 			json: { screenshot_filename: options.screenshotFilename, conference_id: options.conferenceId },
@@ -168,7 +168,7 @@ export class CallAPI {
 
 	public setCall = async (options: { callId: number; joinableBy: string; gameTitle?: string; categoryId?: string }) => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `v1/calls/${options.callId}`,
 			requireAuth: true,
 			json: { joinable_by: options.joinableBy, game_title: options.gameTitle, category_id: options.categoryId },
@@ -177,7 +177,7 @@ export class CallAPI {
 
 	public setUserRole = async (options: { callId: number; userId: number; role: string }) => {
 		return await this.base.request({
-			method: RequestMethod.PUT,
+			method: HttpMethod.PUT,
 			route: `/v1/calls/${options.callId}/users/${options.userId}`,
 			requireAuth: true,
 			json: { role: options.role },
@@ -186,7 +186,7 @@ export class CallAPI {
 
 	public startCall = async (options: { conferenceId: number; callSid: string }): Promise<ConferenceCallResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/calls/start_conference_call`,
 			requireAuth: false,
 			json: { conference_id: options.conferenceId, call_sid: options.callSid },
@@ -195,7 +195,7 @@ export class CallAPI {
 
 	public stopCall = async (options: { conferenceId: number; callSid: string }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/calls/leave_conference_call`,
 			requireAuth: false,
 			json: { conference_id: options.conferenceId, call_sid: options.callSid },

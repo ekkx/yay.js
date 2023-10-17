@@ -13,7 +13,7 @@ export type RESTOptions = {
 };
 
 export type RequestOptions = {
-	method: RequestMethod;
+	method: HttpMethod;
 	route: string;
 	requireAuth: boolean;
 	params?: Record<string, any>;
@@ -161,7 +161,7 @@ export interface EventMessage {
 /**
  * リクエストを送信する際のAPIメソッド
  */
-export enum RequestMethod {
+export enum HttpMethod {
 	DELETE = 'DELETE',
 	GET = 'GET',
 	PATCH = 'PATCH',
@@ -169,58 +169,58 @@ export enum RequestMethod {
 	PUT = 'PUT',
 }
 
-export type ErrorResponse = {
+export interface ErrorResponse {
 	result: string;
 	message: string;
 	errorCode: number;
 	banUntil: number | null;
-};
-
-export enum GatewayIntents {
-	ChatMessage = 'ChatRoomChannel',
-	GroupUpdates = 'GroupUpdatesChannel',
 }
+
+export const GatewayIntents = {
+	ChatMessage: 'ChatRoomChannel',
+	GroupUpdates: 'GroupUpdatesChannel',
+};
 
 /**
  * 投稿のタイプ
  */
-export enum PostType {
-	text = 'text',
-	media = 'media',
-	image = 'image',
-	video = 'video',
-	survey = 'survey',
-	call = 'call',
-	shareableUrl = 'shareable_url',
-}
+export const PostType = {
+	text: 'text',
+	media: 'media',
+	image: 'image',
+	video: 'video',
+	survey: 'survey',
+	call: 'call',
+	shareableUrl: 'shareable_url',
+};
 
 /**
  * 通話のタイプ
  */
-export enum CallType {
-	voice = 'voice',
-	video = 'vdo',
-}
+export const CallType = {
+	voice: 'voice',
+	video: 'vdo',
+};
 
 /**
  * 画像のタイプ
  */
-export enum ImageType {
-	post = 'post',
-	chatMessage = 'chat_message',
-	chatBackground = 'chat_background',
-	report = 'report',
-	userAvatar = 'user_avatar',
-	userCover = 'user_cover',
-	groupIcon = 'group_icon',
-	groupCover = 'group_cover',
-	groupThreadIcon = 'group_thread_icon',
-}
+export const ImageType = {
+	post: 'post',
+	chatMessage: 'chat_message',
+	chatBackground: 'chat_background',
+	report: 'report',
+	userAvatar: 'user_avatar',
+	userCover: 'user_cover',
+	groupIcon: 'group_icon',
+	groupCover: 'group_cover',
+	groupThreadIcon: 'group_thread_icon',
+};
 
 /**
  * 共有のタイプ
  */
-export enum ShareableType {
-	group = 'group',
-	thread = 'thread',
-}
+export const ShareableType = {
+	group: 'group',
+	thread: 'thread',
+};

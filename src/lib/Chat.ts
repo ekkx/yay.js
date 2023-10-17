@@ -1,4 +1,4 @@
-import { RequestMethod, SearchCriteria } from '../util/Types';
+import { HttpMethod, SearchCriteria } from '../util/Types';
 import { BaseClient } from '../client/BaseClient';
 import {
 	AdditionalSettingsResponse,
@@ -20,7 +20,7 @@ export class ChatAPI {
 
 	public acceptRequest = async (options: { chatRoomIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/accept_chat_request`,
 			requireAuth: false,
 			json: { 'chat_room_ids[]': options.chatRoomIds },
@@ -29,7 +29,7 @@ export class ChatAPI {
 
 	public checkUnreadStatus = async (options: { fromTime?: number } = {}): Promise<UnreadStatusResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/chat_rooms/unread_status`,
 			requireAuth: false,
 			params: { from_time: options.fromTime },
@@ -43,7 +43,7 @@ export class ChatAPI {
 		backgroundFilename?: string;
 	}): Promise<CreateChatRoomResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v3/chat_rooms/new`,
 			requireAuth: false,
 			json: {
@@ -61,7 +61,7 @@ export class ChatAPI {
 		himaChat?: boolean;
 	}): Promise<CreateChatRoomResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/new`,
 			requireAuth: false,
 			json: { with_user_id: options.withUserId, matching_id: options.matchingId, hima_chat: options.himaChat },
@@ -70,7 +70,7 @@ export class ChatAPI {
 
 	public deleteBackground = async (options: { id: number }) => {
 		return await this.base.request({
-			method: RequestMethod.DELETE,
+			method: HttpMethod.DELETE,
 			route: `v2/chat_rooms/${options.id}/background`,
 			requireAuth: false,
 		});
@@ -78,7 +78,7 @@ export class ChatAPI {
 
 	public deleteMessage = async (options: { roomId: number; messageId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.DELETE,
+			method: HttpMethod.DELETE,
 			route: `v1/chat_rooms/${options.roomId}/messages/${options.messageId}/delete`,
 			requireAuth: false,
 		});
@@ -86,7 +86,7 @@ export class ChatAPI {
 
 	public edit = async (options: { id: number; name?: number; iconFilename?: string; backgroundFilename?: string }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v3/chat_rooms/${options.id}/edit`,
 			requireAuth: false,
 			json: {
@@ -102,7 +102,7 @@ export class ChatAPI {
 		options: { fromFollowId?: number; fromTimestamp?: number; orderBy?: string } = {},
 	): Promise<FollowUsersResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/users/followings/chatable`,
 			requireAuth: false,
 			params: {
@@ -115,7 +115,7 @@ export class ChatAPI {
 
 	public getGifsData = async (): Promise<GifsDataResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/users/gif_data`,
 			requireAuth: false,
 		});
@@ -125,7 +125,7 @@ export class ChatAPI {
 		options: { number?: number; fromTimestamp?: number } = {},
 	): Promise<ChatRoomsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `/v1/hidden/chats`,
 			requireAuth: false,
 			params: { number: options.number, from_timestamp: options.fromTimestamp },
@@ -134,7 +134,7 @@ export class ChatAPI {
 
 	public getMainRooms = async (options: { fromTimestamp?: number } = {}): Promise<ChatRoomsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/chat_rooms/main_list`,
 			requireAuth: false,
 			params: { from_timestamp: options.fromTimestamp },
@@ -148,7 +148,7 @@ export class ChatAPI {
 		toMessageId?: number;
 	}): Promise<MessagesResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/chat_rooms/${options.id}/messages`,
 			requireAuth: false,
 			params: { number: options.number, from_message_id: options.fromMessageId, to_message_id: options.toMessageId },
@@ -157,7 +157,7 @@ export class ChatAPI {
 
 	public getNotificationSettings = async (options: { id: number }): Promise<AdditionalSettingsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/notification_settings/chat_rooms/${options.id}`,
 			requireAuth: false,
 		});
@@ -165,7 +165,7 @@ export class ChatAPI {
 
 	public getRequestRooms = async (options: { fromTimestamp?: number } = {}): Promise<ChatRoomsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/chat_rooms/request_list`,
 			requireAuth: false,
 			params: { from_timestamp: options.fromTimestamp },
@@ -174,7 +174,7 @@ export class ChatAPI {
 
 	public getRoom = async (options: { id: number }): Promise<ChatRoomResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/chat_rooms/${options.id}`,
 			requireAuth: false,
 		});
@@ -182,7 +182,7 @@ export class ChatAPI {
 
 	public getStickerPacks = async (): Promise<StickerPacksResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/sticker_packs`,
 			requireAuth: false,
 		});
@@ -190,7 +190,7 @@ export class ChatAPI {
 
 	public getTotalRequests = async (): Promise<TotalChatRequestResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v1/chat_rooms/total_chat_request`,
 			requireAuth: true,
 		});
@@ -198,7 +198,7 @@ export class ChatAPI {
 
 	public hideChat = async (options: { chatRoomId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/hidden/chats`,
 			requireAuth: true,
 			json: { chat_room_id: options.chatRoomId },
@@ -207,7 +207,7 @@ export class ChatAPI {
 
 	public invite = async (options: { id: number; withUserIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/chat_rooms/${options.id}/invite`,
 			requireAuth: true,
 			json: { 'with_user_ids[]': options.withUserIds },
@@ -216,7 +216,7 @@ export class ChatAPI {
 
 	public kickUsers = async (options: { id: number; withUserIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/chat_rooms/${options.id}/kick`,
 			requireAuth: true,
 			json: { 'with_user_ids[]': options.withUserIds },
@@ -225,7 +225,7 @@ export class ChatAPI {
 
 	public pin = async (options: { id: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/${options.id}/pinned`,
 			requireAuth: true,
 		});
@@ -233,7 +233,7 @@ export class ChatAPI {
 
 	public readAttachment = async (options: { id: number; attachmentMsgIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/${options.id}/attachments_read`,
 			requireAuth: true,
 			json: { 'attachment_msg_ids[]': options.attachmentMsgIds },
@@ -242,7 +242,7 @@ export class ChatAPI {
 
 	public readMessage = async (options: { id: number; messageId: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/chat_rooms/${options.id}/messages/${options.messageId}/read`,
 			requireAuth: true,
 		});
@@ -250,7 +250,7 @@ export class ChatAPI {
 
 	public readVideoMessage = async (options: { id: number; videoMsgIds: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/${options.id}/videos_read`,
 			requireAuth: true,
 			json: { 'video_msg_ids[]': options.videoMsgIds },
@@ -259,7 +259,7 @@ export class ChatAPI {
 
 	public refreshRooms = async (options: { fromTime?: number } = {}): Promise<ChatRoomsResponse> => {
 		return await this.base.request({
-			method: RequestMethod.GET,
+			method: HttpMethod.GET,
 			route: `v2/chat_rooms/update`,
 			requireAuth: true,
 			params: { from_time: options.fromTime },
@@ -268,7 +268,7 @@ export class ChatAPI {
 
 	public remove = async (options: { chatRoomIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/mass_destroy`,
 			requireAuth: true,
 			json: { 'chat_room_ids[]': options.chatRoomIds },
@@ -286,7 +286,7 @@ export class ChatAPI {
 		screenshot4Filename?: string;
 	}) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v3/chat_rooms/${options.chatRoomId}/report`,
 			requireAuth: false,
 			json: {
@@ -303,7 +303,7 @@ export class ChatAPI {
 
 	public sendMediaScreenshotNotification = async (options: { id: number }) => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v1/chat_rooms/${options.id}/screen_captured`,
 			requireAuth: false,
 		});
@@ -323,7 +323,7 @@ export class ChatAPI {
 		parentId?: string;
 	}): Promise<MessageResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v3/chat_rooms/${options.id}/messages/new`,
 			requireAuth: false,
 			json: {
@@ -346,7 +346,7 @@ export class ChatAPI {
 		notificationChat: number;
 	}): Promise<NotificationSettingResponse> => {
 		return await this.base.request({
-			method: RequestMethod.POST,
+			method: HttpMethod.POST,
 			route: `v2/notification_settings/chat_rooms/${options.id}`,
 			requireAuth: false,
 			json: { notification_chat: options.notificationChat },
@@ -355,7 +355,7 @@ export class ChatAPI {
 
 	public unHideChat = async (options: { chatRoomIds: number[] }) => {
 		return await this.base.request({
-			method: RequestMethod.DELETE,
+			method: HttpMethod.DELETE,
 			route: `v1/hidden/chats`,
 			requireAuth: false,
 			params: { chat_room_ids: options.chatRoomIds },
@@ -364,7 +364,7 @@ export class ChatAPI {
 
 	public unpin = async (options: { id: number }) => {
 		return await this.base.request({
-			method: RequestMethod.DELETE,
+			method: HttpMethod.DELETE,
 			route: `v1/chat_rooms/${options.id}/pinned`,
 			requireAuth: false,
 		});
