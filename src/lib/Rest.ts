@@ -1,18 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { objectToCamel } from '../util/CaseConverter';
-import { ErrorResponse, RequestObject, RequestOptions } from '../util/Types';
+import { RequestObject, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
 import { BASE_API_URL } from '../util/Constants';
-import {
-	AuthenticationError,
-	BadRequestError,
-	ForbiddenError,
-	HTTPError,
-	NotFoundError,
-	RateLimitError,
-	ServerError,
-} from './Errors';
 import { YJSLogger } from '../util/Logger';
 
 /**
