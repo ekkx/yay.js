@@ -17,43 +17,43 @@ import {
 export class GroupAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	public acceptModeratorOffer = async (options: { id: number }) => {
+	public acceptModeratorOffer = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.PUT,
-			route: `v1/groups/${options.id}/deputize`,
+			route: `v1/groups/${options.groupId}/deputize`,
 			requireAuth: false,
 		});
 	};
 
-	public acceptOwnershipOffer = async (options: { id: number }) => {
+	public acceptOwnershipOffer = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.PUT,
-			route: `v1/groups/${options.id}/transfer`,
+			route: `v1/groups/${options.groupId}/transfer`,
 			requireAuth: false,
 		});
 	};
 
-	public acceptUserRequest = async (options: { id: number; userId: number }) => {
+	public acceptUserRequest = async (options: { groupId: number; userId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/groups/${options.id}/accept/${options.userId}`,
+			route: `v1/groups/${options.groupId}/accept/${options.userId}`,
 			requireAuth: false,
 		});
 	};
 
-	public addRelatedGroups = async (options: { id: number; relatedGroupId: number }) => {
+	public addRelatedGroups = async (options: { groupId: number; relatedGroupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.PUT,
-			route: `v1/groups/v${options.id}/related`,
+			route: `v1/groups/v${options.groupId}/related`,
 			params: { 'related_group_id[]': options.relatedGroupId },
 			requireAuth: false,
 		});
 	};
 
-	public banUser = async (options: { id: number; userId: number }) => {
+	public banUser = async (options: { groupId: number; userId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/groups/${options.id}/ban/${options.userId}`,
+			route: `v1/groups/${options.groupId}/ban/${options.userId}`,
 			requireAuth: false,
 		});
 	};
@@ -128,67 +128,67 @@ export class GroupAPI {
 		});
 	};
 
-	public createPinGroup = async (options: { id: number }) => {
+	public createPinGroup = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/pinned/groups`,
-			json: { id: options.id },
+			json: { id: options.groupId },
 			requireAuth: false,
 		});
 	};
 
-	public declineModeratorOffer = async (options: { id: number }) => {
+	public declineModeratorOffer = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `v1/groups/${options.id}/deputize`,
+			route: `v1/groups/${options.groupId}/deputize`,
 			requireAuth: false,
 		});
 	};
 
-	public declineOwnershipOffer = async (options: { id: number }) => {
+	public declineOwnershipOffer = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `v1/groups/${options.id}/transfer`,
+			route: `v1/groups/${options.groupId}/transfer`,
 			requireAuth: false,
 		});
 	};
 
-	public declineUserRequest = async (options: { id: number; userId: number }) => {
+	public declineUserRequest = async (options: { groupId: number; userId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/groups/${options.id}/decline/${options.userId}`,
+			route: `v1/groups/${options.groupId}/decline/${options.userId}`,
 			requireAuth: false,
 		});
 	};
 
-	public deleteCover = async (options: { id: number }) => {
+	public deleteCover = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `v3/groups/${options.id}/cover`,
+			route: `v3/groups/${options.groupId}/cover`,
 			requireAuth: false,
 		});
 	};
 
-	public deleteIcon = async (options: { id: number }) => {
+	public deleteIcon = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `v3/groups/${options.id}/icon`,
+			route: `v3/groups/${options.groupId}/icon`,
 			requireAuth: false,
 		});
 	};
 
-	public deletePinGroup = async (options: { id: number }) => {
+	public deletePinGroup = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `/v1/pinned/groups/${options.id}`,
+			route: `/v1/pinned/groups/${options.groupId}`,
 			requireAuth: false,
 		});
 	};
 
-	public getBannedMembers = async (options: { id: number; page?: number }): Promise<UsersResponse> => {
+	public getBannedMembers = async (options: { groupId: number; page?: number }): Promise<UsersResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v1/groups/${options.id}/ban_list`,
+			route: `v1/groups/${options.groupId}/ban_list`,
 			params: { page: options.page },
 			requireAuth: false,
 		});
@@ -211,18 +211,20 @@ export class GroupAPI {
 		});
 	};
 
-	public getGroup = async (options: { id: number }): Promise<GroupResponse> => {
+	public getGroup = async (options: { groupId: number }): Promise<GroupResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v1/groups/${options.id}`,
+			route: `v1/groups/${options.groupId}`,
 			requireAuth: false,
 		});
 	};
 
-	public getGroupNotificationSettings = async (options: { id: number }): Promise<GroupNotificationSettingsResponse> => {
+	public getGroupNotificationSettings = async (options: {
+		groupId: number;
+	}): Promise<GroupNotificationSettingsResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/notification_settings/groups/${options.id}`,
+			route: `v2/notification_settings/groups/${options.groupId}`,
 			requireAuth: false,
 		});
 	};
@@ -263,25 +265,25 @@ export class GroupAPI {
 		});
 	};
 
-	public getJoinedStatuses = async (options: { ids: number[] }): Promise<Record<string, string>> => {
+	public getJoinedStatuses = async (options: { groupIds: number[] }): Promise<Record<string, string>> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v1/groups/joined_statuses`,
-			params: { 'ids[]': options.ids },
+			params: { 'ids[]': options.groupIds },
 			requireAuth: false,
 		});
 	};
 
-	public getMember = async (options: { id: number; userId: number }): Promise<GroupUserResponse> => {
+	public getMember = async (options: { groupId: number; userId: number }): Promise<GroupUserResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v1/groups/${options.id}/members/${options.userId}`,
+			route: `v1/groups/${options.groupId}/members/${options.userId}`,
 			requireAuth: false,
 		});
 	};
 
 	public getMembers = async (options: {
-		id: number;
+		groupId: number;
 		mode?: string;
 		keyword?: string;
 		fromId?: number;
@@ -291,7 +293,7 @@ export class GroupAPI {
 	}): Promise<GroupUsersResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/groups/${options.id}/members`,
+			route: `v2/groups/${options.groupId}/members`,
 			params: {
 				mode: options.mode,
 				keyword: options.keyword,

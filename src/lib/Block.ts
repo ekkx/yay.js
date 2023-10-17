@@ -42,10 +42,10 @@ export class BlockAPI {
 		});
 	};
 
-	public unblockUser = async (userId: number) => {
+	public unblockUser = async (options: {userId: number}) => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/users/${userId}/unblock`,
+			route: `v2/users/${options.userId}/unblock`,
 			requireAuth: true,
 		});
 	};

@@ -6,10 +6,10 @@ import { MessageTag, Post, SharedUrl } from '../util/Models';
 export class PostAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	public addBookmark = async (options: { userId: number; id: number }): Promise<BookmarkPostResponse> => {
+	public addBookmark = async (options: { userId: number; postId: number }): Promise<BookmarkPostResponse> => {
 		return await this.base.request({
 			method: HttpMethod.PUT,
-			route: `v1/users/${options.userId}/bookmarks/${options.id}`,
+			route: `v1/users/${options.userId}/bookmarks/${options.postId}`,
 			requireAuth: true,
 		});
 	};

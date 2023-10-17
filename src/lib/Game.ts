@@ -13,10 +13,10 @@ export class GameAPI {
 		});
 	};
 
-	public requestWalkthrough = async (options: { id: number }) => {
+	public requestWalkthrough = async (options: { groupId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/groups/${options.id}/request_walkthrough`,
+			route: `v1/groups/${options.groupId}/request_walkthrough`,
 			requireAuth: false,
 		});
 	};
