@@ -11,6 +11,7 @@ export class HeaderInterceptor {
 	private deviceInfo: string;
 	private cookie: Cookie;
 	private locale: string;
+	private contentType: string;
 
 	public constructor(device: Device, cookie: Cookie, locale: string = 'ja') {
 		this.device = device;
@@ -19,6 +20,7 @@ export class HeaderInterceptor {
 		this.deviceInfo = 'yay ' + VERSION_NAME + ' ' + this.userAgent;
 		this.cookie = cookie;
 		this.connectionType = 'wifi';
+		this.contentType = 'application/json;charset=UTF-8';
 		this.clientIP = '';
 		this.connectionSpeed = '';
 	}
@@ -35,7 +37,7 @@ export class HeaderInterceptor {
 			'X-Connection-Type': this.connectionType,
 			'X-Connection-Speed': this.connectionSpeed,
 			'Accept-Language': this.locale,
-			'Content-Type': 'application/json;charset=UTF-8',
+			'Content-Type': this.contentType,
 		};
 
 		if (this.clientIP.length > 0) {
