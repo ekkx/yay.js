@@ -77,7 +77,7 @@ client.on('messageCreate', async (message) => {
   if (message.text === 'ping') {
     await client.sendMessage({
       text: 'pong',
-      id: message.roomId,
+      roomId: message.roomId,
     });
   }
 });
