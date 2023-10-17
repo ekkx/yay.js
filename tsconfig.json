@@ -1,5 +1,5 @@
 {
-    "files": ["src/version.ts"],
+    "files": ["src/util/version.ts"],
 	"compilerOptions": {
 		"target": "es2020",
 		"lib": ["esnext"],
