@@ -11,8 +11,8 @@
 		<a href="https://www.npmjs.com/package/yay.js"><img src="https://img.shields.io/npm/dt/yay.js.svg?maxAge=3600" alt="npm downloads" /></a>
 	</p>
     <p>
-        <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" height=30px>
-        <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height=30px>
+        <a href="https://github.com/qvco/yay.js/tree/master/docs/javascript"><img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" height=30px></a>
+        <a href="https://github.com/qvco/yay.js/tree/master/docs/javascript"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height=30px></a>
     </p>
 </div>
 
@@ -22,9 +22,8 @@
 
 - オブジェクト指向
 - 非同期処理に対応
-- 認証情報を暗号化
-
-### ※ 開発途中です。現在はインストールできません。
+- クッキーの暗号化
+- API を 100% カバー
 
 ## Installation
 
@@ -48,17 +47,17 @@ npm install yay.js
 import { Client } from 'yay.js';
 
 const main = async () => {
-  const client = new Client();
+	const client = new Client();
 
-  await client.login({
-    email: 'yourEmail',
-    password: 'yourPassword',
-  });
+	await client.login({
+		email: 'yourEmail',
+		password: 'yourPassword',
+	});
 
-  await client.createPost({
-    text: 'Hello with yay.js!',
-    sharedUrl: 'https://github.com/qvco/yay.js',
-  });
+	await client.createPost({
+		text: 'Hello with yay.js!',
+		sharedUrl: 'https://github.com/qvco/yay.js',
+	});
 };
 
 main();
@@ -71,21 +70,21 @@ import { Client, GatewayIntents } from 'yay.js';
 const client = new Client({ intents: [GatewayIntents.ChatMessage] });
 
 client.on('ready', () => {
-  console.log('The bot is ready!');
+	console.log('The bot is ready!');
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.text === 'ping') {
-    await client.sendMessage({
-      text: 'pong',
-      id: message.roomId,
-    });
-  }
+	if (message.text === 'ping') {
+		await client.sendMessage({
+			text: 'pong',
+			id: message.roomId,
+		});
+	}
 });
 
 client.login({
-  email: 'yourEmail',
-  password: 'yourPassword',
+	email: 'yourEmail',
+	password: 'yourPassword',
 });
 ```
 
