@@ -2,6 +2,7 @@ import { BaseClient } from './BaseClient';
 import { ClientOptions } from '../util/Types';
 import { API_KEY } from '../util/Constants';
 import {
+	ActiveFollowingsResponse,
 	AdditionalSettingsResponse,
 	ApplicationConfigResponse,
 	BanWordsResponse,
@@ -768,6 +769,34 @@ export class Client extends BaseClient {
 	// ThreadAPI
 
 	// UserAPI
+
+	public deleteContactFriends = async () => {
+		return await this.userAPI.deleteContactFriends();
+	};
+
+	public deleteFootprint = async (options: { userId: number; footprintId: number }) => {
+		return await this.userAPI.deleteFootprint(options);
+	};
+
+	public destroyUser = async (options: { uuid: string; apiKey: string; timestamp: string; signedInfo: string }) => {
+		// clientの処理
+		return await this.userAPI.destroyUser(options);
+	};
+
+	public followUser = async (options: { userId: number }) => {
+		return await this.userAPI.followUser(options);
+	};
+
+	public followUsers = async (options: { userIds: number[] }) => {
+		return await this.userAPI.followUsers(options);
+	};
+
+	public getActiveFollowings = async (options: {
+		onlyOnline: boolean;
+		fromLoggedinAt?: number;
+	}): Promise<ActiveFollowingsResponse> => {
+		return await this.userAPI.getActiveFollowings(options);
+	};
 }
 
 export default Client;
