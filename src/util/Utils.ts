@@ -13,7 +13,8 @@ export const signedInfo = (uuid: string, timestamp: number, requireSharedKey: bo
 };
 
 export const signedVersion = (): string => {
-	const hmac = createHmac('sha256', encode(API_VERSION_KEY) + encode(`yay_android/${API_VERSION_NAME}`));
+	const hmac = createHmac('sha256', encode(API_VERSION_KEY));
+	hmac.update(encode(`yay_android/${API_VERSION_NAME}`));
 	const resultBuffer = hmac.digest().toString();
 	return decode(resultBuffer);
 };
