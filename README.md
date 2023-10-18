@@ -47,17 +47,17 @@ npm install yay.js
 import { Client } from 'yay.js';
 
 const main = async () => {
-	const client = new Client();
+  const client = new Client();
 
-	await client.login({
-		email: 'yourEmail',
-		password: 'yourPassword',
-	});
+  await client.login({
+    email: 'yourEmail',
+    password: 'yourPassword',
+  });
 
-	await client.createPost({
-		text: 'Hello with yay.js!',
-		sharedUrl: 'https://github.com/qvco/yay.js',
-	});
+  await client.createPost({
+    text: 'Hello with yay.js!',
+    sharedUrl: 'https://github.com/qvco/yay.js',
+  });
 };
 
 main();
@@ -70,21 +70,21 @@ import { Client, GatewayIntents } from 'yay.js';
 const client = new Client({ intents: [GatewayIntents.ChatMessage] });
 
 client.on('ready', () => {
-	console.log('The bot is ready!');
+  console.log('The bot is ready!');
 });
 
 client.on('messageCreate', async (message) => {
-	if (message.text === 'ping') {
-		await client.sendMessage({
-			text: 'pong',
-			id: message.roomId,
-		});
-	}
+  if (message.text === 'ping') {
+    await client.sendMessage({
+      text: 'pong',
+      roomId: message.roomId,
+    });
+  }
 });
 
 client.login({
-	email: 'yourEmail',
-	password: 'yourPassword',
+  email: 'yourEmail',
+  password: 'yourPassword',
 });
 ```
 

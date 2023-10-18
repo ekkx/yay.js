@@ -69,12 +69,12 @@ export class CallAPI {
 		});
 	};
 
-	public getGames = async (options: { number: number; ids: number[]; fromId?: number }): Promise<GamesResponse> => {
+	public getGames = async (options: { number: number; gameIds: number[]; fromId?: number }): Promise<GamesResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v1/games/apps`,
 			requireAuth: false,
-			params: { number: options.number, 'ids[]': options.ids, from_id: options.fromId },
+			params: { number: options.number, 'ids[]': options.gameIds, from_id: options.fromId },
 		});
 	};
 
@@ -103,7 +103,7 @@ export class CallAPI {
 		});
 	};
 
-	public inviteToCallBulk = async (options: { callId: number; groupId: number }) => {
+	public inviteToCallBulk = async (options: { callId: number; groupId?: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/calls/${options.callId}/bulk_invite`,

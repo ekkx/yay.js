@@ -18,12 +18,12 @@ import {
 export class ChatAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	public acceptRequest = async (options: { chatRoomIds: number[] }) => {
+	public acceptRequest = async (options: { roomIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/chat_rooms/accept_chat_request`,
 			requireAuth: false,
-			json: { 'chat_room_ids[]': options.chatRoomIds },
+			json: { 'chat_room_ids[]': options.roomIds },
 		});
 	};
 
@@ -68,10 +68,10 @@ export class ChatAPI {
 		});
 	};
 
-	public deleteBackground = async (options: { id: number }) => {
+	public deleteBackground = async (options: { roomId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `v2/chat_rooms/${options.id}/background`,
+			route: `v2/chat_rooms/${options.roomId}/background`,
 			requireAuth: false,
 		});
 	};
@@ -84,10 +84,15 @@ export class ChatAPI {
 		});
 	};
 
-	public edit = async (options: { id: number; name?: number; iconFilename?: string; backgroundFilename?: string }) => {
+	public edit = async (options: {
+		roomId: number;
+		name?: number;
+		iconFilename?: string;
+		backgroundFilename?: string;
+	}) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v3/chat_rooms/${options.id}/edit`,
+			route: `v3/chat_rooms/${options.roomId}/edit`,
 			requireAuth: false,
 			json: {
 				name: options.name,
@@ -142,23 +147,23 @@ export class ChatAPI {
 	};
 
 	public getMessages = async (options: {
-		id: number;
+		roomId: number;
 		number?: number;
 		fromMessageId?: number;
 		toMessageId?: number;
 	}): Promise<MessagesResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/chat_rooms/${options.id}/messages`,
+			route: `v2/chat_rooms/${options.roomId}/messages`,
 			requireAuth: false,
 			params: { number: options.number, from_message_id: options.fromMessageId, to_message_id: options.toMessageId },
 		});
 	};
 
-	public getNotificationSettings = async (options: { id: number }): Promise<AdditionalSettingsResponse> => {
+	public getNotificationSettings = async (options: { roomId: number }): Promise<AdditionalSettingsResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/notification_settings/chat_rooms/${options.id}`,
+			route: `v2/notification_settings/chat_rooms/${options.roomId}`,
 			requireAuth: false,
 		});
 	};
@@ -172,10 +177,10 @@ export class ChatAPI {
 		});
 	};
 
-	public getRoom = async (options: { id: number }): Promise<ChatRoomResponse> => {
+	public getRoom = async (options: { roomId: number }): Promise<ChatRoomResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/chat_rooms/${options.id}`,
+			route: `v2/chat_rooms/${options.roomId}`,
 			requireAuth: false,
 		});
 	};
@@ -196,62 +201,62 @@ export class ChatAPI {
 		});
 	};
 
-	public hideChat = async (options: { chatRoomId: number }) => {
+	public hideChat = async (options: { roomId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/hidden/chats`,
 			requireAuth: true,
-			json: { chat_room_id: options.chatRoomId },
+			json: { chat_room_id: options.roomId },
 		});
 	};
 
-	public invite = async (options: { id: number; withUserIds: number[] }) => {
+	public invite = async (options: { roomId: number; withUserIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v2/chat_rooms/${options.id}/invite`,
+			route: `v2/chat_rooms/${options.roomId}/invite`,
 			requireAuth: true,
 			json: { 'with_user_ids[]': options.withUserIds },
 		});
 	};
 
-	public kickUsers = async (options: { id: number; withUserIds: number[] }) => {
+	public kickUsers = async (options: { roomId: number; withUserIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v2/chat_rooms/${options.id}/kick`,
+			route: `v2/chat_rooms/${options.roomId}/kick`,
 			requireAuth: true,
 			json: { 'with_user_ids[]': options.withUserIds },
 		});
 	};
 
-	public pin = async (options: { id: number }) => {
+	public pin = async (options: { roomId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/chat_rooms/${options.id}/pinned`,
+			route: `v1/chat_rooms/${options.roomId}/pinned`,
 			requireAuth: true,
 		});
 	};
 
-	public readAttachment = async (options: { id: number; attachmentMsgIds: number[] }) => {
+	public readAttachment = async (options: { roomId: number; attachmentMsgIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/chat_rooms/${options.id}/attachments_read`,
+			route: `v1/chat_rooms/${options.roomId}/attachments_read`,
 			requireAuth: true,
 			json: { 'attachment_msg_ids[]': options.attachmentMsgIds },
 		});
 	};
 
-	public readMessage = async (options: { id: number; messageId: number }) => {
+	public readMessage = async (options: { roomId: number; messageId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v2/chat_rooms/${options.id}/messages/${options.messageId}/read`,
+			route: `v2/chat_rooms/${options.roomId}/messages/${options.messageId}/read`,
 			requireAuth: true,
 		});
 	};
 
-	public readVideoMessage = async (options: { id: number; videoMsgIds: number }) => {
+	public readVideoMessage = async (options: { roomId: number; videoMsgIds: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/chat_rooms/${options.id}/videos_read`,
+			route: `v1/chat_rooms/${options.roomId}/videos_read`,
 			requireAuth: true,
 			json: { 'video_msg_ids[]': options.videoMsgIds },
 		});
@@ -266,17 +271,17 @@ export class ChatAPI {
 		});
 	};
 
-	public remove = async (options: { chatRoomIds: number[] }) => {
+	public remove = async (options: { roomIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/chat_rooms/mass_destroy`,
 			requireAuth: true,
-			json: { 'chat_room_ids[]': options.chatRoomIds },
+			json: { 'chat_room_ids[]': options.roomIds },
 		});
 	};
 
 	public report = async (options: {
-		chatRoomId: number;
+		roomId: number;
 		categoryId: number;
 		reason?: string;
 		opponentId?: number;
@@ -287,7 +292,7 @@ export class ChatAPI {
 	}) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v3/chat_rooms/${options.chatRoomId}/report`,
+			route: `v3/chat_rooms/${options.roomId}/report`,
 			requireAuth: false,
 			json: {
 				category_id: options.categoryId,
@@ -301,16 +306,16 @@ export class ChatAPI {
 		});
 	};
 
-	public sendMediaScreenshotNotification = async (options: { id: number }) => {
+	public sendMediaScreenshotNotification = async (options: { roomId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/chat_rooms/${options.id}/screen_captured`,
+			route: `v1/chat_rooms/${options.roomId}/screen_captured`,
 			requireAuth: false,
 		});
 	};
 
 	public sendMessage = async (options: {
-		id: number;
+		roomId: number;
 		messageType?: string;
 		callType?: string;
 		text?: string;
@@ -324,7 +329,7 @@ export class ChatAPI {
 	}): Promise<MessageResponse> => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v3/chat_rooms/${options.id}/messages/new`,
+			route: `v3/chat_rooms/${options.roomId}/messages/new`,
 			requireAuth: false,
 			json: {
 				message_type: options.messageType,
@@ -342,30 +347,30 @@ export class ChatAPI {
 	};
 
 	public setNotificationSettings = async (options: {
-		id: number;
+		roomId: number;
 		notificationChat: number;
 	}): Promise<NotificationSettingResponse> => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v2/notification_settings/chat_rooms/${options.id}`,
+			route: `v2/notification_settings/chat_rooms/${options.roomId}`,
 			requireAuth: false,
 			json: { notification_chat: options.notificationChat },
 		});
 	};
 
-	public unHideChat = async (options: { chatRoomIds: number[] }) => {
+	public unHideChat = async (options: { roomIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
 			route: `v1/hidden/chats`,
 			requireAuth: false,
-			params: { chat_room_ids: options.chatRoomIds },
+			params: { chat_room_ids: options.roomIds },
 		});
 	};
 
-	public unpin = async (options: { id: number }) => {
+	public unpin = async (options: { roomId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.DELETE,
-			route: `v1/chat_rooms/${options.id}/pinned`,
+			route: `v1/chat_rooms/${options.roomId}/pinned`,
 			requireAuth: false,
 		});
 	};

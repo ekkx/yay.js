@@ -3,30 +3,64 @@ import { ClientOptions } from '../util/Types';
 import { API_KEY } from '../util/Constants';
 import {
 	AdditionalSettingsResponse,
+	ApplicationConfigResponse,
+	BanWordsResponse,
+	BgmsResponse,
+	BlockedUserIdsResponse,
+	BlockedUsersResponse,
+	CallStatusResponse,
 	ChatRoomResponse,
 	ChatRoomsResponse,
+	ConferenceCallResponse,
 	CreateChatRoomResponse,
 	FollowUsersResponse,
+	GamesResponse,
+	GenresResponse,
 	GifsDataResponse,
 	LoginUserResponse,
 	MessageResponse,
 	MessagesResponse,
 	NotificationSettingResponse,
 	PolicyAgreementsResponse,
+	PopularWordsResponse,
+	PostResponse,
+	PostsResponse,
 	StickerPacksResponse,
 	TokenResponse,
 	TotalChatRequestResponse,
 	UnreadStatusResponse,
+	UsersByTimestampResponse,
 } from '../util/Responses';
-import { Post, SharedUrl } from '../util/Models';
+import { Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
 
 export class Client extends BaseClient {
+	/**
+	 * Returns the average of two numbers.
+	 *
+	 * @remarks
+	 * This method is part of the {@link core-library#Statistics | Statistics subsystem}.
+	 *
+	 * @param x - The first input number
+	 * @param y - The second input number
+	 * @returns The arithmetic mean of `x` and `y`
+	 *
+	 * @beta
+	 */
 	public constructor(options?: ClientOptions) {
 		super(options);
 	}
 
 	// AuthAPI
+
+	public getToken = async (options: {
+		grantType: string;
+		email?: string;
+		password?: string;
+		refreshToken?: string;
+	}): Promise<TokenResponse> => {
+		return await this.authAPI.getToken(options);
+	};
 
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
 		const loginResponse = await this.prepare({
@@ -50,11 +84,127 @@ export class Client extends BaseClient {
 
 	// BlockAPI
 
+	public blockUser = async (options: { userId: number }) => {
+		return await this.blockAPI.blockUser(options);
+	};
+
+	public getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
+		return await this.blockAPI.getBlockedUserIds();
+	};
+
+	public getBlockedUsers = async (
+		options: {
+			nickname?: string;
+			username?: string;
+			biography?: string;
+			prefecture?: string;
+			gender?: number;
+			fromId?: number;
+		} = {},
+	): Promise<BlockedUsersResponse> => {
+		return await this.blockAPI.getBlockedUsers(options);
+	};
+
+	public unblockUser = async (options: { userId: number }) => {
+		return await this.blockAPI.unblockUser(options);
+	};
+
 	// CallAPI
+
+	public bumpCall = async (options: { callId: number; participantLimit?: number }) => {
+		return await this.callAPI.bumpCall(options);
+	};
+
+	public getActiveCall = async (options: { userId: number }): Promise<PostResponse> => {
+		return await this.getActiveCall(options);
+	};
+
+	public getBgms = async (): Promise<BgmsResponse> => {
+		return await this.callAPI.getBgms();
+	};
+
+	public getCall = async (options: { callId: number }): Promise<ConferenceCallResponse> => {
+		return await this.callAPI.getCall(options);
+	};
+
+	public getCallInvitableUsers = async (options: {
+		callId: number;
+		fromTimestamp?: number;
+		nickname?: string;
+	}): Promise<UsersByTimestampResponse> => {
+		return await this.callAPI.getCallInvitableUsers(options);
+	};
+
+	public getCallStatus = async (options: { opponentId: number }): Promise<CallStatusResponse> => {
+		return await this.callAPI.getCallStatus(options);
+	};
+
+	public getGames = async (options: { number: number; gameIds: number[]; fromId?: number }): Promise<GamesResponse> => {
+		return await this.callAPI.getGames(options);
+	};
+
+	public getGenres = async (options: { number: number; from: number }): Promise<GenresResponse> => {
+		return await this.callAPI.getGenres(options);
+	};
+
+	public getGroupCalls = async (
+		options: { number?: number; groupCategoryId?: number; fromTimestamp?: number; scope?: string } = {},
+	): Promise<PostsResponse> => {
+		return await this.callAPI.getGroupCalls(options);
+	};
+
+	public inviteMultipleToCall = async (options: { callId: number; groupId?: number }) => {
+		return await this.callAPI.inviteToCallBulk(options);
+	};
+
+	public inviteUsersToCall = async (options: { callId: number; userIds: number[] }) => {
+		return await this.callAPI.inviteUsersToCall(options);
+	};
+
+	public inviteUsersToChatCall = async (options: { chatRoomId?: number; roomId?: number; roomUrl?: string } = {}) => {
+		return await this.callAPI.inviteUsersToChatCall(options);
+	};
+
+	public banUserFromCall = async (options: { callId: number; userId: number }) => {
+		return await this.callAPI.kickAndBanFromCall(options);
+	};
+
+	public notifyAnonymousUserLeaveCall = async (options: { conferenceId: number; agoraUid: string }) => {
+		return await this.callAPI.notifyAnonymousUserLeaveAgoraChannel(options);
+	};
+
+	public notifyUserLeaveCall = async (options: { conferenceId: number; userId: number }) => {
+		return await this.callAPI.notifyUserLeaveAgoraChannel(options);
+	};
+
+	public sendCallScreenshot = async (options: { screenshotFilename: string; conferenceId: number }) => {
+		return await this.callAPI.sendCallScreenshot(options);
+	};
+
+	public startCall = async (options: {
+		callId: number;
+		joinableBy: string;
+		gameTitle?: string;
+		categoryId?: string;
+	}) => {
+		return await this.callAPI.setCall(options);
+	};
+
+	public setCallUserRole = async (options: { callId: number; userId: number; role: string }) => {
+		return await this.callAPI.setUserRole(options);
+	};
+
+	public joinCall = async (options: { conferenceId: number; callSid: string }): Promise<ConferenceCallResponse> => {
+		return await this.callAPI.startCall(options);
+	};
+
+	public leaveCall = async (options: { conferenceId: number; callSid: string }) => {
+		return await this.callAPI.stopCall(options);
+	};
 
 	// ChatAPI
 
-	public acceptChatRequest = async (options: { chatRoomIds: number[] }) => {
+	public acceptChatRequest = async (options: { roomIds: number[] }) => {
 		return await this.chatAPI.acceptRequest(options);
 	};
 
@@ -79,7 +229,7 @@ export class Client extends BaseClient {
 		return await this.chatAPI.createPrivate(options);
 	};
 
-	public deleteChatBackground = async (options: { id: number }) => {
+	public deleteChatBackground = async (options: { roomId: number }) => {
 		return await this.chatAPI.deleteBackground(options);
 	};
 
@@ -88,7 +238,7 @@ export class Client extends BaseClient {
 	};
 
 	public editChatRoom = async (options: {
-		id: number;
+		roomId: number;
 		name?: number;
 		iconFilename?: string;
 		backgroundFilename?: string;
@@ -118,7 +268,7 @@ export class Client extends BaseClient {
 	};
 
 	public getMessages = async (options: {
-		id: number;
+		roomId: number;
 		number?: number;
 		fromMessageId?: number;
 		toMessageId?: number;
@@ -126,7 +276,7 @@ export class Client extends BaseClient {
 		return await this.chatAPI.getMessages(options);
 	};
 
-	public getChatNotificationSettings = async (options: { id: number }): Promise<AdditionalSettingsResponse> => {
+	public getChatNotificationSettings = async (options: { roomId: number }): Promise<AdditionalSettingsResponse> => {
 		return await this.chatAPI.getNotificationSettings(options);
 	};
 
@@ -134,7 +284,7 @@ export class Client extends BaseClient {
 		return await this.chatAPI.getRequestRooms(options);
 	};
 
-	public getChatRoom = async (options: { id: number }): Promise<ChatRoomResponse> => {
+	public getChatRoom = async (options: { roomId: number }): Promise<ChatRoomResponse> => {
 		return await this.chatAPI.getRoom(options);
 	};
 
@@ -146,31 +296,31 @@ export class Client extends BaseClient {
 		return await this.chatAPI.getTotalRequests();
 	};
 
-	public hideChatRoom = async (options: { chatRoomId: number }) => {
+	public hideChatRoom = async (options: { roomId: number }) => {
 		return await this.chatAPI.hideChat(options);
 	};
 
-	public inviteUsersToChatRoom = async (options: { id: number; withUserIds: number[] }) => {
+	public inviteUsersToChatRoom = async (options: { roomId: number; withUserIds: number[] }) => {
 		return await this.chatAPI.invite(options);
 	};
 
-	public kickUsersFromChatRoom = async (options: { id: number; withUserIds: number[] }) => {
+	public kickUsersFromChatRoom = async (options: { roomId: number; withUserIds: number[] }) => {
 		return await this.chatAPI.kickUsers(options);
 	};
 
-	public pinChatRoom = async (options: { id: number }) => {
+	public pinChatRoom = async (options: { roomId: number }) => {
 		return await this.chatAPI.pin(options);
 	};
 
-	public readMessageAttachment = async (options: { id: number; attachmentMsgIds: number[] }) => {
+	public readMessageAttachment = async (options: { roomId: number; attachmentMsgIds: number[] }) => {
 		return await this.chatAPI.readAttachment(options);
 	};
 
-	public readMessage = async (options: { id: number; messageId: number }) => {
+	public readMessage = async (options: { roomId: number; messageId: number }) => {
 		return await this.chatAPI.readMessage(options);
 	};
 
-	public readVideoMessage = async (options: { id: number; videoMsgIds: number }) => {
+	public readVideoMessage = async (options: { roomId: number; videoMsgIds: number }) => {
 		return await this.chatAPI.readVideoMessage(options);
 	};
 
@@ -178,12 +328,12 @@ export class Client extends BaseClient {
 		return await this.chatAPI.refreshRooms(options);
 	};
 
-	public removeChatRooms = async (options: { chatRoomIds: number[] }) => {
+	public removeChatRooms = async (options: { roomIds: number[] }) => {
 		return await this.chatAPI.remove(options);
 	};
 
 	public reportChatRoom = async (options: {
-		chatRoomId: number;
+		roomId: number;
 		categoryId: number;
 		reason?: string;
 		opponentId?: number;
@@ -195,12 +345,12 @@ export class Client extends BaseClient {
 		return await this.chatAPI.report(options);
 	};
 
-	public sendChatRoomMediaScreenshotNotification = async (options: { id: number }) => {
+	public sendChatRoomMediaScreenshotNotification = async (options: { roomId: number }) => {
 		return await this.chatAPI.sendMediaScreenshotNotification(options);
 	};
 
 	public sendMessage = async (options: {
-		id: number;
+		roomId: number;
 		messageType?: string;
 		callType?: string;
 		text?: string;
@@ -216,23 +366,43 @@ export class Client extends BaseClient {
 	};
 
 	public setChatRoomNotificationSettings = async (options: {
-		id: number;
+		roomId: number;
 		notificationChat: number;
 	}): Promise<NotificationSettingResponse> => {
 		return await this.chatAPI.setNotificationSettings(options);
 	};
 
-	public unHideChatRooms = async (options: { chatRoomIds: number[] }) => {
+	public unHideChatRooms = async (options: { roomIds: number[] }) => {
 		return await this.chatAPI.unHideChat(options);
 	};
 
-	public unpinChatRoom = async (options: { id: number }) => {
+	public unpinChatRoom = async (options: { roomId: number }) => {
 		return await this.chatAPI.unpin(options);
 	};
 
 	// ConfigAPI
 
+	public getAppConfig = async (): Promise<ApplicationConfigResponse> => {
+		return await this.configAPI.getAppConfig();
+	};
+
+	public getBanWords = async (options: { countryApiValue: string }): Promise<BanWordsResponse> => {
+		return await this.configAPI.getBanWords(options);
+	};
+
+	public getPopularWords = async (options: { countryApiValue: string }): Promise<PopularWordsResponse> => {
+		return await this.configAPI.getPopularWords(options);
+	};
+
 	// GameAPI
+
+	public getWalkthroughs = async (options: { appId: number }): Promise<Walkthrough[]> => {
+		return await this.gameAPI.getWalkthroughs(options);
+	};
+
+	public requestWalkthrough = async (options: { groupId: number }) => {
+		return await this.gameAPI.requestWalkthrough(options);
+	};
 
 	// GiftAPI
 
@@ -241,15 +411,6 @@ export class Client extends BaseClient {
 	// HiddenAPI
 
 	// MiscAPI
-
-	public getToken = async (options: {
-		grantType: string;
-		email?: string;
-		password?: string;
-		refreshToken?: string;
-	}): Promise<TokenResponse> => {
-		return await this.authAPI.getToken(options);
-	};
 
 	public acceptPolicyAgreement = async (options: { type: string }) => {
 		return await this.miscAPI.acceptPolicyAgreement(options);

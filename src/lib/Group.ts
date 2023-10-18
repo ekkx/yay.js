@@ -285,7 +285,7 @@ export class GroupAPI {
 	};
 
 	public getMembers = async (options: {
-		grupId: number;
+		groupId: number;
 		mode?: string;
 		keyword?: string;
 		fromId?: number;
@@ -295,7 +295,7 @@ export class GroupAPI {
 	}): Promise<GroupUsersResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/groups/${options.grupId}/members`,
+			route: `v2/groups/${options.groupId}/members`,
 			params: {
 				mode: options.mode,
 				keyword: options.keyword,

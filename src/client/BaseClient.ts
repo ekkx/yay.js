@@ -85,6 +85,7 @@ export class BaseClient extends EventEmitter {
 
 		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
+
 		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie);
 		this.headerInterceptor.setConnectionSpeed('0');
 
@@ -141,6 +142,11 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.deviceUuid;
 	}
 
+	/**
+	 * 認証します
+	 *
+	 * @param options - 認証情報のオプション
+	 */
 	private async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
@@ -174,6 +180,11 @@ export class BaseClient extends EventEmitter {
 		}
 	}
 
+	/**
+	 * クライアントを初期化します
+	 *
+	 * @param options - 認証情報のオプション
+	 */
 	protected async prepare(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		const res = await this.authenticate(options);
 
@@ -196,6 +207,11 @@ export class BaseClient extends EventEmitter {
 		return res;
 	}
 
+	/**
+	 * HTTPリクエストを送信します
+	 *
+	 * @param options - リクエストを送信するためのオプション
+	 */
 	public async request(options: RequestOptions): Promise<any> {
 		// X-Client-IPがヘッダーになければ設定する
 		if (!this.headerInterceptor.getClientIP() && options.route !== 'v2/users/timestamp') {
