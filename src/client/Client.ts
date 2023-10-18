@@ -13,10 +13,19 @@ import {
 	ChatRoomsResponse,
 	ConferenceCallResponse,
 	CreateChatRoomResponse,
+	CreateGroupResponse,
+	CreateQuotaResponse,
 	FollowUsersResponse,
 	GamesResponse,
 	GenresResponse,
 	GifsDataResponse,
+	GroupCategoriesResponse,
+	GroupNotificationSettingsResponse,
+	GroupResponse,
+	GroupUserResponse,
+	GroupUsersResponse,
+	GroupsRelatedResponse,
+	GroupsResponse,
 	LoginUserResponse,
 	MessageResponse,
 	MessagesResponse,
@@ -30,6 +39,7 @@ import {
 	TotalChatRequestResponse,
 	UnreadStatusResponse,
 	UsersByTimestampResponse,
+	UsersResponse,
 } from '../util/Responses';
 import { Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
@@ -196,7 +206,7 @@ export class Client extends BaseClient {
 		return await this.chatAPI.acceptRequest(options);
 	};
 
-	public checkUnreadStatus = async (options: { fromTime?: number } = {}): Promise<UnreadStatusResponse> => {
+	public checkChatUnreadStatus = async (options: { fromTime?: number } = {}): Promise<UnreadStatusResponse> => {
 		return await this.chatAPI.checkUnreadStatus(options);
 	};
 
@@ -396,6 +406,298 @@ export class Client extends BaseClient {
 
 	// GroupAPI
 
+	public acceptGroupModeratorOffer = async (options: { groupId: number }) => {
+		return await this.groupAPI.acceptModeratorOffer(options);
+	};
+
+	public acceptGroupOwnershipOffer = async (options: { groupId: number }) => {
+		return await this.groupAPI.acceptOwnershipOffer(options);
+	};
+
+	public acceptGroupJoinRequest = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.acceptUserRequest(options);
+	};
+
+	public addRelatedGroups = async (options: { groupId: number; relatedGroupId: number }) => {
+		return await this.groupAPI.addRelatedGroups(options);
+	};
+
+	public banGroupUser = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.banUser(options);
+	};
+
+	public checkGroupUnreadStatus = async (options: { fromTime: number }): Promise<UnreadStatusResponse> => {
+		return await this.groupAPI.checkUnreadStatus(options);
+	};
+
+	public createGroup = async (options: {
+		topic: string;
+		description?: string;
+		secret?: string;
+		hideReportedPosts?: boolean;
+		hideConferenceCall?: boolean;
+		isPrivate?: boolean;
+		onlyVerifiedAge?: boolean;
+		onlyMobileVerified?: boolean;
+		callTimelineDisplay?: boolean;
+		allowOwnershipTransfer?: boolean;
+		allowThreadCreationBy?: string;
+		gender?: number;
+		generationGroupsLimit?: number;
+		groupCategoryId?: number;
+		coverImageFilename?: string;
+		groupIconFilename?: string;
+		uuid: string;
+		apiKey: string;
+		timestamp: string;
+		signedInfo: string;
+		subCategoryId?: string;
+		hideFromGameEight?: boolean;
+		allowMembersToPostImageAndVideo?: boolean;
+		allowMembersToPostUrl?: boolean;
+		guidelines?: string;
+	}): Promise<CreateGroupResponse> => {
+		return await this.groupAPI.create(options);
+	};
+
+	public pinGroup = async (options: { groupId: number }) => {
+		return await this.groupAPI.createPinGroup(options);
+	};
+
+	public declineGroupModeratorOffer = async (options: { groupId: number }) => {
+		return await this.groupAPI.declineModeratorOffer(options);
+	};
+
+	public declineGroupOwnershipOffer = async (options: { groupId: number }) => {
+		return await this.groupAPI.declineOwnershipOffer(options);
+	};
+
+	public declineGroupJoinRequest = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.declineUserRequest(options);
+	};
+
+	public deleteGroupCover = async (options: { groupId: number }) => {
+		return await this.groupAPI.deleteCover(options);
+	};
+
+	public deleteGroupIcon = async (options: { groupId: number }) => {
+		return await this.groupAPI.deleteIcon(options);
+	};
+
+	public unpinGroup = async (options: { groupId: number }) => {
+		return await this.groupAPI.deletePinGroup(options);
+	};
+
+	public getBannedGroupMembers = async (options: { groupId: number; page?: number }): Promise<UsersResponse> => {
+		return await this.groupAPI.getBannedMembers(options);
+	};
+
+	public getGroupCategories = async (options: { page?: number; number?: number }): Promise<GroupCategoriesResponse> => {
+		return await this.groupAPI.getCategories(options);
+	};
+
+	public getGroupCreateQuota = async (): Promise<CreateQuotaResponse> => {
+		return await this.groupAPI.getCreateQuota();
+	};
+
+	public getGroup = async (options: { groupId: number }): Promise<GroupResponse> => {
+		return await this.groupAPI.getGroup(options);
+	};
+
+	public getGroupNotificationSettings = async (options: {
+		groupId: number;
+	}): Promise<GroupNotificationSettingsResponse> => {
+		return await this.groupAPI.getGroupNotificationSettings(options);
+	};
+
+	public getGroups = async (options: {
+		groupCategoryId?: number;
+		keyword?: string;
+		fromTimestamp?: number;
+		subCategoryId?: number;
+	}): Promise<GroupsResponse> => {
+		return await this.groupAPI.getGroups(options);
+	};
+
+	public getGroupInvitableUsers = async (options: {
+		groupId: number;
+		fromTimestamp?: number;
+		// user[nickname]
+		nickname?: string;
+	}): Promise<UsersByTimestampResponse> => {
+		return await this.groupAPI.getInvitableUsers(options);
+	};
+
+	public getGroupJoinedStatuses = async (options: { groupIds: number[] }): Promise<Record<string, string>> => {
+		return await this.groupAPI.getJoinedStatuses(options);
+	};
+
+	public getGroupMember = async (options: { groupId: number; userId: number }): Promise<GroupUserResponse> => {
+		return await this.groupAPI.getMember(options);
+	};
+
+	public getGroupMembers = async (options: {
+		groupId: number;
+		mode?: string;
+		keyword?: string;
+		fromId?: number;
+		fromTimestamp?: number;
+		orderBy?: string;
+		followedByMe?: boolean;
+	}): Promise<GroupUsersResponse> => {
+		return await this.groupAPI.getMembers(options);
+	};
+
+	public getMyGroups = async (options: { fromTimestamp?: number }): Promise<GroupsResponse> => {
+		return await this.groupAPI.getMyGroups(options);
+	};
+
+	public getRelatableGroups = async (options: {
+		groupId: number;
+		keyword?: string;
+		from?: string;
+	}): Promise<GroupsRelatedResponse> => {
+		return await this.groupAPI.getRelatableGroups(options);
+	};
+
+	public getJoinedGroups = async (options: { userId: number; page?: number }): Promise<GroupsResponse> => {
+		return await this.groupAPI.getUserGroups(options);
+	};
+
+	public inviteUsersToGroup = async (options: { groupId: number; userIds: number[] }) => {
+		return await this.groupAPI.inviteUsers(options);
+	};
+
+	public joinGroup = async (options: { groupId: number }) => {
+		return await this.groupAPI.join(options);
+	};
+
+	public leaveGroup = async (options: { groupId: number }) => {
+		return await this.groupAPI.leave(options);
+	};
+
+	public removeGroupModerator = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.removeModerator(options);
+	};
+
+	/**
+	 *
+	 * 関連するサークルを削除します
+	 *
+	 * @remarks
+	 * `DELETE`: https://api.yay.space/v1/groups/:groupId/related
+	 *
+	 * @param options - 引数のオプション
+	 * @param options.groupId - サークルのID
+	 * @param options.relatedGroupIds - 関連するサークルのID
+	 *
+	 * @see https://github.com/qvco/yay.js
+	 *
+	 */
+	public removeRelatedGroups = async (options: { groupId: number; relatedGroupIds: number[] }) => {
+		return await this.groupAPI.removeRelatedGroups(options);
+	};
+
+	public reportGroup = async (options: {
+		groupId: number;
+		categoryId: number;
+		reason?: string;
+		opponentId?: number;
+		screenshotFilename?: string;
+		screenshot2Filename?: string;
+		screenshot3Filename?: string;
+		screenshot4Filename?: string;
+	}) => {
+		return await this.groupAPI.report(options);
+	};
+
+	public sendGroupModeratorOffers = async (options: {
+		groupId: number;
+		userIds: number[];
+		uuid: string;
+		apiKey: string;
+		timestamp: number;
+		signedInfo: string;
+	}) => {
+		return await this.groupAPI.sendModeratorOffers(options);
+	};
+
+	public sendGroupOwnershipOffer = async (options: {
+		groupId: number;
+		userId: number;
+		uuid: string;
+		apiKey: string;
+		timestamp: number;
+		signedInfo: string;
+	}) => {
+		return await this.groupAPI.sendOwnershipOffer(options);
+	};
+
+	public setGroupNotificationSettings = async (options: {
+		groupId: number;
+		notificationGroupPost?: number;
+		notificationGroupJoin?: number;
+		notificationGroupRequest?: number;
+		notificationGroupMessageTagAll?: number;
+	}): Promise<AdditionalSettingsResponse> => {
+		return await this.groupAPI.setGroupNotificationSettings(options);
+	};
+
+	public setGroupTitle = async (options: { groupId: number; title: string }) => {
+		return await this.groupAPI.setTitle(options);
+	};
+
+	public takeoverGroupOwnership = async (options: { groupId: number }) => {
+		return await this.groupAPI.takeoverOwnership(options);
+	};
+
+	public unbanGroupUser = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.unbanUser(options);
+	};
+
+	public editGroup = async (options: {
+		groupId: number;
+		topic?: string;
+		description?: string;
+		secret?: string;
+		hideReportedPosts?: boolean;
+		hideConferenceCall?: boolean;
+		isPrivate?: boolean;
+		onlyVerifiedAge?: boolean;
+		onlyMobileVerified?: boolean;
+		callTimelineDisplay?: boolean;
+		allowOwnershipTransfer?: boolean;
+		allowThreadCreationBy?: string;
+		gender?: number;
+		generationGroupsLimit?: number;
+		groupCategoryId?: number;
+		coverImageFilename?: string;
+		groupIconFilename?: string;
+		uuid: string;
+		apiKey: string;
+		timestamp: string;
+		signedInfo: string;
+		subCategoryId?: string;
+		hideFromGameEight?: boolean;
+		allowMembersToPostImageAndVideo?: boolean;
+		allowMembersToPostUrl?: boolean;
+		guidelines?: string;
+	}): Promise<GroupResponse> => {
+		return await this.groupAPI.update(options);
+	};
+
+	public visitGroup = async (options: { groupId: number }) => {
+		return await this.groupAPI.visit(options);
+	};
+
+	public withdrawGroupModeratorOffer = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.withdrawModeratorOffer(options);
+	};
+
+	public withdrawGroupOwnershipOffer = async (options: { groupId: number; userId: number }) => {
+		return await this.groupAPI.withdrawOwnershipOffer(options);
+	};
+
 	// HiddenAPI
 
 	// MiscAPI
@@ -442,19 +744,19 @@ export class Client extends BaseClient {
 		} = {},
 	): Promise<Post> => {
 		const postType = this.getPostType(options);
+
 		let sharedUrlObj: SharedUrl | undefined = undefined;
 		if (options.sharedUrl) {
 			sharedUrlObj = objectToSnake(await this.getUrlMetadata({ url: options.sharedUrl }));
 		}
-		const res = await this.postAPI.createPost({
+
+		return await this.postAPI.createPost({
 			...options,
 			jwt: await this.getWebSocketToken(),
 			postType: postType,
 			sharedUrl: sharedUrlObj,
 			messageTags: undefined,
 		});
-		this.logger.info('投稿を作成しました。');
-		return res;
 	};
 
 	public getUrlMetadata = async (options: { url: string }): Promise<SharedUrl> => {
