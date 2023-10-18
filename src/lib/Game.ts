@@ -2,6 +2,15 @@ import { Walkthrough } from '../util/Models';
 import { BaseClient } from '../client/BaseClient';
 import { HttpMethod } from '../util/Types';
 
+/**
+ * ゲームAPI
+ *
+ * @remarks
+ * ゲームAPIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class GameAPI {
 	public constructor(private readonly base: BaseClient) {}
 

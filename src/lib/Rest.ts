@@ -7,7 +7,13 @@ import { BASE_API_URL } from '../util/Constants';
 import { YJSLogger } from '../util/Logger';
 
 /**
- * Represents the class that manages handlers for endpoints
+ * Rest API のクラス
+ *
+ * @remarks
+ * サーバーサイドとのHTTP通信を担当するクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
  */
 export class REST {
 	private logger: YJSLogger;

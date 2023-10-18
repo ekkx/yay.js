@@ -40,6 +40,15 @@ import { packageVersion } from '../util/version';
 import { AxiosResponse } from 'axios';
 import EventEmitter from 'node:events';
 
+/**
+ * yay.js クライアントの基底クラス
+ *
+ * @remarks
+ * クライアント処理を担当する、yay.js の基底クラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class BaseClient extends EventEmitter {
 	private rest: REST;
 	private cookie: Cookie;

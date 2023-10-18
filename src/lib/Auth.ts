@@ -2,6 +2,15 @@ import { BaseClient } from '../client/BaseClient';
 import { LoginEmailUserRequest, HttpMethod } from '../util/Types';
 import { LoginUserResponse, TokenResponse } from '../util/Responses';
 
+/**
+ * 認証API
+ *
+ * @remarks
+ * 認証APIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class AuthAPI {
 	public constructor(private readonly base: BaseClient) {}
 

@@ -2,7 +2,13 @@ import colors from 'colors';
 import winston from 'winston';
 
 /**
- * ログ用のクラス
+ * ロギング用のクラス
+ *
+ * @remarks
+ * ログレベルを設定したり装飾を施します
+ *
+ * @see https://github.com/qvco/yay.js
+ *
  */
 export class YJSLogger {
 	private logger: winston.Logger;

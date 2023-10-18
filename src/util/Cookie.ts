@@ -6,6 +6,15 @@ import { YJSError } from '../lib/Errors';
 
 const defaultFilePath = process.cwd() + '/cookie.json';
 
+/**
+ * クッキー管理クラス
+ *
+ * @remarks
+ * ファイル操作や認証情報の暗号化処理を担当します
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class Cookie {
 	private algorithm: string;
 	private saveCookie: boolean;

@@ -2,14 +2,23 @@ import { BaseClient } from '../client/BaseClient';
 import { ActiveFollowingsResponse, UserTimestampResponse } from '../util/Responses';
 import { API_KEY } from '../util/Constants';
 import { HttpMethod } from '../util/Types';
-import { signedInfo } from '../util/Utils';
+import * as util from '../util/Utils';
 
+/**
+ * ユーザーAPI
+ *
+ * @remarks
+ * ユーザーAPIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class UserAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	/** @ignore */
 	private get signedInfo(): string {
-		return signedInfo(this.base.deviceUuid, Date.now(), false);
+		return util.md5(this.base.deviceUuid, Date.now(), false);
 	}
 
 	public deleteContactFriends = async () => {

@@ -11,6 +11,15 @@ import {
 	PostsResponse,
 } from '../util/Responses';
 
+/**
+ * 通話API
+ *
+ * @remarks
+ * 通話APIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class CallAPI {
 	public constructor(private readonly base: BaseClient) {}
 

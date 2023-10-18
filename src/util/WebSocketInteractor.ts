@@ -6,6 +6,15 @@ import { BaseClient } from '../client/BaseClient';
 import { ChannelCommand, ChannelMessage, GatewayIntents, Identifier } from './Types';
 import { objectToCamel } from './CaseConverter';
 
+/**
+ * WebSocket管理クラス
+ *
+ * @remarks
+ * WebSocket通信を管理したりクライアントにイベントを送信するクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class WebSocketInteractor extends EventEmitter {
 	private base: BaseClient;
 	private ws: WebSocket | undefined;

@@ -15,6 +15,15 @@ import {
 	UnreadStatusResponse,
 } from '../util/Responses';
 
+/**
+ * チャットAPI
+ *
+ * @remarks
+ * チャットルームAPIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class ChatAPI {
 	public constructor(private readonly base: BaseClient) {}
 

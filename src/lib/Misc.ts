@@ -2,6 +2,15 @@ import { PolicyAgreementsResponse, WebSocketTokenResponse } from '../util/Respon
 import { BaseClient } from '../client/BaseClient';
 import { HttpMethod } from '../util/Types';
 
+/**
+ * 雑多API
+ *
+ * @remarks
+ * カテゴリ化できないAPIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class MiscAPI {
 	public constructor(private readonly base: BaseClient) {}
 

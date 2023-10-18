@@ -15,21 +15,24 @@ import {
 	UsersByTimestampResponse,
 	UsersResponse,
 } from '../util/Responses';
-import { signedInfo } from '../util/Utils';
 import { API_KEY } from '../util/Constants';
+import * as util from '../util/Utils';
 
 /**
- * サークルAPIのエンドポイントと連携するためのクラス
+ * サークルAPI
+ *
+ * @remarks
+ * サークルAPIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
  */
 export class GroupAPI {
-	/**
-	 * @param base - クライアントの基底クラス
-	 */
 	public constructor(private readonly base: BaseClient) {}
 
 	/** @ignore */
 	private get signedInfo(): string {
-		return signedInfo(this.base.uuid, Math.floor(Date.now() / 1000), true);
+		return util.md5(this.base.uuid, Math.floor(Date.now() / 1000), true);
 	}
 
 	public acceptModeratorOffer = async (options: { groupId: number }) => {

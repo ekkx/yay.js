@@ -3,6 +3,15 @@ import { BookmarkPostResponse } from 'util/Responses';
 import { HttpMethod } from '../util/Types';
 import { MessageTag, Post, SharedUrl } from '../util/Models';
 
+/**
+ * 投稿API
+ *
+ * @remarks
+ * 投稿APIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class PostAPI {
 	public constructor(private readonly base: BaseClient) {}
 

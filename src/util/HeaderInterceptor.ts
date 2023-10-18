@@ -2,6 +2,15 @@ import { API_VERSION_NAME, BASE_HOST, VERSION_NAME } from './Constants';
 import { Cookie } from './Cookie';
 import { Device } from './Types';
 
+/**
+ * ヘッダー管理クラス
+ *
+ * @remarks
+ * ヘッダー情報のビルドを担当します
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class HeaderInterceptor {
 	private clientIP: string;
 	private connectionSpeed: string;

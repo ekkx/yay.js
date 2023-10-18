@@ -2,6 +2,15 @@ import { BaseClient } from '../client/BaseClient';
 import { HttpMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
+/**
+ * ブロックAPI
+ *
+ * @remarks
+ * ユーザーブロックAPIのエンドポイントと連携するためのクラスです
+ *
+ * @see https://github.com/qvco/yay.js
+ *
+ */
 export class BlockAPI {
 	public constructor(private readonly base: BaseClient) {}
 
@@ -42,7 +51,7 @@ export class BlockAPI {
 		});
 	};
 
-	public unblockUser = async (options: {userId: number}) => {
+	public unblockUser = async (options: { userId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v2/users/${options.userId}/unblock`,

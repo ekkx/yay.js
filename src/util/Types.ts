@@ -47,31 +47,31 @@ export type ClientOptions = {
 	 */
 	backoffFactor?: number;
 	/**
-	 * レート制限を待機するかどうか
+	 * レート制限を待機するか
 	 *
 	 * @defaultValue `true`
 	 */
 	waitOnRateLimit?: boolean;
 	/**
-	 * クッキーを保存するかどうか
+	 * クッキーを保存するか
 	 *
 	 * @defaultValue `true`
 	 */
 	saveCookie?: boolean;
 	/**
-	 * クッキーを暗号化して保存する際のパスワード
+	 * クッキーを暗号化&復号化する際のパスワード
 	 *
 	 * @defaultValue `true`
 	 */
 	cookiePassword?: string;
 	/**
-	 * クッキーファイルを保存する場所
+	 * クッキーを保存する場所
 	 *
 	 * @defaultValue `'cookie'`
 	 */
 	cookieFilePath?: string;
 	/**
-	 * 取得するWebSocketイベント
+	 * 取得するWebSocketイベントの範囲
 	 *
 	 * @defaultValue `'undefined'`
 	 */
