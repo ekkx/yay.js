@@ -448,10 +448,6 @@ export class Client extends BaseClient {
 		groupCategoryId?: number;
 		coverImageFilename?: string;
 		groupIconFilename?: string;
-		uuid: string;
-		apiKey: string;
-		timestamp: string;
-		signedInfo: string;
 		subCategoryId?: string;
 		hideFromGameEight?: boolean;
 		allowMembersToPostImageAndVideo?: boolean;
@@ -612,25 +608,11 @@ export class Client extends BaseClient {
 		return await this.groupAPI.report(options);
 	};
 
-	public sendGroupModeratorOffers = async (options: {
-		groupId: number;
-		userIds: number[];
-		uuid: string;
-		apiKey: string;
-		timestamp: number;
-		signedInfo: string;
-	}) => {
+	public sendGroupModeratorOffers = async (options: { groupId: number; userIds: number[] }) => {
 		return await this.groupAPI.sendModeratorOffers(options);
 	};
 
-	public sendGroupOwnershipOffer = async (options: {
-		groupId: number;
-		userId: number;
-		uuid: string;
-		apiKey: string;
-		timestamp: number;
-		signedInfo: string;
-	}) => {
+	public sendGroupOwnershipOffer = async (options: { groupId: number; userId: number }) => {
 		return await this.groupAPI.sendOwnershipOffer(options);
 	};
 
@@ -674,10 +656,6 @@ export class Client extends BaseClient {
 		groupCategoryId?: number;
 		coverImageFilename?: string;
 		groupIconFilename?: string;
-		uuid: string;
-		apiKey: string;
-		timestamp: string;
-		signedInfo: string;
 		subCategoryId?: string;
 		hideFromGameEight?: boolean;
 		allowMembersToPostImageAndVideo?: boolean;
@@ -778,9 +756,8 @@ export class Client extends BaseClient {
 		return await this.userAPI.deleteFootprint(options);
 	};
 
-	public destroyUser = async (options: { uuid: string; apiKey: string; timestamp: string; signedInfo: string }) => {
-		// clientの処理
-		return await this.userAPI.destroyUser(options);
+	public destroyUser = async () => {
+		return await this.userAPI.destroyUser();
 	};
 
 	public followUser = async (options: { userId: number }) => {

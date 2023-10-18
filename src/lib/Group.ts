@@ -16,7 +16,7 @@ import {
 	UsersResponse,
 } from '../util/Responses';
 import { signedInfo } from '../util/Utils';
-import { API_KEY } from 'util/Constants';
+import { API_KEY } from '../util/Constants';
 
 /**
  * サークルAPIのエンドポイントと連携するためのクラス
@@ -29,7 +29,7 @@ export class GroupAPI {
 
 	/** @ignore */
 	private get signedInfo(): string {
-		return signedInfo(this.base.deviceUuid, Date.now(), false);
+		return signedInfo(this.base.uuid, Math.floor(Date.now() / 1000), true);
 	}
 
 	public acceptModeratorOffer = async (options: { groupId: number }) => {
@@ -127,7 +127,7 @@ export class GroupAPI {
 				group_icon_filename: options.groupIconFilename,
 				uuid: this.base.uuid,
 				api_key: API_KEY,
-				timestamp: Date.now(),
+				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
 				sub_category_id: options.subCategoryId,
 				hide_from_game_eight: options.hideFromGameEight,
@@ -438,7 +438,7 @@ export class GroupAPI {
 				'user_ids[]': options.userIds,
 				uuid: this.base.uuid,
 				api_key: API_KEY,
-				timestamp: Date.now(),
+				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
 			},
 			requireAuth: false,
@@ -453,7 +453,7 @@ export class GroupAPI {
 				user_id: options.userId,
 				uuid: this.base.uuid,
 				api_key: API_KEY,
-				timestamp: Date.now(),
+				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
 			},
 			requireAuth: false,
@@ -551,7 +551,7 @@ export class GroupAPI {
 				group_icon_filename: options.groupIconFilename,
 				uuid: this.base.uuid,
 				api_key: API_KEY,
-				timestamp: Date.now(),
+				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
 				sub_category_id: options.subCategoryId,
 				hide_from_game_eight: options.hideFromGameEight,
