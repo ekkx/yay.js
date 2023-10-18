@@ -8,7 +8,7 @@ const encode = (str: string): string => Buffer.from(str, 'binary').toString('bas
 export const signedInfo = (uuid: string, timestamp: number, requireSharedKey: boolean): string => {
 	const sharedKey: string = requireSharedKey ? SHARED_KEY : '';
 	return createHash('md5')
-		.update(API_KEY + uuid + timestamp + sharedKey)
+		.update(API_KEY + uuid + timestamp.toString() + sharedKey)
 		.digest('hex');
 };
 

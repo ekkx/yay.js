@@ -126,20 +126,20 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.userId;
 	}
 
+	public get uuid(): string {
+		return this.cookie.uuid;
+	}
+
+	public get deviceUuid(): string {
+		return this.cookie.deviceUuid;
+	}
+
 	protected get accessToken(): string {
 		return this.cookie.accessToken;
 	}
 
 	protected get refreshToken(): string {
 		return this.cookie.refreshToken;
-	}
-
-	protected get uuid(): string {
-		return this.cookie.uuid;
-	}
-
-	protected get deviceUuid(): string {
-		return this.cookie.deviceUuid;
 	}
 
 	/**

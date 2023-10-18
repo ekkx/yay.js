@@ -1,9 +1,16 @@
 import { BaseClient } from '../client/BaseClient';
 import { ActiveFollowingsResponse, UserTimestampResponse } from '../util/Responses';
+import { API_KEY } from '../util/Constants';
 import { HttpMethod } from '../util/Types';
+import { signedInfo } from '../util/Utils';
 
 export class UserAPI {
 	public constructor(private readonly base: BaseClient) {}
+
+	/** @ignore */
+	private get signedInfo(): string {
+		return signedInfo(this.base.deviceUuid, Date.now(), false);
+	}
 
 	public deleteContactFriends = async () => {
 		return await this.base.request({
@@ -21,15 +28,15 @@ export class UserAPI {
 		});
 	};
 
-	public destroyUser = async (options: { uuid: string; apiKey: string; timestamp: string; signedInfo: string }) => {
+	public destroyUser = async () => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v2/users/destroy`,
 			json: {
-				uuid: options.uuid,
-				api_key: options.apiKey,
-				timestamp: options.timestamp,
-				signed_info: options.signedInfo,
+				uuid: this.base.uuid,
+				api_key: API_KEY,
+				timestamp: Date.now(),
+				signed_info: this.signedInfo,
 			},
 			requireAuth: false,
 		});

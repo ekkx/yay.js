@@ -15,9 +15,22 @@ import {
 	UsersByTimestampResponse,
 	UsersResponse,
 } from '../util/Responses';
+import { signedInfo } from '../util/Utils';
+import { API_KEY } from 'util/Constants';
 
+/**
+ * サークルAPIのエンドポイントと連携するためのクラス
+ */
 export class GroupAPI {
+	/**
+	 * @param base - クライアントの基底クラス
+	 */
 	public constructor(private readonly base: BaseClient) {}
+
+	/** @ignore */
+	private get signedInfo(): string {
+		return signedInfo(this.base.deviceUuid, Date.now(), false);
+	}
 
 	public acceptModeratorOffer = async (options: { groupId: number }) => {
 		return await this.base.request({
@@ -86,10 +99,6 @@ export class GroupAPI {
 		groupCategoryId?: number;
 		coverImageFilename?: string;
 		groupIconFilename?: string;
-		uuid: string;
-		apiKey: string;
-		timestamp: string;
-		signedInfo: string;
 		subCategoryId?: string;
 		hideFromGameEight?: boolean;
 		allowMembersToPostImageAndVideo?: boolean;
@@ -116,10 +125,10 @@ export class GroupAPI {
 				group_category_id: options.groupCategoryId,
 				cover_image_filename: options.coverImageFilename,
 				group_icon_filename: options.groupIconFilename,
-				uuid: options.uuid,
-				api_key: options.apiKey,
-				timestamp: options.timestamp,
-				signed_info: options.signedInfo,
+				uuid: this.base.uuid,
+				api_key: API_KEY,
+				timestamp: Date.now(),
+				signed_info: this.signedInfo,
 				sub_category_id: options.subCategoryId,
 				hide_from_game_eight: options.hideFromGameEight,
 				allow_members_to_post_image_and_video: options.allowMembersToPostImageAndVideo,
@@ -421,45 +430,31 @@ export class GroupAPI {
 		});
 	};
 
-	public sendModeratorOffers = async (options: {
-		groupId: number;
-		userIds: number[];
-		uuid: string;
-		apiKey: string;
-		timestamp: number;
-		signedInfo: string;
-	}) => {
+	public sendModeratorOffers = async (options: { groupId: number; userIds: number[] }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v3/groups/${options.groupId}/deputize/mass`,
 			json: {
 				'user_ids[]': options.userIds,
-				uuid: options.uuid,
-				api_key: options.apiKey,
-				timestamp: options.timestamp,
-				signed_info: options.signedInfo,
+				uuid: this.base.uuid,
+				api_key: API_KEY,
+				timestamp: Date.now(),
+				signed_info: this.signedInfo,
 			},
 			requireAuth: false,
 		});
 	};
 
-	public sendOwnershipOffer = async (options: {
-		groupId: number;
-		userId: number;
-		uuid: string;
-		apiKey: string;
-		timestamp: number;
-		signedInfo: string;
-	}) => {
+	public sendOwnershipOffer = async (options: { groupId: number; userId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v3/groups/${options.groupId}/transfer`,
 			json: {
 				user_id: options.userId,
-				uuid: options.uuid,
-				api_key: options.apiKey,
-				timestamp: options.timestamp,
-				signed_info: options.signedInfo,
+				uuid: this.base.uuid,
+				api_key: API_KEY,
+				timestamp: Date.now(),
+				signed_info: this.signedInfo,
 			},
 			requireAuth: false,
 		});
@@ -528,10 +523,6 @@ export class GroupAPI {
 		groupCategoryId?: number;
 		coverImageFilename?: string;
 		groupIconFilename?: string;
-		uuid: string;
-		apiKey: string;
-		timestamp: string;
-		signedInfo: string;
 		subCategoryId?: string;
 		hideFromGameEight?: boolean;
 		allowMembersToPostImageAndVideo?: boolean;
@@ -558,10 +549,10 @@ export class GroupAPI {
 				group_category_id: options.groupCategoryId,
 				cover_image_filename: options.coverImageFilename,
 				group_icon_filename: options.groupIconFilename,
-				uuid: options.uuid,
-				api_key: options.apiKey,
-				timestamp: options.timestamp,
-				signed_info: options.signedInfo,
+				uuid: this.base.uuid,
+				api_key: API_KEY,
+				timestamp: Date.now(),
+				signed_info: this.signedInfo,
 				sub_category_id: options.subCategoryId,
 				hide_from_game_eight: options.hideFromGameEight,
 				allow_members_to_post_image_and_video: options.allowMembersToPostImageAndVideo,
