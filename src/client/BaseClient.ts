@@ -365,16 +365,17 @@ export class BaseClient extends EventEmitter {
 	}
 
 	protected getPostType(options: Record<string, any>): string {
-		if (options.choices) {
-			return 'survey';
-		} else if (options.sharedUrl) {
-			return 'shareable_url';
-		} else if (options.videoFileName) {
-			return 'video';
-		} else if (options.attachmentFileName) {
-			return 'image';
-		} else {
-			return 'text';
+		switch (true) {
+			case options.choices:
+				return 'survey';
+			case options.sharedUrl:
+				return 'shareable_url';
+			case options.videoFileName:
+				return 'video';
+			case options.attachmentFileName:
+				return 'image';
+			default:
+				return 'text';
 		}
 	}
 }
