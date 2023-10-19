@@ -15,6 +15,16 @@ import { API_KEY } from '../util/Constants';
 export class AuthAPI {
 	public constructor(private readonly base: BaseClient) {}
 
+	/** @ignore */
+	private get uuid(): string {
+		return this.base.uuid;
+	}
+
+	/** @ignore */
+	private get deviceUuid(): string {
+		return this.base.deviceUuid;
+	}
+
 	public getToken = async (options: {
 		grantType: string;
 		email?: string;
@@ -43,7 +53,7 @@ export class AuthAPI {
 				api_key: API_KEY,
 				email: request.email,
 				password: request.password,
-				uuid: this.base.uuid,
+				uuid: this.uuid,
 			},
 		});
 	};

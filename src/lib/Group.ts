@@ -31,8 +31,18 @@ export class GroupAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	/** @ignore */
+	private get uuid(): string {
+		return this.base.uuid;
+	}
+
+	/** @ignore */
+	private get deviceUuid(): string {
+		return this.base.deviceUuid;
+	}
+
+	/** @ignore */
 	private get signedInfo(): string {
-		return util.md5(this.base.uuid, Math.floor(Date.now() / 1000), true);
+		return util.md5(this.uuid, Math.floor(Date.now() / 1000), true);
 	}
 
 	public acceptModeratorOffer = async (options: { groupId: number }) => {
@@ -128,7 +138,7 @@ export class GroupAPI {
 				group_category_id: options.groupCategoryId,
 				cover_image_filename: options.coverImageFilename,
 				group_icon_filename: options.groupIconFilename,
-				uuid: this.base.uuid,
+				uuid: this.uuid,
 				api_key: API_KEY,
 				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
@@ -439,7 +449,7 @@ export class GroupAPI {
 			route: `v3/groups/${options.groupId}/deputize/mass`,
 			json: {
 				'user_ids[]': options.userIds,
-				uuid: this.base.uuid,
+				uuid: this.uuid,
 				api_key: API_KEY,
 				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
@@ -454,7 +464,7 @@ export class GroupAPI {
 			route: `v3/groups/${options.groupId}/transfer`,
 			json: {
 				user_id: options.userId,
-				uuid: this.base.uuid,
+				uuid: this.uuid,
 				api_key: API_KEY,
 				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,
@@ -552,7 +562,7 @@ export class GroupAPI {
 				group_category_id: options.groupCategoryId,
 				cover_image_filename: options.coverImageFilename,
 				group_icon_filename: options.groupIconFilename,
-				uuid: this.base.uuid,
+				uuid: this.uuid,
 				api_key: API_KEY,
 				timestamp: Math.floor(Date.now() / 1000),
 				signed_info: this.signedInfo,

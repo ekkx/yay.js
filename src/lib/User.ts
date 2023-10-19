@@ -4,9 +4,12 @@ import {
 	AdditionalSettingsResponse,
 	FollowRecommendationsResponse,
 	FollowRequestCountResponse,
+	FollowUsersResponse,
 	FootprintsResponse,
 	HimaUsersResponse,
 	RefreshCounterRequestsResponse,
+	UserCustomDefinitionsResponse,
+	UserEmailResponse,
 	UserResponse,
 	UserTimestampResponse,
 	UsersByTimestampResponse,
@@ -29,8 +32,18 @@ export class UserAPI {
 	public constructor(private readonly base: BaseClient) {}
 
 	/** @ignore */
+	private get uuid(): string {
+		return this.base.uuid;
+	}
+
+	/** @ignore */
+	private get deviceUuid(): string {
+		return this.base.deviceUuid;
+	}
+
+	/** @ignore */
 	private get signedInfo(): string {
-		return util.md5(this.base.deviceUuid, Date.now(), false);
+		return util.md5(this.deviceUuid, Math.floor(Date.now() / 1000), false);
 	}
 
 	public deleteContactFriends = async () => {
@@ -54,7 +67,7 @@ export class UserAPI {
 			method: HttpMethod.POST,
 			route: `v2/users/destroy`,
 			json: {
-				uuid: this.base.uuid,
+				uuid: this.uuid,
 				api_key: API_KEY,
 				timestamp: Date.now(),
 				signed_info: this.signedInfo,
@@ -198,6 +211,245 @@ export class UserAPI {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v2/users/timestamp`,
+			requireAuth: false,
+		});
+	};
+
+	public getUser = async (options: { userId: number }): Promise<UserResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/users/${options.userId}`,
+			requireAuth: false,
+		});
+	};
+
+	public getUserCustomDefinitions = async (): Promise<UserCustomDefinitionsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/users/custom_definitions`,
+			requireAuth: false,
+		});
+	};
+
+	public getUserEmail = async (options: { userId: number }): Promise<UserEmailResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/users/fresh/${options.userId}`,
+			requireAuth: false,
+		});
+	};
+
+	public getUserFollowers = async (options: {
+		userId: number;
+		fromFollowId?: number;
+		followedByMe?: boolean;
+		nickname?: string;
+	}): Promise<FollowUsersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/users/${options.userId}/followers`,
+			params: {
+				from_follow_id: options.fromFollowId,
+				followed_by_me: options.followedByMe,
+				'user[nickname]': options.nickname,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getUserFollowings = async (options: {
+		userId: number;
+		fromFollowId?: number;
+		fromTimestamp?: boolean;
+		orderBy?: string;
+		// SearchUsersRequest
+	}): Promise<FollowUsersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/users/${options.userId}/list_followings`,
+			params: {
+				from_follow_id: options.fromFollowId,
+				from_timestamp: options.fromTimestamp,
+				order_by: options.orderBy,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getUserFromQr = async (options: { qr: string }): Promise<UserResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/users/qr_codes/${options.qr}`,
+			requireAuth: false,
+		});
+	};
+
+	public getUserWithCallUserId = async (options: { callId: number; callUserId: string }): Promise<UserResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/calls/${options.callId}/participants/${options.callUserId}`,
+			requireAuth: false,
+		});
+	};
+
+	public getUserWithoutLeavingFootprint = async (options: { userId: number }): Promise<UserResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/users/info/${options.userId}`,
+			requireAuth: false,
+		});
+	};
+
+	public getUsers = async (options: { jwt: string; userIds: number[] }): Promise<UsersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/users/list_id`,
+			params: { 'user_ids[]': options.userIds },
+			headers: { 'X-Jwt': options.jwt },
+			requireAuth: false,
+		});
+	};
+
+	public getUsersFromUuid = async (options: { uuid: string }): Promise<UsersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/users/list_uuid`,
+			params: { uuid: options.uuid },
+			requireAuth: false,
+		});
+	};
+
+	public reduceKentaPenalty = async () => {};
+
+	public refreshCounter = async (options: { counter: string }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/users/reset_counters`,
+			json: { counter: options.counter },
+			requireAuth: false,
+		});
+	};
+
+	public removeUserAvatar = async () => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/users/remove_profile_photo`,
+			requireAuth: false,
+		});
+	};
+
+	public removeUserCover = async () => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/users/remove_cover_image`,
+			requireAuth: false,
+		});
+	};
+
+	public reportUser = async (options: {
+		userId: number;
+		categoryId: number;
+		reason?: string;
+		screenshotFilename?: string;
+		screenshot2Filename?: string;
+		screenshot3Filename?: string;
+		screenshot4Filename?: string;
+	}) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v3/users/${options.userId}/report`,
+			json: {
+				category_id: options.categoryId,
+				reason: options.reason,
+				screenshot_filename: options.screenshotFilename,
+				screenshot_2_filename: options.screenshot2Filename,
+				screenshot_3_filename: options.screenshot3Filename,
+				screenshot_4_filename: options.screenshot4Filename,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public resetPassword = async (options: { email: string; emailGrantToken: string; password: string }) => {
+		return await this.base.request({
+			method: HttpMethod.PUT,
+			route: `v1/users/reset_password`,
+			json: {
+				email: options.email,
+				email_grant_token: options.emailGrantToken,
+				password: options.password,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public searchLobiUsers = async (
+		options: { nickname?: string; number?: number; from?: string } = {},
+	): Promise<UsersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/lobi_friends`,
+			params: {
+				nickname: options.nickname,
+				number: options.number,
+				from: options.from,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public searchUsers = async (options: {
+		gender?: string;
+		nickname?: number;
+		title?: string;
+		biography?: string;
+		fromTimestamp?: number;
+		similarAge?: boolean;
+		notRecentGomimushi?: boolean;
+		recentlyCreated?: boolean;
+		samePrefecture?: boolean;
+		saveRecentSearch?: boolean;
+	}): Promise<UsersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/users/search`,
+			params: {
+				gender: options.gender,
+				nickname: options.nickname,
+				title: options.title,
+				biography: options.biography,
+				from_timestamp: options.fromTimestamp,
+				similar_age: options.similarAge,
+				not_recent_gomimushi: options.notRecentGomimushi,
+				recently_created: options.recentlyCreated,
+				same_prefecture: options.samePrefecture,
+				save_recent_search: options.saveRecentSearch,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public setAdditionalSettingEnabled = async (options: { mode: string; on?: number }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/users/additonal_notification_setting`,
+			json: { mode: options.mode, on: options.on },
+			requireAuth: false,
+		});
+	};
+
+	public setFollowPermissionEnabled = async (options: { nickname: string; isPrivate?: boolean }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/users/edit`,
+			json: {
+				nickname: options.nickname,
+				is_private: options,
+				uuid: this.uuid,
+				api_key: API_KEY,
+				timestamp: Math.floor(Date.now() / 1000),
+				signed_info: this.signedInfo,
+			},
 			requireAuth: false,
 		});
 	};
