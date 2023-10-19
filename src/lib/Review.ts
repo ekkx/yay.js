@@ -16,49 +16,11 @@ import { ReviewsResponse } from 'util/Responses';
 export class ReviewAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	/** @ignore */
-	private get uuid(): string {
-		return this.base.uuid;
-	}
-
-	/** @ignore */
-	private get deviceUuid(): string {
-		return this.base.deviceUuid;
-	}
-
-	/** @ignore */
-	private get signedInfo(): string {
-		return util.md5(this.uuid, Math.floor(Date.now() / 1000), true);
-	}
-
 	public createReview = async (options: { userId: number; comment: string }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v2/users/reviews/${options.userId}`,
-			json: {
-				id: options.userId,
-				comment: options.comment,
-				uuid: this.uuid,
-				api_key: API_KEY,
-				timestamp: Math.floor(Date.now() / 1000),
-				signed_info: this.signedInfo,
-			},
-			requireAuth: false,
-		});
-	};
-
-	public createReviews = async (options: { userIds: number[]; comment: string }) => {
-		return await this.base.request({
-			method: HttpMethod.POST,
-			route: `v1/users/reviews`,
-			json: {
-				'user_ids[]': options.userIds,
-				comment: options.comment,
-				uuid: this.uuid,
-				api_key: API_KEY,
-				timestamp: Math.floor(Date.now() / 1000),
-				signed_info: this.signedInfo,
-			},
+			route: `v1/users/reviews/${options.userId}`,
+			json: { comment: options.comment },
 			requireAuth: false,
 		});
 	};

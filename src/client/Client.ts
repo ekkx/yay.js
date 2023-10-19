@@ -34,6 +34,7 @@ import {
 	PopularWordsResponse,
 	PostResponse,
 	PostsResponse,
+	ReviewsResponse,
 	StickerPacksResponse,
 	TokenResponse,
 	TotalChatRequestResponse,
@@ -756,6 +757,30 @@ export class Client extends BaseClient {
 	};
 
 	// ReviewAPI
+
+	public sendReview = async (options: { userId: number; comment: string }) => {
+		return await this.reviewAPI.createReview(options);
+	};
+
+	public deleteReviews = async (options: { reviewIds: number[] }) => {
+		return await this.reviewAPI.deleteReviews(options);
+	};
+
+	public getMyReviews = async (options: { fromId?: number } = {}): Promise<ReviewsResponse> => {
+		return await this.reviewAPI.getMyReviews(options);
+	};
+
+	public getReviews = async (options: { userId: number; fromId?: number }): Promise<ReviewsResponse> => {
+		return await this.reviewAPI.getReviews(options);
+	};
+
+	public pinReview = async (options: { reviewId: number }) => {
+		return await this.reviewAPI.pinReview(options);
+	};
+
+	public unpinReview = async (options: { reviewId: number }) => {
+		return await this.reviewAPI.unpinReview(options);
+	};
 
 	// ThreadAPI
 
