@@ -16,6 +16,7 @@ import {
 	CreateGroupResponse,
 	CreateQuotaResponse,
 	CreateUserResponse,
+	EmailGrantTokenResponse,
 	EmailVerificationPresignedUrlResponse,
 	FollowRecommendationsResponse,
 	FollowRequestCountResponse,
@@ -715,6 +716,10 @@ export class Client extends BaseClient {
 		return await this.miscAPI.acceptPolicyAgreement(options);
 	};
 
+	public getEmailGrantToken = async (options: { email: string; code: string }): Promise<string> => {
+		return (await this.miscAPI.getEmailGrantToken(options)).emailGrantToken;
+	};
+
 	public getEmailVerificationPresignedUrl = async (options: {
 		email: string;
 		locale: string;
@@ -745,6 +750,10 @@ export class Client extends BaseClient {
 
 	public getWebSocketToken = async (): Promise<string> => {
 		return (await this.miscAPI.getWebSocketToken()).token;
+	};
+
+	public svc = async (options: { email: string; locale: string }) => {
+		return await this.miscAPI.svc(options);
 	};
 
 	public verifyDevice = async (options: {

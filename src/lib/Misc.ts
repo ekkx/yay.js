@@ -1,4 +1,5 @@
 import {
+	EmailGrantTokenResponse,
 	EmailVerificationPresignedUrlResponse,
 	PolicyAgreementsResponse,
 	PresignedUrlResponse,
@@ -10,7 +11,7 @@ import {
 } from '../util/Responses';
 import { BaseClient } from '../client/BaseClient';
 import { HttpMethod } from '../util/Types';
-import { API_VERSION_NAME } from '../util/Constants';
+import { API_VERSION_NAME, ID_CARD_CHECK_URL } from '../util/Constants';
 
 /**
  * 雑多API
@@ -39,6 +40,16 @@ export class MiscAPI {
 			method: HttpMethod.POST,
 			route: `v1/users/policy_agreements/${options.type}`,
 			requireAuth: true,
+		});
+	};
+
+	public getEmailGrantToken = async (options: { email: string; code: string }): Promise<EmailGrantTokenResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `apis/v1/apps/yay/email_grant_tokens`,
+			json: { email: options.email, code: options.code },
+			requireAuth: false,
+			baseURL: ID_CARD_CHECK_URL,
 		});
 	};
 
@@ -109,6 +120,16 @@ export class MiscAPI {
 			method: HttpMethod.GET,
 			route: `v1/users/ws_token`,
 			requireAuth: false,
+		});
+	};
+
+	public svc = async (options: { email: string; locale: string }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: (await this.getEmailVerificationPresignedUrl({ email: options.email, locale: options.locale })).url,
+			json: { email: options.email },
+			requireAuth: false,
+			baseURL: '',
 		});
 	};
 
