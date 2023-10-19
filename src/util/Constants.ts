@@ -10,6 +10,7 @@ export const BASE_HOST = 'api.yay.space';
 export const BASE_API_URL = `https://${BASE_HOST}/`;
 export const BASE_CASSANDRA_URL = 'https://cas.yay.space/';
 export const BASE_CONFIG_URL = 'https://settings.yay.space/';
+export const ID_CARD_CHECK_URL = 'https://idcardcheck.com/';
 export const WEB_SOCKET_URL = 'wss://cable.yay.space/';
 
 export const DEFAULT_DEVICE = {

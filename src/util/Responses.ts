@@ -304,6 +304,9 @@ export interface RegisterDeviceTokenResponse {
 	updatedAt?: number;
 	uuid?: string;
 }
+export interface EmailGrantTokenResponse {
+	emailGrantToken: string;
+}
 export interface EmailVerificationPresignedUrlResponse {
 	url: string;
 }
