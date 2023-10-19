@@ -16,7 +16,6 @@ import {
 	CreateGroupResponse,
 	CreateQuotaResponse,
 	CreateUserResponse,
-	EmailGrantTokenResponse,
 	EmailVerificationPresignedUrlResponse,
 	FollowRecommendationsResponse,
 	FollowRequestCountResponse,
