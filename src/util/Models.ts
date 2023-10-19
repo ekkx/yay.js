@@ -1,8 +1,6 @@
 export interface User {
 	ageVerified?: boolean;
 	biography?: string;
-	birthDate?: string;
-	blockingLimit?: number;
 	chatRequest?: boolean;
 	connectedBy?: string[];
 	contactPhones?: string[];
@@ -11,8 +9,6 @@ export interface User {
 	coverImageThumbnail?: string;
 	createdAt?: number;
 	dangerousUser?: boolean;
-	emailConfirmed?: boolean;
-	facebookConnected?: boolean;
 	followPending?: boolean;
 	followedBy?: boolean;
 	followersCount?: number;
@@ -21,43 +17,30 @@ export interface User {
 	fromDifferentGenerationAndTrusted?: boolean;
 	gender?: number;
 	generation?: number;
-	giftingAbility?: GiftingAbility;
-	groupPhoneOn?: boolean;
 	groupUser?: GroupUser;
-	groupVideoOn?: boolean;
 	groupsUsersCount?: number;
 	hidden?: boolean;
 	hideVip?: boolean;
 	id: number;
-	interestsCount?: number;
 	interestsSelected?: boolean;
 	isPrivate?: boolean;
 	lastLoggedinAt?: number;
-	lineConnected?: boolean;
-	lobiConnected?: boolean;
 	loginStreakCount?: number;
-	maskedEmail?: string;
 	mobileNumber?: string;
 	newUser?: boolean;
 	nickname?: string;
 	onlineStatus?: string;
-	phoneOn?: boolean;
 	postsCount?: number;
 	prefecture?: string;
 	profileIcon?: string;
 	profileIconThumbnail?: string;
-	pushNotification?: boolean;
 	recentlyKenta?: boolean;
 	restrictedReviewBy?: string;
 	reviewsCount?: number;
 	title?: string;
-	twitterId?: string;
 	updatedTime?: number;
 	username?: string;
-	uuid?: string;
-	videoOn?: boolean;
 	vip: boolean;
-	vipUntil?: number;
 }
 export interface GiftingAbility {
 	canReceive?: boolean;

@@ -227,6 +227,26 @@ export interface GiftSendersResponse {
 export interface CreateGroupResponse {
 	groupId?: number;
 }
+export interface UserResponse {
+	birthDate?: string;
+	blockingLimit?: number;
+	emailConfirmed?: boolean;
+	facebookConnected?: boolean;
+	giftingAbility?: GiftingAbility;
+	groupPhoneOn?: boolean;
+	groupVideoOn?: boolean;
+	interestsCount?: number;
+	lineConnected?: boolean;
+	lobiConnected?: boolean;
+	maskedEmail?: string;
+	phoneOn?: boolean;
+	pushNotification?: boolean;
+	twitterId?: string;
+	user?: User;
+	uuid?: string;
+	videoOn?: boolean;
+	vipUntil?: number;
+}
 export interface UsersResponse {
 	nextPageValue?: string;
 	users: User[];
