@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-
 import { objectToCamel } from '../util/CaseConverter';
 import { RequestObject, RequestOptions } from '../util/Types';
 import { RESTOptions } from '../util/Types';
@@ -22,9 +21,9 @@ export class REST {
 	public constructor(options: RESTOptions) {
 		this.logger = options.logger;
 		this.api = axios.create({
-			baseURL: options.baseURL ? options.baseURL : BASE_API_URL,
+			baseURL: options.baseURL ?? BASE_API_URL,
 			proxy: options.proxy,
-			timeout: options.timeout ? options.timeout : 30000,
+			timeout: options.timeout ?? 30000,
 			headers: options.defaultHeaders,
 			validateStatus: function (status) {
 				return true;
@@ -52,6 +51,7 @@ export class REST {
 			params: this.filterRequests(options.params),
 			data: this.filterRequests(options.json),
 			headers: options.headers,
+			baseURL: options.baseURL,
 		};
 
 		const requestDetails: string =

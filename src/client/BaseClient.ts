@@ -44,7 +44,7 @@ import EventEmitter from 'node:events';
  * yay.js クライアントの基底クラス
  *
  * @remarks
- * クライアント処理を担当する、yay.js の基底クラスです
+ * クライアント処理を担当する、クライアントの基底クラスです
  *
  * @see https://github.com/qvco/yay.js
  *
@@ -151,11 +151,6 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.refreshToken;
 	}
 
-	/**
-	 * 認証します
-	 *
-	 * @param options - 認証情報のオプション
-	 */
 	private async authenticate(options: { email: string; password: string }): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
@@ -187,9 +182,6 @@ export class BaseClient extends EventEmitter {
 		}
 	}
 
-	/**
-	 * クライアントを初期化します
-	 */
 	protected async prepare(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		const res = await this.authenticate(options);
 
@@ -217,11 +209,6 @@ export class BaseClient extends EventEmitter {
 		return res;
 	}
 
-	/**
-	 * HTTPリクエストを送信します
-	 *
-	 * @param options - リクエストを送信するためのオプション
-	 */
 	public async request(options: RequestOptions): Promise<any> {
 		// X-Client-IPがヘッダーになければ設定する
 		if (!this.headerInterceptor.getClientIP() && options.route !== 'v2/users/timestamp') {
