@@ -453,4 +453,93 @@ export class UserAPI {
 			requireAuth: false,
 		});
 	};
+
+	public setSettingFollowRecommendationEnabled = async (options: { on: boolean }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/users/visible_on_sns_friend_recommendation_setting`,
+			params: { on: options.on },
+			requireAuth: false,
+		});
+	};
+
+	public takeActionFollowRequest = async (options: { userId: number; action: string }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/users/${options.userId}/follow_request`,
+			json: { action: options.action },
+			requireAuth: false,
+		});
+	};
+
+	public turnOnHima = async () => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/users/hima`,
+			requireAuth: false,
+		});
+	};
+
+	public unfollowUser = async (options: { userId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/users/${options.userId}/unfollow`,
+			requireAuth: false,
+		});
+	};
+
+	public updateLanguage = async (options: { language: string }) => {
+		return await this.base.request({
+			method: HttpMethod.PUT,
+			route: `v1/users/language`,
+			json: {
+				uuid: this.uuid,
+				api_key: API_KEY,
+				timestamp: Math.floor(Date.now() / 1000),
+				signed_info: this.signedInfo,
+				language: options.language,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public updateUser = async (options: {
+		nickname: string;
+		username?: string;
+		biography?: string;
+		prefecture?: string;
+		gender?: number;
+		countryCode?: string;
+		profileIconFilename?: string;
+		coverImageFilename?: string;
+	}) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/users/language`,
+			json: {
+				nickname: options.nickname,
+				username: options.username,
+				biography: options.biography,
+				prefecture: options.prefecture,
+				gender: options.gender,
+				country_code: options.countryCode,
+				profile_icon_filename: options.profileIconFilename,
+				cover_image_filename: options.coverImageFilename,
+				uuid: this.uuid,
+				api_key: API_KEY,
+				timestamp: Math.floor(Date.now() / 1000),
+				signed_info: this.signedInfo,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public uploadTwitterFriendIds = async (options: { twitterFriendIds: string[] }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/users/twitter_friends`,
+			json: { twitter_friend_ids: options.twitterFriendIds },
+			requireAuth: false,
+		});
+	};
 }
