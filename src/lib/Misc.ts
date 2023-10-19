@@ -10,6 +10,7 @@ import {
 } from '../util/Responses';
 import { BaseClient } from '../client/BaseClient';
 import { HttpMethod } from '../util/Types';
+import { API_VERSION_NAME } from '../util/Constants';
 
 /**
  * 雑多API
@@ -112,7 +113,6 @@ export class MiscAPI {
 	};
 
 	public verifyDevice = async (options: {
-		appVersion: string;
 		platform: string;
 		verificationString: string;
 	}): Promise<VerifyDeviceResponse> => {
@@ -120,7 +120,7 @@ export class MiscAPI {
 			method: HttpMethod.POST,
 			route: `v1/genuine_devices/verify`,
 			json: {
-				app_version: options.appVersion,
+				app_version: API_VERSION_NAME,
 				platform: options.platform,
 				device_uuid: this.deviceUuid,
 				verification_string: options.verificationString,

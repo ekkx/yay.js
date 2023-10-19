@@ -16,6 +16,7 @@ import {
 	CreateGroupResponse,
 	CreateQuotaResponse,
 	CreateUserResponse,
+	EmailVerificationPresignedUrlResponse,
 	FollowRecommendationsResponse,
 	FollowRequestCountResponse,
 	FollowUsersResponse,
@@ -39,6 +40,9 @@ import {
 	PopularWordsResponse,
 	PostResponse,
 	PostsResponse,
+	PresignedUrlResponse,
+	PresignedUrlsResponse,
+	PromotionsResponse,
 	RefreshCounterRequestsResponse,
 	ReviewsResponse,
 	StickerPacksResponse,
@@ -51,6 +55,8 @@ import {
 	UserTimestampResponse,
 	UsersByTimestampResponse,
 	UsersResponse,
+	VerifyDeviceResponse,
+	VipGameRewardUrlResponse,
 } from '../util/Responses';
 import { Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
@@ -709,12 +715,43 @@ export class Client extends BaseClient {
 		return await this.miscAPI.acceptPolicyAgreement(options);
 	};
 
+	public getEmailVerificationPresignedUrl = async (options: {
+		email: string;
+		locale: string;
+		intent?: string;
+	}): Promise<EmailVerificationPresignedUrlResponse> => {
+		return await this.miscAPI.getEmailVerificationPresignedUrl(options);
+	};
+
+	public getFileUploadPresignedUrls = async (options: { filenames: string[] }): Promise<PresignedUrlsResponse> => {
+		return await this.miscAPI.getFileUploadPresignedUrls(options);
+	};
+
+	public getVideoFileUploadPresignedUrl = async (options: { videoFilename: string }): Promise<PresignedUrlResponse> => {
+		return await this.miscAPI.getOldFileUploadPresignedUrl(options);
+	};
+
 	public getPolicyAgreements = async (): Promise<PolicyAgreementsResponse> => {
 		return await this.miscAPI.getPolicyAgreements();
 	};
 
+	public getPromotions = async (options: { page: number; number?: number }): Promise<PromotionsResponse> => {
+		return await this.miscAPI.getPromotions(options);
+	};
+
+	public getVipGameRewardUrl = async (options: { deviceType: string }): Promise<VipGameRewardUrlResponse> => {
+		return await this.miscAPI.getVipGameRewardUrl(options);
+	};
+
 	public getWebSocketToken = async (): Promise<string> => {
 		return (await this.miscAPI.getWebSocketToken()).token;
+	};
+
+	public verifyDevice = async (options: {
+		platform: string;
+		verificationString: string;
+	}): Promise<VerifyDeviceResponse> => {
+		return await this.miscAPI.verifyDevice(options);
 	};
 
 	// MuteKeywordAPI
