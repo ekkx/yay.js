@@ -1,6 +1,11 @@
 import {
 	EmailVerificationPresignedUrlResponse,
 	PolicyAgreementsResponse,
+	PresignedUrlResponse,
+	PresignedUrlsResponse,
+	PromotionsResponse,
+	VerifyDeviceResponse,
+	VipGameRewardUrlResponse,
 	WebSocketTokenResponse,
 } from '../util/Responses';
 import { BaseClient } from '../client/BaseClient';
@@ -54,11 +59,47 @@ export class MiscAPI {
 		});
 	};
 
+	public getFileUploadPresignedUrls = async (options: { filenames: string[] }): Promise<PresignedUrlsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/buckets/presigned_urls`,
+			params: { 'file_names[]': options.filenames },
+			requireAuth: false,
+		});
+	};
+
+	public getOldFileUploadPresignedUrl = async (options: { videoFilename: string }): Promise<PresignedUrlResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/users/presigned_url`,
+			params: { video_file_name: options.videoFilename },
+			requireAuth: false,
+		});
+	};
+
 	public getPolicyAgreements = async (): Promise<PolicyAgreementsResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v1/users/policy_agreements`,
-			requireAuth: true,
+			requireAuth: false,
+		});
+	};
+
+	public getPromotions = async (options: { page: number; number?: number }): Promise<PromotionsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/promotions`,
+			params: { page: options.page, number: options.number },
+			requireAuth: false,
+		});
+	};
+
+	public getVipGameRewardUrl = async (options: { deviceType: string }): Promise<VipGameRewardUrlResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/skyfall/url`,
+			params: { device_type: options.deviceType },
+			requireAuth: false,
 		});
 	};
 
@@ -66,6 +107,24 @@ export class MiscAPI {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v1/users/ws_token`,
+			requireAuth: false,
+		});
+	};
+
+	public verifyDevice = async (options: {
+		appVersion: string;
+		platform: string;
+		verificationString: string;
+	}): Promise<VerifyDeviceResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/genuine_devices/verify`,
+			json: {
+				app_version: options.appVersion,
+				platform: options.platform,
+				device_uuid: this.deviceUuid,
+				verification_string: options.verificationString,
+			},
 			requireAuth: false,
 		});
 	};
