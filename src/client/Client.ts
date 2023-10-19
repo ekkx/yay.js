@@ -1,6 +1,5 @@
 import { BaseClient } from './BaseClient';
 import { ClientOptions } from '../util/Types';
-import { API_KEY } from '../util/Constants';
 import {
 	ActiveFollowingsResponse,
 	AdditionalSettingsResponse,
@@ -92,23 +91,7 @@ export class Client extends BaseClient {
 	};
 
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
-		const loginResponse = await this.prepare({
-			apiKey: API_KEY,
-			email: options.email,
-			password: options.password,
-			uuid: this.uuid,
-		});
-
-		// 利用規約に同意する
-		const policyResponse = await this.getPolicyAgreements();
-		if (!policyResponse.latestPrivacyPolicyAgreed) {
-			this.acceptPolicyAgreement({ type: 'privacy_policy' });
-		}
-		if (!policyResponse.latestTermsOfUseAgreed) {
-			this.acceptPolicyAgreement({ type: 'terms_of_use' });
-		}
-
-		return loginResponse;
+		return await this.prepare({ email: options.email, password: options.password });
 	};
 
 	// BlockAPI

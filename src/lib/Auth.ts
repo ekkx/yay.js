@@ -1,6 +1,7 @@
 import { BaseClient } from '../client/BaseClient';
 import { LoginEmailUserRequest, HttpMethod } from '../util/Types';
 import { LoginUserResponse, TokenResponse } from '../util/Responses';
+import { API_KEY } from '../util/Constants';
 
 /**
  * 認証API
@@ -39,10 +40,10 @@ export class AuthAPI {
 			route: `v3/users/login_with_email`,
 			requireAuth: false,
 			json: {
-				api_key: request.apiKey,
+				api_key: API_KEY,
 				email: request.email,
 				password: request.password,
-				uuid: request.uuid,
+				uuid: this.base.uuid,
 			},
 		});
 	};

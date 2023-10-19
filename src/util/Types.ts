@@ -122,10 +122,8 @@ export type Device = {
 export type RequestObject = Record<string, unknown>;
 
 export type LoginEmailUserRequest = {
-	apiKey: string;
 	email: string;
 	password: string;
-	uuid: string;
 };
 
 export type SearchCriteria = {

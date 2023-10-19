@@ -156,7 +156,7 @@ export class BaseClient extends EventEmitter {
 	 *
 	 * @param options - 認証情報のオプション
 	 */
-	private async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+	private async authenticate(options: { email: string; password: string }): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
 			return {
@@ -166,10 +166,8 @@ export class BaseClient extends EventEmitter {
 			};
 		} catch (error) {
 			const res = await this.authAPI.loginWithEmail({
-				apiKey: options.apiKey,
 				email: options.email,
 				password: options.password,
-				uuid: options.uuid,
 			});
 			if (!res.accessToken) {
 				throw new ForbiddenError({
@@ -191,8 +189,6 @@ export class BaseClient extends EventEmitter {
 
 	/**
 	 * クライアントを初期化します
-	 *
-	 * @param options - 認証情報のオプション
 	 */
 	protected async prepare(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		const res = await this.authenticate(options);
@@ -212,6 +208,11 @@ export class BaseClient extends EventEmitter {
 				this.ws.connect(wsToken, this.intents);
 			});
 		}
+
+		// 利用規約に同意する
+		const policyResponse = await this.miscAPI.getPolicyAgreements();
+		if (!policyResponse.latestPrivacyPolicyAgreed) this.miscAPI.acceptPolicyAgreement({ type: 'privacy_policy' });
+		if (!policyResponse.latestTermsOfUseAgreed) this.miscAPI.acceptPolicyAgreement({ type: 'terms_of_use' });
 
 		return res;
 	}
