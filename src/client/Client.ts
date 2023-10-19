@@ -15,7 +15,10 @@ import {
 	CreateChatRoomResponse,
 	CreateGroupResponse,
 	CreateQuotaResponse,
+	FollowRecommendationsResponse,
+	FollowRequestCountResponse,
 	FollowUsersResponse,
+	FootprintsResponse,
 	GamesResponse,
 	GenresResponse,
 	GifsDataResponse,
@@ -26,6 +29,7 @@ import {
 	GroupUsersResponse,
 	GroupsRelatedResponse,
 	GroupsResponse,
+	HimaUsersResponse,
 	LoginUserResponse,
 	MessageResponse,
 	MessagesResponse,
@@ -34,11 +38,16 @@ import {
 	PopularWordsResponse,
 	PostResponse,
 	PostsResponse,
+	RefreshCounterRequestsResponse,
 	ReviewsResponse,
 	StickerPacksResponse,
 	TokenResponse,
 	TotalChatRequestResponse,
 	UnreadStatusResponse,
+	UserCustomDefinitionsResponse,
+	UserEmailResponse,
+	UserResponse,
+	UserTimestampResponse,
 	UsersByTimestampResponse,
 	UsersResponse,
 } from '../util/Responses';
@@ -811,6 +820,210 @@ export class Client extends BaseClient {
 		fromLoggedinAt?: number;
 	}): Promise<ActiveFollowingsResponse> => {
 		return await this.userAPI.getActiveFollowings(options);
+	};
+
+	public getAdditionalSettings = async (): Promise<AdditionalSettingsResponse> => {
+		return await this.userAPI.getAdditionalSettings();
+	};
+
+	public getFollowRecommendations = async (
+		options: {
+			fromTimestamp?: number;
+			number?: number;
+			sources?: string[];
+		} = {},
+	): Promise<FollowRecommendationsResponse> => {
+		return await this.userAPI.getFollowRecommendations(options);
+	};
+
+	public getFollowRequests = async (options: { fromTimestamp?: number } = {}): Promise<UsersByTimestampResponse> => {
+		return await this.userAPI.getFollowRequest(options);
+	};
+
+	public getFollowRequestsCount = async (): Promise<FollowRequestCountResponse> => {
+		return await this.userAPI.getFollowRequestCount();
+	};
+
+	public getFollowingUserBirthdate = async (options: { birthdate?: string } = {}): Promise<UsersResponse> => {
+		return await this.userAPI.getFollowingUsersBorn(options);
+	};
+
+	public getFootprints = async (
+		options: { fromId?: number; number?: number; mode?: string } = {},
+	): Promise<FootprintsResponse> => {
+		return await this.userAPI.getFootprints(options);
+	};
+
+	public getFreshUser = async (options: { userId: number }): Promise<UserResponse> => {
+		return await this.userAPI.getFreshUser(options);
+	};
+
+	public getHimaUsers = async (options: { fromHimaId?: number; number?: number } = {}): Promise<HimaUsersResponse> => {
+		return await this.userAPI.getHimaUsers(options);
+	};
+
+	public getRecommendedUsersToFollow = async (options: {
+		userId: number;
+		number?: number;
+		page?: number;
+	}): Promise<UsersResponse> => {
+		return await this.userAPI.getRecommendedUsersToFollowForProfile(options);
+	};
+
+	public getRefreshCounterRequests = async (): Promise<RefreshCounterRequestsResponse> => {
+		return await this.userAPI.getRefreshCounterRequests();
+	};
+
+	public getTimestamp = async (): Promise<UserTimestampResponse> => {
+		return await this.userAPI.getTimestamp();
+	};
+
+	public getUser = async (options: { userId: number }): Promise<UserResponse> => {
+		return await this.userAPI.getUser(options);
+	};
+
+	public getUserCustomDefinitions = async (): Promise<UserCustomDefinitionsResponse> => {
+		return await this.getUserCustomDefinitions();
+	};
+
+	public getUserEmail = async (options: { userId: number }): Promise<UserEmailResponse> => {
+		return await this.userAPI.getUserEmail(options);
+	};
+
+	public getUserFollowers = async (options: {
+		userId: number;
+		fromFollowId?: number;
+		followedByMe?: boolean;
+		nickname?: string;
+	}): Promise<FollowUsersResponse> => {
+		return await this.userAPI.getUserFollowers(options);
+	};
+
+	public getUserFollowings = async (options: {
+		userId: number;
+		fromFollowId?: number;
+		fromTimestamp?: boolean;
+		orderBy?: string;
+		// SearchUsersRequest
+	}): Promise<FollowUsersResponse> => {
+		return await this.userAPI.getUserFollowings(options);
+	};
+
+	public getUserFromQr = async (options: { qr: string }): Promise<UserResponse> => {
+		return await this.userAPI.getUserFromQr(options);
+	};
+
+	public getUserWithCallUserId = async (options: { callId: number; callUserId: string }): Promise<UserResponse> => {
+		return await this.userAPI.getUserWithCallUserId(options);
+	};
+
+	public getUserWithoutLeavingFootprint = async (options: { userId: number }): Promise<UserResponse> => {
+		return await this.userAPI.getUserWithoutLeavingFootprint(options);
+	};
+
+	public getUsers = async (options: { userIds: number[] }): Promise<UsersResponse> => {
+		return await this.userAPI.getUsers({
+			...options,
+			jwt: await this.getWebSocketToken(),
+		});
+	};
+
+	public getUsersFromUuid = async (options: { uuid: string }): Promise<UsersResponse> => {
+		return await this.userAPI.getUsersFromUuid(options);
+	};
+
+	public refreshProfileCounter = async (options: { counter: string }) => {
+		return await this.userAPI.refreshCounter(options);
+	};
+
+	public removeUserAvatar = async () => {
+		return await this.userAPI.removeUserAvatar();
+	};
+
+	public removeUserCover = async () => {
+		return await this.userAPI.removeUserCover();
+	};
+
+	public reportUser = async (options: {
+		userId: number;
+		categoryId: number;
+		reason?: string;
+		screenshotFilename?: string;
+		screenshot2Filename?: string;
+		screenshot3Filename?: string;
+		screenshot4Filename?: string;
+	}) => {
+		return await this.userAPI.reportUser(options);
+	};
+
+	public resetPassword = async (options: { email: string; emailGrantToken: string; password: string }) => {
+		return await this.userAPI.resetPassword(options);
+	};
+
+	public searchLobiUsers = async (
+		options: { nickname?: string; number?: number; from?: string } = {},
+	): Promise<UsersResponse> => {
+		return await this.userAPI.searchLobiUsers(options);
+	};
+
+	public searchUsers = async (options: {
+		gender?: string;
+		nickname?: number;
+		title?: string;
+		biography?: string;
+		fromTimestamp?: number;
+		similarAge?: boolean;
+		notRecentGomimushi?: boolean;
+		recentlyCreated?: boolean;
+		samePrefecture?: boolean;
+		saveRecentSearch?: boolean;
+	}): Promise<UsersResponse> => {
+		return await this.userAPI.searchUsers(options);
+	};
+
+	public setAdditionalUserSettingEnabled = async (options: { mode: string; on?: number }) => {
+		return await this.userAPI.setAdditionalSettingEnabled(options);
+	};
+
+	public setFollowPermissionEnabled = async (options: { nickname: string; isPrivate?: boolean }) => {
+		return await this.userAPI.setFollowPermissionEnabled(options);
+	};
+
+	public setSettingFollowRecommendationEnabled = async (options: { on: boolean }) => {
+		return await this.userAPI.setSettingFollowRecommendationEnabled(options);
+	};
+
+	public takeActionFollowRequest = async (options: { userId: number; action: string }) => {
+		return await this.userAPI.takeActionFollowRequest(options);
+	};
+
+	public turnOnHima = async () => {
+		return await this.userAPI.turnOnHima();
+	};
+
+	public unfollowUser = async (options: { userId: number }) => {
+		return await this.userAPI.unfollowUser(options);
+	};
+
+	public updateLanguage = async (options: { language: string }) => {
+		return await this.userAPI.updateLanguage(options);
+	};
+
+	public updateUser = async (options: {
+		nickname: string;
+		username?: string;
+		biography?: string;
+		prefecture?: string;
+		gender?: number;
+		countryCode?: string;
+		profileIconFilename?: string;
+		coverImageFilename?: string;
+	}) => {
+		return await this.userAPI.updateUser(options);
+	};
+
+	public uploadTwitterFriendIds = async (options: { twitterFriendIds: string[] }) => {
+		return await this.userAPI.uploadTwitterFriendIds(options);
 	};
 }
 
