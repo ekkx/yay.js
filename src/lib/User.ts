@@ -2,6 +2,7 @@ import { BaseClient } from '../client/BaseClient';
 import {
 	ActiveFollowingsResponse,
 	AdditionalSettingsResponse,
+	CreateUserResponse,
 	FollowRecommendationsResponse,
 	FollowRequestCountResponse,
 	FollowUsersResponse,
@@ -15,7 +16,7 @@ import {
 	UsersByTimestampResponse,
 	UsersResponse,
 } from '../util/Responses';
-import { API_KEY } from '../util/Constants';
+import { API_KEY, API_VERSION_NAME } from '../util/Constants';
 import { HttpMethod } from '../util/Types';
 import * as util from '../util/Utils';
 
@@ -44,6 +45,11 @@ export class UserAPI {
 	/** @ignore */
 	private get signedInfo(): string {
 		return util.md5(this.deviceUuid, Math.floor(Date.now() / 1000), false);
+	}
+
+	/** @ignore */
+	private get signedVersion(): string {
+		return util.sha256();
 	}
 
 	public deleteContactFriends = async () => {
@@ -326,6 +332,49 @@ export class UserAPI {
 			method: HttpMethod.POST,
 			route: `v1/users/reset_counters`,
 			json: { counter: options.counter },
+			requireAuth: false,
+		});
+	};
+
+	public reg = async (options: {
+		nickname: string;
+		biography?: string;
+		birthDate: string;
+		gender: number;
+		countryCode: string;
+		prefecture?: string;
+		profileIconFilename?: string;
+		coverImageFilename?: string;
+		email?: string;
+		password?: string;
+		emailGrantToken?: string;
+		en?: number;
+		vn?: number;
+	}): Promise<CreateUserResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v3/users/register`,
+			json: {
+				app_version: API_VERSION_NAME,
+				timestamp: Math.floor(Date.now() / 1000),
+				api_key: API_KEY,
+				signed_version: this.signedVersion,
+				signed_info: this.signedInfo,
+				uuid: this.uuid,
+				nickname: options.nickname,
+				birth_date: options.birthDate,
+				gender: options.gender,
+				country_code: options.countryCode,
+				biography: options.biography,
+				prefecture: options.prefecture,
+				profile_icon_filename: options.profileIconFilename,
+				cover_image_filename: options.coverImageFilename,
+				email: options.email,
+				password: options.password,
+				email_grant_token: options.emailGrantToken,
+				en: options.en,
+				vn: options.vn,
+			},
 			requireAuth: false,
 		});
 	};

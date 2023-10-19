@@ -15,6 +15,7 @@ import {
 	CreateChatRoomResponse,
 	CreateGroupResponse,
 	CreateQuotaResponse,
+	CreateUserResponse,
 	FollowRecommendationsResponse,
 	FollowRequestCountResponse,
 	FollowUsersResponse,
@@ -934,6 +935,24 @@ export class Client extends BaseClient {
 
 	public refreshProfileCounter = async (options: { counter: string }) => {
 		return await this.userAPI.refreshCounter(options);
+	};
+
+	public reg = async (options: {
+		nickname: string;
+		biography?: string;
+		birthDate: string;
+		gender: number;
+		countryCode: string;
+		prefecture?: string;
+		profileIconFilename?: string;
+		coverImageFilename?: string;
+		email?: string;
+		password?: string;
+		emailGrantToken?: string;
+		en?: number;
+		vn?: number;
+	}): Promise<CreateUserResponse> => {
+		return await this.userAPI.reg(options);
 	};
 
 	public removeUserAvatar = async () => {
