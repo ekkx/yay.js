@@ -15,8 +15,8 @@ import {
 	UsersByTimestampResponse,
 	UsersResponse,
 } from '../util/Responses';
-import { API_KEY } from '../util/Constants';
 import * as util from '../util/Utils';
+import { API_KEY } from '../util/Constants';
 
 /**
  * サークルAPI
