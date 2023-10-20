@@ -32,6 +32,7 @@ import {
 	GroupsRelatedResponse,
 	GroupsResponse,
 	HimaUsersResponse,
+	LoginUpdateResponse,
 	LoginUserResponse,
 	MessageResponse,
 	MessagesResponse,
@@ -98,6 +99,21 @@ export class Client extends BaseClient {
 
 	// AuthAPI
 
+	public changeEmail = async (options: {
+		email: string;
+		password: string;
+		emailGrantToken?: string;
+	}): Promise<LoginUpdateResponse> => {
+		return await this.authAPI.changeEmail(options);
+	};
+
+	public changePassword = async (options: {
+		currentPassword: string;
+		newPassword: string;
+	}): Promise<LoginUpdateResponse> => {
+		return await this.authAPI.changePassword(options);
+	};
+
 	public getToken = async (options: {
 		grantType: string;
 		email?: string;
@@ -109,6 +125,48 @@ export class Client extends BaseClient {
 
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
 		return await this.prepare({ email: options.email, password: options.password });
+	};
+
+	public logout = async () => {
+		return await this.authAPI.logoutDevice();
+	};
+
+	public migrateToken = async (options: { token: string }) => {
+		return await this.authAPI.migrateToken(options);
+	};
+
+	public registerDeviceToken = async (options: {
+		deviceToken: string;
+		deviceType: string;
+		osVersion: string;
+		screenResolution: string;
+		screenDensity: string;
+		deviceModel: string;
+		appsflyerId: string;
+		advertisingId?: string;
+	}) => {
+		return await this.authAPI.registerDeviceToken(options);
+	};
+
+	public resendConfirmEmail = async () => {
+		return await this.authAPI.resendConfirmEmail();
+	};
+
+	public restoreUser = async (options: { userId: number }) => {
+		return await this.authAPI.restoreUser(options);
+	};
+
+	public revokeDeviceTokens = async () => {
+		return await this.authAPI.revokeTokens();
+	};
+
+	public saveAccountWithEmail = async (options: {
+		email: string;
+		password?: string;
+		currentPassword?: string;
+		emailGrantToken?: string;
+	}) => {
+		return await this.authAPI.saveAccountWithEmail(options);
 	};
 
 	// BlockAPI
