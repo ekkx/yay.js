@@ -15,21 +15,6 @@ import * as util from '../util/Utils';
 export class AuthAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	/** @ignore */
-	private get uuid(): string {
-		return this.base.uuid;
-	}
-
-	/** @ignore */
-	private get deviceUuid(): string {
-		return this.base.deviceUuid;
-	}
-
-	/** @ignore */
-	private get signedInfo(): string {
-		return util.md5(this.deviceUuid, Math.floor(Date.now() / 1000), false);
-	}
-
 	public changeEmail = async (options: {
 		email: string;
 		password: string;
@@ -194,4 +179,19 @@ export class AuthAPI {
 			},
 		});
 	};
+
+	/** @ignore */
+	private get uuid(): string {
+		return this.base.uuid;
+	}
+
+	/** @ignore */
+	private get deviceUuid(): string {
+		return this.base.deviceUuid;
+	}
+
+	/** @ignore */
+	private get signedInfo(): string {
+		return util.md5(this.deviceUuid, Math.floor(Date.now() / 1000), false);
+	}
 }

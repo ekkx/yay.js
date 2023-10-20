@@ -25,16 +25,6 @@ import { API_VERSION_NAME, ID_CARD_CHECK_URL } from '../util/Constants';
 export class MiscAPI {
 	public constructor(private readonly base: BaseClient) {}
 
-	/** @ignore */
-	private get uuid(): string {
-		return this.base.uuid;
-	}
-
-	/** @ignore */
-	private get deviceUuid(): string {
-		return this.base.deviceUuid;
-	}
-
 	public acceptPolicyAgreement = async (options: { type: string }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
@@ -149,4 +139,14 @@ export class MiscAPI {
 			requireAuth: false,
 		});
 	};
+
+	/** @ignore */
+	private get uuid(): string {
+		return this.base.uuid;
+	}
+
+	/** @ignore */
+	private get deviceUuid(): string {
+		return this.base.deviceUuid;
+	}
 }
