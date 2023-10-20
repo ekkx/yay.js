@@ -37,6 +37,7 @@ import {
 	LoginUserResponse,
 	MessageResponse,
 	MessagesResponse,
+	MuteKeywordResponse,
 	NotificationSettingResponse,
 	PolicyAgreementsResponse,
 	PopularWordsResponse,
@@ -60,7 +61,7 @@ import {
 	VerifyDeviceResponse,
 	VipGameRewardUrlResponse,
 } from '../util/Responses';
-import { Post, SharedUrl, Walkthrough } from '../util/Models';
+import { MuteKeyword, Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
 
 /**
@@ -834,6 +835,26 @@ export class Client extends BaseClient {
 	};
 
 	// MuteKeywordAPI
+
+	public muteKeyword = async (options: { word: string; context: string[] }): Promise<MuteKeyword> => {
+		return (await this.muteKeywordAPI.createKeyword(options)).hiddenWord;
+	};
+
+	public deleteMutedKeyword = async (options: { keywordIds: number[] }) => {
+		return await this.muteKeywordAPI.deleteKeyword(options);
+	};
+
+	public getMutedKeywords = async (): Promise<MuteKeyword[]> => {
+		return (await this.muteKeywordAPI.getKeywords()).hiddenWords;
+	};
+
+	public editMutedKeyword = async (options: {
+		keywordId: number;
+		word: string;
+		context: string[];
+	}): Promise<MuteKeyword> => {
+		return (await this.muteKeywordAPI.updateKeyword(options)).hiddenWord;
+	};
 
 	// NotificationAPI
 
