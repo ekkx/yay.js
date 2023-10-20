@@ -672,7 +672,7 @@ export class Client extends BaseClient {
 		groupId: number;
 		topic?: string;
 		description?: string;
-		secret?: string;
+		secret?: boolean;
 		hideReportedPosts?: boolean;
 		hideConferenceCall?: boolean;
 		isPrivate?: boolean;
@@ -1073,7 +1073,7 @@ export class Client extends BaseClient {
 		return await this.userAPI.updateLanguage(options);
 	};
 
-	public updateUser = async (options: {
+	public editUser = async (options: {
 		nickname: string;
 		username?: string;
 		biography?: string;

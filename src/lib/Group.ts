@@ -73,7 +73,7 @@ export class GroupAPI {
 		return await this.base.request({
 			method: HttpMethod.PUT,
 			route: `v1/groups/v${options.groupId}/related`,
-			params: { 'related_group_id[]': options.relatedGroupId },
+			params: { 'related_group_id': options.relatedGroupId },
 			requireAuth: false,
 		});
 	};
@@ -293,7 +293,7 @@ export class GroupAPI {
 		return await this.base.request({
 			method: HttpMethod.GET,
 			route: `v1/groups/joined_statuses`,
-			params: { 'ids[]': options.groupIds },
+			params: { 'ids': options.groupIds },
 			requireAuth: false,
 		});
 	};
@@ -365,7 +365,7 @@ export class GroupAPI {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/groups/${options.groupId}/invite`,
-			json: { 'user_ids[]': options.userIds },
+			json: { 'user_ids': options.userIds },
 			requireAuth: false,
 		});
 	};
@@ -448,7 +448,7 @@ export class GroupAPI {
 			method: HttpMethod.POST,
 			route: `v3/groups/${options.groupId}/deputize/mass`,
 			json: {
-				'user_ids[]': options.userIds,
+				'user_ids': options.userIds,
 				uuid: this.uuid,
 				api_key: API_KEY,
 				timestamp: Math.floor(Date.now() / 1000),
@@ -522,7 +522,7 @@ export class GroupAPI {
 		groupId: number;
 		topic?: string;
 		description?: string;
-		secret?: string;
+		secret?: boolean;
 		hideReportedPosts?: boolean;
 		hideConferenceCall?: boolean;
 		isPrivate?: boolean;
