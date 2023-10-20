@@ -31,6 +31,7 @@ import {
 	GroupUsersResponse,
 	GroupsRelatedResponse,
 	GroupsResponse,
+	HiddenResponse,
 	HimaUsersResponse,
 	LoginUpdateResponse,
 	LoginUserResponse,
@@ -459,7 +460,7 @@ export class Client extends BaseClient {
 		return await this.chatAPI.setNotificationSettings(options);
 	};
 
-	public unHideChatRooms = async (options: { roomIds: number[] }) => {
+	public unhideChatRooms = async (options: { roomIds: number[] }) => {
 		return await this.chatAPI.unHideChat(options);
 	};
 
@@ -766,6 +767,18 @@ export class Client extends BaseClient {
 	};
 
 	// HiddenAPI
+
+	public getMutedUsers = async (options: { from?: string; number?: number }): Promise<HiddenResponse> => {
+		return await this.hiddenAPI.getList(options);
+	};
+
+	public muteUser = async (options: { userId: number }) => {
+		return await this.hiddenAPI.hideUser(options);
+	};
+
+	public unmuteUsers = async (options: { userIds: number[] }) => {
+		return await this.hiddenAPI.unHideUsers(options);
+	};
 
 	// MiscAPI
 
