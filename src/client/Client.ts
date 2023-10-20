@@ -2,6 +2,7 @@ import { BaseClient } from './BaseClient';
 import { ClientOptions } from '../util/Types';
 import {
 	ActiveFollowingsResponse,
+	ActivitiesResponse,
 	AdditionalSettingsResponse,
 	ApplicationConfigResponse,
 	BanWordsResponse,
@@ -857,6 +858,24 @@ export class Client extends BaseClient {
 	};
 
 	// NotificationAPI
+
+	public getNotifications = async (
+		options: {
+			important?: boolean;
+			fromTimestamp?: number;
+			number?: number;
+		} = {},
+	): Promise<ActivitiesResponse> => {
+		return await this.notificationAPI.getUserActivities(options);
+	};
+
+	public getMergedNotifications = async (options: { fromTimestamp?: number } = {}): Promise<ActivitiesResponse> => {
+		return await this.notificationAPI.getUserMergedActivities(options);
+	};
+
+	public receivedNotification = async (options: { pid: string; type: string; openedAt?: number }) => {
+		return await this.notificationAPI.receivedNotification(options);
+	};
 
 	// PostAPI
 

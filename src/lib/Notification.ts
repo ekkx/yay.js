@@ -43,7 +43,7 @@ export class NotificationAPI {
 		pid: string;
 		type: string;
 		openedAt?: number;
-	}): Promise<ActivitiesResponse> => {
+	}) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `api/received_push_notifications`,
