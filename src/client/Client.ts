@@ -62,10 +62,10 @@ import { GifImageCategory, GroupUser, MuteKeyword, Post, SharedUrl, Walkthrough 
 import { objectToSnake } from '../util/CaseConverter';
 
 /**
- * yay.js クライアントクラス
+ * **yay.js - クライアント**
  *
  * @remarks
- * クライアント処理を担当する、yay.js のスタートポイントとなるクラスです
+ * yay.js のエントリーポイントとなるクラスです
  *
  * @example
  * ```typescript
@@ -666,12 +666,11 @@ export class Client extends BaseClient {
 
 	/**
 	 *
-	 * 関連するサークルを削除します
+	 * **関連するサークルを削除します**
 	 *
 	 * @remarks
 	 * `DELETE`: https://api.yay.space/v1/groups/:groupId/related
 	 *
-	 * @param options - 引数のオプション
 	 * @param options.groupId - サークルのID
 	 * @param options.relatedGroupIds - 関連するサークルのID
 	 *
@@ -1197,5 +1196,3 @@ export class Client extends BaseClient {
 		return await this.userAPI.uploadTwitterFriendIds(options);
 	};
 }
-
-export default Client;
