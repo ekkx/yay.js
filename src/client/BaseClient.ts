@@ -36,7 +36,7 @@ import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, ErrorResponse, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
 
-import { packageVersion } from '../util/version';
+import { packageVersion } from '../util/Version';
 import { AxiosResponse } from 'axios';
 import EventEmitter from 'node:events';
 
