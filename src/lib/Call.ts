@@ -126,7 +126,7 @@ export class CallAPI {
 			method: HttpMethod.POST,
 			route: `v1/calls/conference_calls/${options.callId}/invite`,
 			requireAuth: true,
-			json: { 'user_ids[]': options.userIds },
+			json: { 'user_ids': options.userIds },
 		});
 	};
 

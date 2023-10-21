@@ -32,7 +32,7 @@ export class ChatAPI {
 			method: HttpMethod.POST,
 			route: `v1/chat_rooms/accept_chat_request`,
 			requireAuth: false,
-			json: { 'chat_room_ids[]': options.roomIds },
+			json: { 'chat_room_ids': options.roomIds },
 		});
 	};
 
@@ -57,7 +57,7 @@ export class ChatAPI {
 			requireAuth: false,
 			json: {
 				name: options.name,
-				'with_user_ids[]': options.withUserIds,
+				'with_user_ids': options.withUserIds,
 				icon_filename: options.iconFilename,
 				background_filename: options.backgroundFilename,
 			},
@@ -224,7 +224,7 @@ export class ChatAPI {
 			method: HttpMethod.POST,
 			route: `v2/chat_rooms/${options.roomId}/invite`,
 			requireAuth: true,
-			json: { 'with_user_ids[]': options.withUserIds },
+			json: { 'with_user_ids': options.withUserIds },
 		});
 	};
 
@@ -233,7 +233,7 @@ export class ChatAPI {
 			method: HttpMethod.POST,
 			route: `v2/chat_rooms/${options.roomId}/kick`,
 			requireAuth: true,
-			json: { 'with_user_ids[]': options.withUserIds },
+			json: { 'with_user_ids': options.withUserIds },
 		});
 	};
 
@@ -250,7 +250,7 @@ export class ChatAPI {
 			method: HttpMethod.POST,
 			route: `v1/chat_rooms/${options.roomId}/attachments_read`,
 			requireAuth: true,
-			json: { 'attachment_msg_ids[]': options.attachmentMsgIds },
+			json: { 'attachment_msg_ids': options.attachmentMsgIds },
 		});
 	};
 
@@ -267,7 +267,7 @@ export class ChatAPI {
 			method: HttpMethod.POST,
 			route: `v1/chat_rooms/${options.roomId}/videos_read`,
 			requireAuth: true,
-			json: { 'video_msg_ids[]': options.videoMsgIds },
+			json: { 'video_msg_ids': options.videoMsgIds },
 		});
 	};
 
@@ -285,7 +285,7 @@ export class ChatAPI {
 			method: HttpMethod.POST,
 			route: `v1/chat_rooms/mass_destroy`,
 			requireAuth: true,
-			json: { 'chat_room_ids[]': options.roomIds },
+			json: { 'chat_room_ids': options.roomIds },
 		});
 	};
 
