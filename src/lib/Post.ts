@@ -1,5 +1,12 @@
 import { BaseClient } from '../client/BaseClient';
-import { BookmarkPostResponse, CreatePostResponse } from 'util/Responses';
+import {
+	BookmarkPostResponse,
+	CreatePostResponse,
+	PostLikersResponse,
+	PostResponse,
+	PostTagsResponse,
+	PostsResponse,
+} from 'util/Responses';
 import { HttpMethod } from '../util/Types';
 import { MessageTag, Post, SharedUrl } from '../util/Models';
 import * as util from '../util/Utils';
@@ -36,26 +43,28 @@ export class PostAPI {
 		});
 	};
 
-	public createGroupCallPost = async (options: {
-		text?: string;
-		fontSize?: number;
-		color?: number;
-		groupId?: number;
-		callType?: string;
-		categoryId?: number;
-		gameTitle?: string;
-		joinableBy?: string;
-		messageTags?: MessageTag;
-		attachmentFilename?: string;
-		attachment2Filename?: string;
-		attachment3Filename?: string;
-		attachment4Filename?: string;
-		attachment5Filename?: string;
-		attachment6Filename?: string;
-		attachment7Filename?: string;
-		attachment8Filename?: string;
-		attachment9Filename?: string;
-	}): Promise<CreatePostResponse> => {
+	public createGroupCallPost = async (
+		options: {
+			text?: string;
+			fontSize?: number;
+			color?: number;
+			groupId?: number;
+			callType?: string;
+			categoryId?: number;
+			gameTitle?: string;
+			joinableBy?: string;
+			messageTags?: MessageTag;
+			attachmentFilename?: string;
+			attachment2Filename?: string;
+			attachment3Filename?: string;
+			attachment4Filename?: string;
+			attachment5Filename?: string;
+			attachment6Filename?: string;
+			attachment7Filename?: string;
+			attachment8Filename?: string;
+			attachment9Filename?: string;
+		} = {},
+	): Promise<CreatePostResponse> => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v2/posts/new_conference_call`,
@@ -200,6 +209,456 @@ export class PostAPI {
 				video_file_name: options.videoFileName,
 			},
 			headers: { 'X-Jwt': options.jwt },
+		});
+	};
+
+	public createSharePost = async (options: {
+		shareableType: string;
+		shareableId: number;
+		postId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+		groupId?: number;
+	}): Promise<Post> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/posts/new_share_post`,
+			requireAuth: true,
+			json: {
+				shareable_type: options.shareableType,
+				shareable_id: options.shareableId,
+				text: options.text,
+				font_size: options.fontSize,
+				uuid: this.uuid,
+				api_key: API_KEY,
+				timestamp: Math.floor(Date.now() / 1000),
+				signed_info: this.signedInfo,
+				color: options.color,
+				group_id: options.groupId,
+			},
+		});
+	};
+
+	public createThreadPost = async (options: {
+		jwt: string;
+		threadId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+		inReplyTo?: number;
+		groupId?: number;
+		postType?: string;
+		mentionIds?: number[];
+		choices?: string[];
+		sharedUrl?: SharedUrl;
+		messageTags?: MessageTag;
+		attachmentFilename?: string;
+		attachment2Filename?: string;
+		attachment3Filename?: string;
+		attachment4Filename?: string;
+		attachment5Filename?: string;
+		attachment6Filename?: string;
+		attachment7Filename?: string;
+		attachment8Filename?: string;
+		attachment9Filename?: string;
+		videoFileName?: string;
+	}): Promise<Post> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/threads/${options.threadId}/posts`,
+			requireAuth: true,
+			json: {
+				text: options.text,
+				font_size: options.fontSize,
+				color: options.color,
+				in_reply_to: options.inReplyTo,
+				group_id: options.groupId,
+				post_type: options.postType,
+				mention_ids: options.mentionIds,
+				choices: options.choices,
+				shared_url: options.sharedUrl,
+				message_tags: options.messageTags,
+				attachment_filename: options.attachmentFilename,
+				attachment_2_filename: options.attachment2Filename,
+				attachment_3_filename: options.attachment3Filename,
+				attachment_4_filename: options.attachment4Filename,
+				attachment_5_filename: options.attachment5Filename,
+				attachment_6_filename: options.attachment6Filename,
+				attachment_7_filename: options.attachment7Filename,
+				attachment_8_filename: options.attachment8Filename,
+				attachment_9_filename: options.attachment9Filename,
+				video_file_name: options.videoFileName,
+			},
+			headers: { 'X-Jwt': options.jwt },
+		});
+	};
+
+	public deleteAllPost = async () => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/posts/delete_all_post`,
+			requireAuth: false,
+		});
+	};
+
+	public deleteGroupPinPost = async (options: { groupId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.DELETE,
+			route: `v2/posts/group_pinned_post`,
+			params: { group_id: options.groupId },
+			requireAuth: false,
+		});
+	};
+
+	public deletePinPost = async (options: { postId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.DELETE,
+			route: `v1/pinned/posts/${options.postId}`,
+			requireAuth: false,
+		});
+	};
+
+	public getBookmark = async (options: { userId: number; from?: string }): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/users/${options.userId}/bookmarks`,
+			params: { from: options.from },
+			requireAuth: false,
+		});
+	};
+
+	public getCallTimeline = async (
+		options: {
+			groupId?: number;
+			fromTimestamp?: number;
+			number?: number;
+			categoryId?: number;
+			callType?: string;
+			includeCircleCall?: boolean;
+			crossGeneration?: boolean;
+			excludeRecentGomimushi?: boolean;
+			sharedInterestCategories?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/call_timeline`,
+			params: {
+				group_id: options.groupId,
+				from_timestamp: options.fromTimestamp,
+				number: options.number,
+				category_id: options.categoryId,
+				call_type: options.callType,
+				include_circle_call: options.includeCircleCall,
+				cross_generation: options.crossGeneration,
+				exclude_recent_gomimushi: options.excludeRecentGomimushi,
+				shared_interest_categories: options.sharedInterestCategories,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getConversation = async (options: {
+		conversationId: number;
+		groupId?: number;
+		threadId?: number;
+		fromPostId?: number;
+		reverse?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/conversations/${options.conversationId}`,
+			params: {
+				group_id: options.groupId,
+				thread_id: options.threadId,
+				from_post_id: options.fromPostId,
+				reverse: options.reverse,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getConversationRootPosts = async (options: { postIds: number[] }): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/conversations/root_posts`,
+			params: { 'ids[]': options.postIds },
+			requireAuth: false,
+		});
+	};
+
+	public getFollowingCallTimeline = async (
+		options: {
+			fromTimestamp?: number;
+			number?: number;
+			categoryId?: number;
+			callType?: string;
+			includeCircleCall?: boolean;
+			excludeRecentGomimushi?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/call_followers_timeline`,
+			params: {
+				from_timestamp: options.fromTimestamp,
+				number: options.number,
+				category_id: options.categoryId,
+				call_type: options.callType,
+				include_circle_call: options.includeCircleCall,
+				exclude_recent_gomimushi: options.excludeRecentGomimushi,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getFollowingTimeline = async (
+		options: {
+			from?: string;
+			fromPostId?: number;
+			onlyRoot?: boolean;
+			orderBy?: string;
+			number?: number;
+			mxn?: number;
+			reduceSelfie?: boolean;
+			customGenerationRange?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/following_timeline`,
+			params: {
+				from: options.from,
+				from_post_id: options.fromPostId,
+				only_root: options.onlyRoot,
+				order_by: options.orderBy,
+				number: options.number,
+				mxn: options.mxn,
+				reduce_selfie: options.reduceSelfie,
+				custom_generation_range: options.customGenerationRange,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getGroupHighlightPosts = async (options: {
+		groupId: number;
+		from?: string;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/groups/${options.groupId}/highlights`,
+			params: { from: options.from, number: options.number },
+			requireAuth: false,
+		});
+	};
+
+	public getGroupSearchPosts = async (options: {
+		groupId: number;
+		keyword: string;
+		fromPostId?: number;
+		number?: number;
+		onlyThreadPosts?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/groups/${options.groupId}/posts/search`,
+			params: {
+				keyword: options.keyword,
+				from_post_id: options.fromPostId,
+				number: options.number,
+				only_thread_posts: options.onlyThreadPosts,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getGroupTimeline = async (options: {
+		groupId: number;
+		fromPostId?: number;
+		reverse?: boolean;
+		postType?: string;
+		number?: number;
+		onlyRoot?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/group_timeline`,
+			params: {
+				group_id: options.groupId,
+				from_post_id: options.fromPostId,
+				reverse: options.reverse,
+				post_type: options.postType,
+				number: options.number,
+				only_root: options.onlyRoot,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getHashtagTimeline = async (options: {
+		tag: number;
+		fromPostId?: number;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/tags/${options.tag}`,
+			params: { from_post_id: options.fromPostId, number: options.number },
+			requireAuth: false,
+		});
+	};
+
+	public getMyPosts = async (
+		options: {
+			fromPostId?: number;
+			number?: number;
+			includeGroupPost?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/mine`,
+			params: {
+				from_post_id: options.fromPostId,
+				number: options.number,
+				include_group_post: options.includeGroupPost,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getPost = async (options: { postId: number }): Promise<PostResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/${options.postId}`,
+			requireAuth: false,
+		});
+	};
+
+	public getPostLikers = async (options: { postId: number; fromId?: number }): Promise<PostLikersResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v1/posts/${options.postId}/likers`,
+			params: { from_id: options.fromId },
+			requireAuth: false,
+		});
+	};
+
+	public getPostReposts = async (options: { postId: number; fromPostId?: number }): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/${options.postId}/reposts`,
+			params: { from_post_id: options.fromPostId },
+			requireAuth: false,
+		});
+	};
+
+	public getPosts = async (options: { postIds: number[] }): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/multiple`,
+			params: { 'post_ids[]': options.postIds },
+			requireAuth: false,
+		});
+	};
+
+	public getRecentEngagementsPosts = async (options: { number?: number } = {}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/recent_engagement`,
+			params: { number: options.number },
+			requireAuth: false,
+		});
+	};
+
+	public getRecommendedPostTags = async (options: {
+		tag: string;
+		saveRecentSearch?: boolean;
+	}): Promise<PostTagsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/posts/recommended_tag`,
+			params: { tag: options.tag, save_recent_search: options.saveRecentSearch },
+			requireAuth: false,
+		});
+	};
+
+	public getRecommendedPosts = async (
+		options: {
+			experimentNum?: number;
+			variantNum?: number;
+			number?: number;
+			saveRecentSearch?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/recommended_timeline`,
+			params: {
+				experiment_num: options.experimentNum,
+				variant_num: options.variantNum,
+				number: options.saveRecentSearch,
+				shared_interest_categories: options.saveRecentSearch,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getSearchPosts = async (options: {
+		keyword: string;
+		postOwnerScope: number;
+		onlyMedia?: boolean;
+		fromPostId?: number;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/search`,
+			params: {
+				keyword: options.keyword,
+				post_owner_scope: options.postOwnerScope,
+				only_media: options.onlyMedia,
+				from_post_id: options.fromPostId,
+				number: options.number,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public getTimeline = async (options: {
+		noreplyMode: string;
+		orderBy: string;
+		experimentOlderAgeRules?: boolean;
+		sharedInterestCategories?: boolean;
+		from?: string;
+		fromPostId?: number;
+		number?: number;
+		mxn?: number;
+		en?: number;
+		vn?: number;
+		reduceSelfie?: boolean;
+		customGenerationRange?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/${options.noreplyMode}timeline`,
+			params: {
+				order_by: options.orderBy,
+				experiment_older_age_rules: options.experimentOlderAgeRules,
+				shared_interest_categories: options.sharedInterestCategories,
+				from: options.from,
+				from_post_id: options.fromPostId,
+				number: options.number,
+				mxn: options.mxn,
+				en: options.en,
+				vn: options.vn,
+				reduce_selfie: options.reduceSelfie,
+				custom_generation_range: options.customGenerationRange,
+			},
+			requireAuth: false,
 		});
 	};
 
