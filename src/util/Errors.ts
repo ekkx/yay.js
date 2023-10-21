@@ -1,4 +1,4 @@
-import { ErrorResponse } from '../util/Types';
+import { ErrorResponse } from './Types';
 
 /**
  * Base exception for yay.js

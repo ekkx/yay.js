@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { objectToCamel } from '../util/CaseConverter';
-import { RequestObject, RequestOptions } from '../util/Types';
-import { RESTOptions } from '../util/Types';
-import { BASE_API_URL } from '../util/Constants';
-import { YJSLogger } from '../util/Logger';
+import { objectToCamel } from './CaseConverter';
+import { RequestObject, RequestOptions } from './Types';
+import { RESTOptions } from './Types';
+import { BASE_API_URL } from './Constants';
+import { YJSLogger } from './Logger';
 
 /**
  * Rest API のクラス

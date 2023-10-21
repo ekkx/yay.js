@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as crypto from 'crypto';
 import { v4 as uuid } from 'uuid';
 import { CookieProps } from './Types';
-import { YJSError } from '../lib/Errors';
+import { YJSError } from './Errors';
 
 const defaultFilePath = process.cwd() + '/cookie.json';
 

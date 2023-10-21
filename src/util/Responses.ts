@@ -268,10 +268,10 @@ export interface GroupsResponse {
 	pinnedGroups?: Group[];
 }
 export interface GroupUserResponse {
-	groupUser?: GroupUser;
+	groupUser: GroupUser;
 }
 export interface GroupUsersResponse {
-	groupUsers?: GroupUser[];
+	groupUsers: GroupUser[];
 }
 export interface GroupsRelatedResponse {
 	groups: Group[];

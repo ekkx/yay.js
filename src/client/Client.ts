@@ -7,7 +7,6 @@ import {
 	ApplicationConfigResponse,
 	BanWordsResponse,
 	BgmsResponse,
-	BlockedUserIdsResponse,
 	BlockedUsersResponse,
 	CallStatusResponse,
 	ChatRoomResponse,
@@ -24,11 +23,9 @@ import {
 	FootprintsResponse,
 	GamesResponse,
 	GenresResponse,
-	GifsDataResponse,
 	GroupCategoriesResponse,
 	GroupNotificationSettingsResponse,
 	GroupResponse,
-	GroupUserResponse,
 	GroupUsersResponse,
 	GroupsRelatedResponse,
 	GroupsResponse,
@@ -38,7 +35,6 @@ import {
 	LoginUserResponse,
 	MessageResponse,
 	MessagesResponse,
-	MuteKeywordResponse,
 	NotificationSettingResponse,
 	PolicyAgreementsResponse,
 	PopularWordsResponse,
@@ -62,7 +58,7 @@ import {
 	VerifyDeviceResponse,
 	VipGameRewardUrlResponse,
 } from '../util/Responses';
-import { MuteKeyword, Post, SharedUrl, Walkthrough } from '../util/Models';
+import { GifImageCategory, GroupUser, MuteKeyword, Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
 
 /**
@@ -178,8 +174,8 @@ export class Client extends BaseClient {
 		return await this.blockAPI.blockUser(options);
 	};
 
-	public getBlockedUserIds = async (): Promise<BlockedUserIdsResponse> => {
-		return await this.blockAPI.getBlockedUserIds();
+	public getBlockedUserIds = async (): Promise<number[]> => {
+		return (await this.blockAPI.getBlockedUserIds()).blockIds;
 	};
 
 	public getBlockedUsers = async (
@@ -205,8 +201,8 @@ export class Client extends BaseClient {
 		return await this.callAPI.bumpCall(options);
 	};
 
-	public getActiveCall = async (options: { userId: number }): Promise<PostResponse> => {
-		return await this.getActiveCall(options);
+	public getUserActiveCall = async (options: { userId: number }): Promise<PostResponse> => {
+		return await this.callAPI.getActiveCall(options);
 	};
 
 	public getBgms = async (): Promise<BgmsResponse> => {
@@ -343,14 +339,14 @@ export class Client extends BaseClient {
 		return await this.chatAPI.getChatableUsers(options);
 	};
 
-	public getGifsData = async (): Promise<GifsDataResponse> => {
-		return await this.chatAPI.getGifsData();
+	public getChatGifs = async (): Promise<GifImageCategory[]> => {
+		return (await this.chatAPI.getGifsData()).gifCategories;
 	};
 
 	public getHiddenChatRooms = async (
 		options: { number?: number; fromTimestamp?: number } = {},
 	): Promise<ChatRoomsResponse> => {
-		return await this.getHiddenChatRooms(options);
+		return await this.chatAPI.getHiddenChatRooms(options);
 	};
 
 	public getMainChatRooms = async (options: { fromTimestamp?: number } = {}): Promise<ChatRoomsResponse> => {
@@ -620,8 +616,8 @@ export class Client extends BaseClient {
 		return await this.groupAPI.getJoinedStatuses(options);
 	};
 
-	public getGroupMember = async (options: { groupId: number; userId: number }): Promise<GroupUserResponse> => {
-		return await this.groupAPI.getMember(options);
+	public getGroupMember = async (options: { groupId: number; userId: number }): Promise<GroupUser> => {
+		return (await this.groupAPI.getMember(options)).groupUser;
 	};
 
 	public getGroupMembers = async (options: {
@@ -1040,7 +1036,7 @@ export class Client extends BaseClient {
 	};
 
 	public getUserCustomDefinitions = async (): Promise<UserCustomDefinitionsResponse> => {
-		return await this.getUserCustomDefinitions();
+		return await this.userAPI.getUserCustomDefinitions();
 	};
 
 	public getUserEmail = async (options: { userId: number }): Promise<UserEmailResponse> => {

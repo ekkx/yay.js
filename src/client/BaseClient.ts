@@ -15,7 +15,7 @@ import { PostAPI } from '../lib/Post';
 import { ReviewAPI } from '../lib/Review';
 import { ThreadAPI } from '../lib/Thread';
 import { UserAPI } from '../lib/User';
-import { REST } from '../lib/Rest';
+import { REST } from '../util/Rest';
 
 import { BASE_API_URL, DEFAULT_DEVICE } from '../util/Constants';
 import { Cookie } from '../util/Cookie';
@@ -28,7 +28,7 @@ import {
 	NotFoundError,
 	RateLimitError,
 	ServerError,
-} from '../lib/Errors';
+} from '../util/Errors';
 import { Events } from '../util/Events';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { WebSocketInteractor } from '../util/WebSocketInteractor';
@@ -151,7 +151,7 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.refreshToken;
 	}
 
-	private async authenticate(options: { email: string; password: string }): Promise<LoginUserResponse> {
+	private async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
 		try {
 			this.cookie.load(options.email);
 			return {
