@@ -8,12 +8,14 @@ import {
 	BanWordsResponse,
 	BgmsResponse,
 	BlockedUsersResponse,
+	BookmarkPostResponse,
 	CallStatusResponse,
 	ChatRoomResponse,
 	ChatRoomsResponse,
 	ConferenceCallResponse,
 	CreateChatRoomResponse,
 	CreateGroupResponse,
+	CreatePostResponse,
 	CreateQuotaResponse,
 	CreateUserResponse,
 	EmailVerificationPresignedUrlResponse,
@@ -31,6 +33,7 @@ import {
 	GroupsResponse,
 	HiddenResponse,
 	HimaUsersResponse,
+	LikePostsResponse,
 	LoginUpdateResponse,
 	LoginUserResponse,
 	MessageResponse,
@@ -38,7 +41,9 @@ import {
 	NotificationSettingResponse,
 	PolicyAgreementsResponse,
 	PopularWordsResponse,
+	PostLikersResponse,
 	PostResponse,
+	PostTagsResponse,
 	PostsResponse,
 	PresignedUrlResponse,
 	PresignedUrlsResponse,
@@ -55,8 +60,10 @@ import {
 	UserTimestampResponse,
 	UsersByTimestampResponse,
 	UsersResponse,
+	ValidationPostResponse,
 	VerifyDeviceResponse,
 	VipGameRewardUrlResponse,
+	VoteSurveyResponse,
 } from '../util/Responses';
 import { GifImageCategory, GroupUser, MuteKeyword, Post, SharedUrl, Walkthrough } from '../util/Models';
 import { objectToSnake } from '../util/CaseConverter';
@@ -874,7 +881,45 @@ export class Client extends BaseClient {
 
 	// PostAPI
 
-	// messageTags
+	public addBookmark = async (options: { userId: number; postId: number }): Promise<BookmarkPostResponse> => {
+		return await this.postAPI.addBookmark(options);
+	};
+
+	public addGroupHighlightPost = async (options: {
+		groupId: number;
+		postId: number;
+	}): Promise<BookmarkPostResponse> => {
+		return await this.postAPI.addGroupHighlightPost(options);
+	};
+
+	public createGroupCallPost = async (
+		options: {
+			text?: string;
+			fontSize?: number;
+			color?: number;
+			groupId?: number;
+			callType?: string;
+			categoryId?: number;
+			gameTitle?: string;
+			joinableBy?: string;
+			attachmentFilename?: string;
+			attachment2Filename?: string;
+			attachment3Filename?: string;
+			attachment4Filename?: string;
+			attachment5Filename?: string;
+			attachment6Filename?: string;
+			attachment7Filename?: string;
+			attachment8Filename?: string;
+			attachment9Filename?: string;
+		} = {},
+	): Promise<CreatePostResponse> => {
+		return await this.postAPI.createGroupCallPost({ ...options, messageTags: undefined });
+	};
+
+	public pinGroupPost = async (options: { postId: number; groupId: number }) => {
+		return await this.postAPI.createGroupPinPost(options);
+	};
+
 	public createPost = async (
 		options: {
 			text?: string;
@@ -913,6 +958,261 @@ export class Client extends BaseClient {
 		});
 	};
 
+	public createRepost = async (options: {
+		postId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+		inReplyTo?: number;
+		groupId?: number;
+		mentionIds?: number[];
+		choices?: string[];
+		sharedUrl?: string;
+		attachmentFilename?: string;
+		attachment2Filename?: string;
+		attachment3Filename?: string;
+		attachment4Filename?: string;
+		attachment5Filename?: string;
+		attachment6Filename?: string;
+		attachment7Filename?: string;
+		attachment8Filename?: string;
+		attachment9Filename?: string;
+		videoFileName?: string;
+	}): Promise<CreatePostResponse> => {
+		const postType = this.getPostType(options);
+
+		let sharedUrlObj: SharedUrl | undefined = undefined;
+		if (options.sharedUrl) {
+			sharedUrlObj = objectToSnake(await this.getUrlMetadata({ url: options.sharedUrl }));
+		}
+
+		return this.postAPI.createRepost({
+			...options,
+			jwt: await this.getWebSocketToken(),
+			postType: postType,
+			sharedUrl: sharedUrlObj,
+			messageTags: undefined,
+		});
+	};
+
+	public createSharePost = async (options: {
+		shareableType: string;
+		shareableId: number;
+		postId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+		groupId?: number;
+	}): Promise<Post> => {
+		return await this.postAPI.createSharePost(options);
+	};
+
+	public createThreadPost = async (options: {
+		threadId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+		inReplyTo?: number;
+		groupId?: number;
+		mentionIds?: number[];
+		choices?: string[];
+		sharedUrl?: string;
+		attachmentFilename?: string;
+		attachment2Filename?: string;
+		attachment3Filename?: string;
+		attachment4Filename?: string;
+		attachment5Filename?: string;
+		attachment6Filename?: string;
+		attachment7Filename?: string;
+		attachment8Filename?: string;
+		attachment9Filename?: string;
+		videoFileName?: string;
+	}): Promise<Post> => {
+		const postType = this.getPostType(options);
+
+		let sharedUrlObj: SharedUrl | undefined = undefined;
+		if (options.sharedUrl) {
+			sharedUrlObj = objectToSnake(await this.getUrlMetadata({ url: options.sharedUrl }));
+		}
+
+		return await this.postAPI.createThreadPost({
+			...options,
+			jwt: await this.getWebSocketToken(),
+			postType: postType,
+			sharedUrl: sharedUrlObj,
+			messageTags: undefined,
+		});
+	};
+
+	public deleteAllMyPost = async () => {
+		return await this.postAPI.deleteAllPost();
+	};
+
+	public unpinGroupPost = async (options: { groupId: number }) => {
+		return await this.postAPI.deleteGroupPinPost(options);
+	};
+
+	public unpinPost = async (options: { postId: number }) => {
+		return await this.postAPI.deletePinPost(options);
+	};
+
+	public getBookmark = async (options: { userId: number; from?: string }): Promise<PostsResponse> => {
+		return await this.postAPI.getBookmark(options);
+	};
+
+	public getTimelineCalls = async (
+		options: {
+			groupId?: number;
+			fromTimestamp?: number;
+			number?: number;
+			categoryId?: number;
+			callType?: string;
+			includeCircleCall?: boolean;
+			crossGeneration?: boolean;
+			excludeRecentGomimushi?: boolean;
+			sharedInterestCategories?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.postAPI.getCallTimeline(options);
+	};
+
+	public getConversation = async (options: {
+		conversationId: number;
+		groupId?: number;
+		threadId?: number;
+		fromPostId?: number;
+		reverse?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getConversation(options);
+	};
+
+	public getConversationRootPosts = async (options: { postIds: number[] }): Promise<PostsResponse> => {
+		return await this.postAPI.getConversationRootPosts(options);
+	};
+
+	public getFollowingTimelineCalls = async (
+		options: {
+			fromTimestamp?: number;
+			number?: number;
+			categoryId?: number;
+			callType?: string;
+			includeCircleCall?: boolean;
+			excludeRecentGomimushi?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.postAPI.getFollowingCallTimeline(options);
+	};
+
+	public getFollowingTimeline = async (
+		options: {
+			from?: string;
+			fromPostId?: number;
+			onlyRoot?: boolean;
+			orderBy?: string;
+			number?: number;
+			mxn?: number;
+			reduceSelfie?: boolean;
+			customGenerationRange?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.postAPI.getFollowingTimeline(options);
+	};
+
+	public getGroupHighlightPosts = async (options: {
+		groupId: number;
+		from?: string;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getGroupHighlightPosts(options);
+	};
+
+	public searchGroupPosts = async (options: {
+		groupId: number;
+		keyword: string;
+		fromPostId?: number;
+		number?: number;
+		onlyThreadPosts?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getGroupSearchPosts(options);
+	};
+
+	public getGroupTimeline = async (options: {
+		groupId: number;
+		fromPostId?: number;
+		reverse?: boolean;
+		postType?: string;
+		number?: number;
+		onlyRoot?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getGroupTimeline(options);
+	};
+
+	public getTimelineByHashtag = async (options: {
+		tag: number;
+		fromPostId?: number;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getHashtagTimeline(options);
+	};
+
+	public getMyPosts = async (
+		options: {
+			fromPostId?: number;
+			number?: number;
+			includeGroupPost?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.postAPI.getMyPosts(options);
+	};
+
+	public getPost = async (options: { postId: number }): Promise<PostResponse> => {
+		return await this.postAPI.getPost(options);
+	};
+
+	public getPostLikers = async (options: { postId: number; fromId?: number }): Promise<PostLikersResponse> => {
+		return await this.postAPI.getPostLikers(options);
+	};
+
+	public getReposts = async (options: { postId: number; fromPostId?: number }): Promise<PostsResponse> => {
+		return await this.postAPI.getPostReposts(options);
+	};
+
+	public getPosts = async (options: { postIds: number[] }): Promise<PostsResponse> => {
+		return await this.postAPI.getPosts(options);
+	};
+
+	public getRecentEngagementsPosts = async (options: { number?: number } = {}): Promise<PostsResponse> => {
+		return await this.postAPI.getRecentEngagementsPosts(options);
+	};
+
+	public getRecommendedPostTags = async (options: {
+		tag: string;
+		saveRecentSearch?: boolean;
+	}): Promise<PostTagsResponse> => {
+		return await this.postAPI.getRecommendedPostTags(options);
+	};
+
+	public getRecommendedPosts = async (
+		options: {
+			experimentNum?: number;
+			variantNum?: number;
+			number?: number;
+			saveRecentSearch?: boolean;
+		} = {},
+	): Promise<PostsResponse> => {
+		return await this.postAPI.getRecommendedPosts(options);
+	};
+
+	public searchPosts = async (options: {
+		keyword: string;
+		postOwnerScope: number;
+		onlyMedia?: boolean;
+		fromPostId?: number;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getSearchPosts(options);
+	};
+
 	public getTimeline = async (options: {
 		noreplyMode: boolean;
 		orderBy: string;
@@ -932,6 +1232,82 @@ export class Client extends BaseClient {
 
 	public getUrlMetadata = async (options: { url: string }): Promise<SharedUrl> => {
 		return await this.postAPI.getUrlMetadata(options);
+	};
+
+	public getUserTimeline = async (options: {
+		userId: number;
+		fromPostId?: number;
+		postType?: string;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getUserTimeline(options);
+	};
+
+	public likePost = async (options: { postId: number }): Promise<LikePostsResponse> => {
+		return await this.postAPI.likePosts({ postIds: [options.postId] });
+	};
+
+	public likeMultiplePosts = async (options: { postIds: number[] }): Promise<LikePostsResponse> => {
+		return await this.postAPI.likePosts(options);
+	};
+
+	public removeGroupHighlightPost = async (options: { groupId: number; postId: number }) => {
+		return await this.postAPI.removeGroupHighlightPost(options);
+	};
+
+	public deletePosts = async (options: { postIds: number[] }) => {
+		return await this.postAPI.removePosts(options);
+	};
+
+	public reportPost = async (options: {
+		postId: number;
+		categoryId?: number;
+		reason?: string;
+		opponentId?: number;
+		screenshotFilename?: string;
+		screenshot2Filename?: string;
+		screenshot3Filename?: string;
+		screenshot4Filename?: string;
+	}) => {
+		return await this.postAPI.reportPost(options);
+	};
+
+	public unlikePost = async (options: { postId: number }) => {
+		return await this.postAPI.unlikePost(options);
+	};
+
+	public updatePost = async (options: {
+		postId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+	}): Promise<Post> => {
+		return await this.postAPI.updatePost({ ...options, messageTags: undefined });
+	};
+
+	public updateRecommendationFeedback = async (options: {
+		postId: number;
+		experimentNum?: number;
+		variantNum?: number;
+		feedbackResult: string;
+	}) => {
+		return await this.postAPI.updateRecommendationFeedback(options);
+	};
+
+	public validatePost = async (options: {
+		text: string;
+		groupId?: number;
+		threadId?: number;
+	}): Promise<ValidationPostResponse> => {
+		return await this.postAPI.validatePost(options);
+	};
+
+	public viewVideo = async (options: { videoId: number }) => {
+		return await this.postAPI.viewVideo(options);
+	};
+
+	public voteSurvey = async (options: { surveyId: number; choiceId: number }): Promise<VoteSurveyResponse> => {
+		return await this.postAPI.voteSurvey(options);
 	};
 
 	// ReviewAPI

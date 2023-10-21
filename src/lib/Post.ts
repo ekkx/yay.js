@@ -9,11 +9,11 @@ import {
 	PostsResponse,
 	ValidationPostResponse,
 	VoteSurveyResponse,
-} from 'util/Responses';
+} from '../util/Responses';
 import { HttpMethod } from '../util/Types';
 import { MessageTag, Post, SharedUrl } from '../util/Models';
 import * as util from '../util/Utils';
-import { API_KEY } from 'util/Constants';
+import { API_KEY } from '../util/Constants';
 
 /**
  * **投稿API**
