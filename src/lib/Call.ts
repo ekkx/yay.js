@@ -12,7 +12,7 @@ import {
 } from '../util/Responses';
 
 /**
- * 通話API
+ * **通話API**
  *
  * @remarks
  * 通話APIのエンドポイントと連携するためのクラスです

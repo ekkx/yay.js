@@ -3,7 +3,7 @@ import { HttpMethod } from '../util/Types';
 import { BlockedUserIdsResponse, BlockedUsersResponse } from '../util/Responses';
 
 /**
- * ブロックAPI
+ * **ブロックAPI**
  *
  * @remarks
  * ユーザーブロックAPIのエンドポイントと連携するためのクラスです

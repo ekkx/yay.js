@@ -4,7 +4,7 @@ import { ApplicationConfigResponse, BanWordsResponse, PopularWordsResponse } fro
 import { BASE_CONFIG_URL } from '../util/Constants';
 
 /**
- * 設定API
+ * **設定API**
  *
  * @remarks
  * アプリの基本情報を取得するAPIのエンドポイントと連携するためのクラスです

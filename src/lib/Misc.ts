@@ -14,7 +14,7 @@ import { HttpMethod } from '../util/Types';
 import { API_VERSION_NAME, ID_CARD_CHECK_URL } from '../util/Constants';
 
 /**
- * 雑多API
+ * **雑多API**
  *
  * @remarks
  * カテゴリ化できないAPIのエンドポイントと連携するためのクラスです

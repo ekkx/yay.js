@@ -3,7 +3,7 @@ import { BaseClient } from '../client/BaseClient';
 import { CreateMuteKeywordResponse, MuteKeywordResponse } from '../util/Responses';
 
 /**
- * ミュートキーワードAPI
+ * **ミュートキーワードAPI**
  *
  * @remarks
  * 特定のキーワードのミュート設定APIのエンドポイントと連携するためのクラスです

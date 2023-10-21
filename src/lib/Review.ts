@@ -1,11 +1,9 @@
 import { HttpMethod } from '../util/Types';
 import { BaseClient } from '../client/BaseClient';
-import * as util from '../util/Utils';
-import { API_KEY } from '../util/Constants';
 import { ReviewsResponse } from 'util/Responses';
 
 /**
- * レターAPI
+ * **レターAPI**
  *
  * @remarks
  * レターAPIのエンドポイントと連携するためのクラスです

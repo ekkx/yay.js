@@ -19,7 +19,7 @@ import * as util from '../util/Utils';
 import { API_KEY } from '../util/Constants';
 
 /**
- * サークルAPI
+ * **サークルAPI**
  *
  * @remarks
  * サークルAPIのエンドポイントと連携するためのクラスです

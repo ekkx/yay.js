@@ -1,7 +1,7 @@
 import { BaseClient } from '../client/BaseClient';
 
 /**
- * ギフトAPI
+ * **ギフトAPI**
  *
  * @remarks
  * ギフトAPIのエンドポイントと連携するためのクラスです

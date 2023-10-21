@@ -1,4 +1,4 @@
-import { Client, mention } from 'yay.js';
+import { Client } from 'yay.js';
 
 const main = async () => {
 	const client = new Client();

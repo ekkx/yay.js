@@ -6,7 +6,7 @@ import * as util from '../util/Utils';
 import { API_KEY } from 'util/Constants';
 
 /**
- * 投稿API
+ * **投稿API**
  *
  * @remarks
  * 投稿APIのエンドポイントと連携するためのクラスです

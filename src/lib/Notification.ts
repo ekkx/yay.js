@@ -4,7 +4,7 @@ import { ActivitiesResponse } from '../util/Responses';
 import { BASE_CASSANDRA_URL } from '../util/Constants';
 
 /**
- * 通知API
+ * **通知API**
  *
  * @remarks
  * 通知APIのエンドポイントと連携するためのクラスです

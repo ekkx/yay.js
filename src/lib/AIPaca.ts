@@ -1,7 +1,7 @@
 import { BaseClient } from '../client/BaseClient';
 
 /**
- * AIパカAPI
+ * **AIパカAPI**
  *
  * @remarks
  * AIパカAPIのエンドポイントと連携するためのクラスです

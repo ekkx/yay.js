@@ -1,7 +1,7 @@
 import { BaseClient } from '../client/BaseClient';
 
 /**
- * スレッドAPI
+ * **スレッドAPI**
  *
  * @remarks
  * スレッドAPIのエンドポイントと連携するためのクラスです

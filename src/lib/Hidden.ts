@@ -3,7 +3,7 @@ import { BaseClient } from '../client/BaseClient';
 import { HiddenResponse } from '../util/Responses';
 
 /**
- * 非表示API
+ * **非表示API**
  *
  * @remarks
  * コンテンツやユーザーを非表示にするAPIのエンドポイントと連携するためのクラスです

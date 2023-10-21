@@ -16,7 +16,7 @@ import {
 } from '../util/Responses';
 
 /**
- * チャットAPI
+ * **チャットAPI**
  *
  * @remarks
  * チャットルームAPIのエンドポイントと連携するためのクラスです

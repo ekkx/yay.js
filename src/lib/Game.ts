@@ -3,7 +3,7 @@ import { BaseClient } from '../client/BaseClient';
 import { HttpMethod } from '../util/Types';
 
 /**
- * ゲームAPI
+ * **ゲームAPI**
  *
  * @remarks
  * ゲームAPIのエンドポイントと連携するためのクラスです

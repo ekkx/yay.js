@@ -4,7 +4,7 @@ import { LoginUpdateResponse, LoginUserResponse, TokenResponse } from '../util/R
 import { API_KEY, API_VERSION_NAME } from '../util/Constants';
 import * as util from '../util/Utils';
 /**
- * 認証API
+ * **認証API**
  *
  * @remarks
  * 認証APIのエンドポイントと連携するためのクラスです

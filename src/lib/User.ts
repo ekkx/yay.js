@@ -21,7 +21,7 @@ import { HttpMethod } from '../util/Types';
 import * as util from '../util/Utils';
 
 /**
- * ユーザーAPI
+ * **ユーザーAPI**
  *
  * @remarks
  * ユーザーAPIのエンドポイントと連携するためのクラスです
