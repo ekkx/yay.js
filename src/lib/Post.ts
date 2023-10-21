@@ -2,10 +2,13 @@ import { BaseClient } from '../client/BaseClient';
 import {
 	BookmarkPostResponse,
 	CreatePostResponse,
+	LikePostsResponse,
 	PostLikersResponse,
 	PostResponse,
 	PostTagsResponse,
 	PostsResponse,
+	ValidationPostResponse,
+	VoteSurveyResponse,
 } from 'util/Responses';
 import { HttpMethod } from '../util/Types';
 import { MessageTag, Post, SharedUrl } from '../util/Models';
@@ -629,7 +632,7 @@ export class PostAPI {
 	};
 
 	public getTimeline = async (options: {
-		noreplyMode: string;
+		noreplyMode: boolean;
 		orderBy: string;
 		experimentOlderAgeRules?: boolean;
 		sharedInterestCategories?: boolean;
@@ -642,9 +645,15 @@ export class PostAPI {
 		reduceSelfie?: boolean;
 		customGenerationRange?: boolean;
 	}): Promise<PostsResponse> => {
+		let noreplyMode: string = '';
+
+		if (options.noreplyMode) {
+			noreplyMode = 'noreply_';
+		}
+
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v2/posts/${options.noreplyMode}timeline`,
+			route: `v2/posts/${noreplyMode}timeline`,
 			params: {
 				order_by: options.orderBy,
 				experiment_older_age_rules: options.experimentOlderAgeRules,
@@ -668,6 +677,169 @@ export class PostAPI {
 			route: `v2/posts/url_metadata`,
 			requireAuth: false,
 			params: { url: options.url },
+		});
+	};
+
+	public getUserTimeline = async (options: {
+		userId: number;
+		fromPostId?: number;
+		postType?: string;
+		number?: number;
+	}): Promise<PostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.GET,
+			route: `v2/posts/user_timeline`,
+			requireAuth: false,
+			params: {
+				user_id: options.userId,
+				from_post_id: options.fromPostId,
+				post_type: options.postType,
+				number: options.number,
+			},
+		});
+	};
+
+	public likePosts = async (options: { postIds: number[] }): Promise<LikePostsResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/posts/like`,
+			requireAuth: false,
+			params: { post_ids: options.postIds },
+		});
+	};
+
+	public removeBookmark = async (options: { userId: number; postId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.DELETE,
+			route: `v1/users/${options.userId}/bookmarks/${options.postId}`,
+			requireAuth: false,
+		});
+	};
+
+	public removeGroupHighlightPost = async (options: { groupId: number; postId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.DELETE,
+			route: `v1/groups/${options.groupId}/highlights/${options.postId}`,
+			requireAuth: false,
+		});
+	};
+
+	public removePosts = async (options: { postIds: number[] }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/posts/mass_destroy`,
+			json: { posts_ids: options.postIds },
+			requireAuth: false,
+		});
+	};
+
+	public reportPost = async (options: {
+		postId: number;
+		categoryId?: number;
+		reason?: string;
+		opponentId?: number;
+		screenshotFilename?: string;
+		screenshot2Filename?: string;
+		screenshot3Filename?: string;
+		screenshot4Filename?: string;
+	}) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v3/posts/${options.postId}/report`,
+			json: {
+				category_id: options.categoryId,
+				reason: options.reason,
+				opponent_id: options.opponentId,
+				screenshot_filename: options.screenshotFilename,
+				screenshot_2_filename: options.screenshot2Filename,
+				screenshot_3_filename: options.screenshot3Filename,
+				screenshot_4_filename: options.screenshot4Filename,
+			},
+			requireAuth: false,
+		});
+	};
+
+	public unlikePost = async (options: { postId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/posts/${options.postId}/unlike`,
+			requireAuth: false,
+		});
+	};
+
+	public updatePost = async (options: {
+		postId: number;
+		text?: string;
+		fontSize?: number;
+		color?: number;
+		messageTags?: MessageTag;
+	}): Promise<Post> => {
+		return await this.base.request({
+			method: HttpMethod.PUT,
+			route: `v3/posts/${options.postId}`,
+			requireAuth: true,
+			json: {
+				text: options.text,
+				font_size: options.fontSize,
+				color: options.color,
+				message_tags: options.messageTags,
+				uuid: this.uuid,
+				api_key: API_KEY,
+				timestamp: Math.floor(Date.now() / 1000),
+				signed_info: this.signedInfo,
+			},
+		});
+	};
+
+	public updateRecommendationFeedback = async (options: {
+		postId: number;
+		experimentNum?: number;
+		variantNum?: number;
+		feedbackResult: string;
+	}) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/posts/${options.postId}/recommendation_feedback`,
+			requireAuth: true,
+			json: {
+				experiment_num: options.experimentNum,
+				variant_num: options.variantNum,
+				feedback_result: options.feedbackResult,
+			},
+		});
+	};
+
+	public validatePost = async (options: {
+		text: string;
+		groupId?: number;
+		threadId?: number;
+	}): Promise<ValidationPostResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/posts/validate`,
+			requireAuth: false,
+			json: {
+				text: options.text,
+				group_id: options.groupId,
+				thread_id: options.threadId,
+			},
+		});
+	};
+
+	public viewVideo = async (options: { videoId: number }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/posts/videos/${options.videoId}/view`,
+			requireAuth: false,
+		});
+	};
+
+	public voteSurvey = async (options: { surveyId: number; choiceId: number }): Promise<VoteSurveyResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v2/surveys/${options.surveyId}/vote`,
+			json: { choice_id: options.choiceId },
+			requireAuth: false,
 		});
 	};
 

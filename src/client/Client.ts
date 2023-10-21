@@ -913,6 +913,23 @@ export class Client extends BaseClient {
 		});
 	};
 
+	public getTimeline = async (options: {
+		noreplyMode: boolean;
+		orderBy: string;
+		experimentOlderAgeRules?: boolean;
+		sharedInterestCategories?: boolean;
+		from?: string;
+		fromPostId?: number;
+		number?: number;
+		mxn?: number;
+		en?: number;
+		vn?: number;
+		reduceSelfie?: boolean;
+		customGenerationRange?: boolean;
+	}): Promise<PostsResponse> => {
+		return await this.postAPI.getTimeline(options);
+	};
+
 	public getUrlMetadata = async (options: { url: string }): Promise<SharedUrl> => {
 		return await this.postAPI.getUrlMetadata(options);
 	};
