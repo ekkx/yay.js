@@ -105,6 +105,18 @@ export class Client extends BaseClient {
 
 	// AuthAPI
 
+	/**
+	 *
+	 * **メールアドレスを変更します**
+	 *
+	 * @param options.email - 新しいメールアドレス
+	 * @param options.password - アカウントのパスワード
+	 * @param options.emailGrantToken - メール認証トークン
+	 *
+	 * @endpoint
+	 * `PUT`: {@link https://api.yay.space/v1/users/change_email}
+	 *
+	 */
 	public changeEmail = async (options: {
 		email: string;
 		password: string;
@@ -113,6 +125,17 @@ export class Client extends BaseClient {
 		return await this.authAPI.changeEmail(options);
 	};
 
+	/**
+	 *
+	 * **パスワードを変更します**
+	 *
+	 * @param options.currentPassword - 現在のパスワード
+	 * @param options.newPassword - 新しいパスワード
+	 *
+	 * @endpoint
+	 * `PUT`: {@link https://api.yay.space/v1/users/change_password}
+	 *
+	 */
 	public changePassword = async (options: {
 		currentPassword: string;
 		newPassword: string;
@@ -120,6 +143,19 @@ export class Client extends BaseClient {
 		return await this.authAPI.changePassword(options);
 	};
 
+	/**
+	 *
+	 * **新しいトークンを取得します**
+	 *
+	 * @param options.grantType - 取得する方法
+	 * @param options.email - メールアドレス
+	 * @param options.password - ・パスワード
+	 * @param options.refreshToken - リフレッシュトークン
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/api/v1/oauth/token}
+	 *
+	 */
 	public getToken = async (options: {
 		grantType: string;
 		email?: string;
@@ -129,18 +165,64 @@ export class Client extends BaseClient {
 		return await this.authAPI.getToken(options);
 	};
 
+	/**
+	 *
+	 * **メールアドレスでログインします**
+	 *
+	 * @param options.email - メールアドレス
+	 * @param options.password - ・パスワード
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v3/users/login_with_email}
+	 *
+	 */
 	public login = async (options: { email: string; password: string }): Promise<LoginUserResponse> => {
 		return await this.prepare({ email: options.email, password: options.password });
 	};
 
+	/**
+	 *
+	 * **ログアウトします**
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/users/logout}
+	 *
+	 */
 	public logout = async () => {
 		return await this.authAPI.logoutDevice();
 	};
 
+	/**
+	 *
+	 * **トークンを移行します**
+	 *
+	 * @param options.token - トークン
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/api/v1/oauth/token/migrate}
+	 *
+	 */
 	public migrateToken = async (options: { token: string }) => {
 		return await this.authAPI.migrateToken(options);
 	};
 
+	/**
+	 *
+	 * **デバイストークンを登録します**
+	 *
+	 * @param options.deviceToken - デバイストークン
+	 * @param options.deviceType - デバイスのタイプ
+	 * @param options.osVersion - デバイスのOS
+	 * @param options.screenResolution - スクリーンの画質
+	 * @param options.screenDensity - スクリーンの比
+	 * @param options.deviceModel - デバイスのモデル
+	 * @param options.appsflyerId - AppsFlyerのID
+	 * @param options.advertisingId - 宣伝ID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v2/users/device_tokens/new}
+	 *
+	 */
 	public registerDeviceToken = async (options: {
 		deviceToken: string;
 		deviceType: string;
@@ -154,18 +236,57 @@ export class Client extends BaseClient {
 		return await this.authAPI.registerDeviceToken(options);
 	};
 
+	/**
+	 *
+	 * **確認メールを再送信します**
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v2/users/resend_confirm_email}
+	 *
+	 */
 	public resendConfirmEmail = async () => {
 		return await this.authAPI.resendConfirmEmail();
 	};
 
+	/**
+	 *
+	 * **ユーザーを復元します**
+	 *
+	 * @param options.userId - ユーザーのID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/api/v1/oauth/token/migrate}
+	 *
+	 */
 	public restoreUser = async (options: { userId: number }) => {
 		return await this.authAPI.restoreUser(options);
 	};
 
+	/**
+	 *
+	 * **デバイストークンを無効化します**
+	 *
+	 * @endpoint
+	 * `DELETE`: {@link https://api.yay.space/v1/users/device_tokens}
+	 *
+	 */
 	public revokeDeviceTokens = async () => {
 		return await this.authAPI.revokeTokens();
 	};
 
+	/**
+	 *
+	 * **アカウントをメールアドレスと紐付けます**
+	 *
+	 * @param options.email - メールアドレス
+	 * @param options.password - パスワード
+	 * @param options.currentPassword - 現在のパスワード
+	 * @param options.emailGrantToken - メール認証トークン
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v3/users/login_update}
+	 *
+	 */
 	public saveAccountWithEmail = async (options: {
 		email: string;
 		password?: string;
@@ -177,14 +298,47 @@ export class Client extends BaseClient {
 
 	// BlockAPI
 
+	/**
+	 *
+	 * **ユーザーをブロックします**
+	 *
+	 * @param options.userId - ユーザーのID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/users/:userId/block}
+	 *
+	 */
 	public blockUser = async (options: { userId: number }) => {
 		return await this.blockAPI.blockUser(options);
 	};
 
+	/**
+	 *
+	 * **あなたをブロックしているユーザーのIDを取得します**
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/users/block_ids}
+	 *
+	 */
 	public getBlockedUserIds = async (): Promise<number[]> => {
 		return (await this.blockAPI.getBlockedUserIds()).blockIds;
 	};
 
+	/**
+	 *
+	 * **ブロックしているユーザーのIDを取得します**
+	 *
+	 * @param options.nickname - カスタムユーザーID
+	 * @param options.username - ユーザー名
+	 * @param options.biography - 自己紹介文
+	 * @param options.prefecture - 都道府県
+	 * @param options.gender - 性別
+	 * @param options.fromId - 取得元ID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v2/users/blocked}
+	 *
+	 */
 	public getBlockedUsers = async (
 		options: {
 			nickname?: string;
@@ -198,6 +352,16 @@ export class Client extends BaseClient {
 		return await this.blockAPI.getBlockedUsers(options);
 	};
 
+	/**
+	 *
+	 * **ユーザーのブロックを解除します**
+	 *
+	 * @param options.userId - ユーザーのID
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v2/users/:userId/unblock}
+	 *
+	 */
 	public unblockUser = async (options: { userId: number }) => {
 		return await this.blockAPI.unblockUser(options);
 	};
@@ -675,13 +839,11 @@ export class Client extends BaseClient {
 	 *
 	 * **関連するサークルを削除します**
 	 *
-	 * @remarks
-	 * `DELETE`: https://api.yay.space/v1/groups/:groupId/related
-	 *
 	 * @param options.groupId - サークルのID
 	 * @param options.relatedGroupIds - 関連するサークルのID
 	 *
-	 * @see https://github.com/qvco/yay.js
+	 * @endpoint
+	 * `DELETE`: https://api.yay.space/v1/groups/:groupId/related
 	 *
 	 */
 	public removeRelatedGroups = async (options: { groupId: number; relatedGroupIds: number[] }) => {
