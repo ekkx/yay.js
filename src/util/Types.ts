@@ -65,7 +65,7 @@ export type ClientOptions = {
 	 */
 	cookiePassword?: string;
 	/**
-	 * クッキーを保存する場所
+	 * クッキーを保存するパス
 	 *
 	 * @defaultValue `'cookie'`
 	 */

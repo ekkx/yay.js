@@ -187,13 +187,13 @@ export class CallAPI {
 	public setUserRole = async (options: { callId: number; userId: number; role: string }) => {
 		return await this.base.request({
 			method: HttpMethod.PUT,
-			route: `/v1/calls/${options.callId}/users/${options.userId}`,
+			route: `v1/calls/${options.callId}/users/${options.userId}`,
 			requireAuth: true,
 			json: { role: options.role },
 		});
 	};
 
-	public startCall = async (options: { conferenceId: number; callSid: string }): Promise<ConferenceCallResponse> => {
+	public startCall = async (options: { conferenceId: number; callSid?: string }): Promise<ConferenceCallResponse> => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v2/calls/start_conference_call`,
@@ -202,12 +202,33 @@ export class CallAPI {
 		});
 	};
 
-	public stopCall = async (options: { conferenceId: number; callSid: string }) => {
+	public stopCall = async (options: { conferenceId: number; callSid?: string }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
 			route: `v1/calls/leave_conference_call`,
 			requireAuth: false,
 			json: { conference_id: options.conferenceId, call_sid: options.callSid },
+		});
+	};
+
+	public startAnonymousCall = async (options: {
+		conferenceId: number;
+		AgoraUid?: string;
+	}): Promise<ConferenceCallResponse> => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/anonymous_calls/start_conference_call`,
+			requireAuth: false,
+			json: { conference_id: options.conferenceId, agora_uid: options.AgoraUid },
+		});
+	};
+
+	public stopAnonymousCall = async (options: { conferenceId: number; AgoraUid?: string }) => {
+		return await this.base.request({
+			method: HttpMethod.POST,
+			route: `v1/anonymous_calls/leave_conference_call`,
+			requireAuth: false,
+			json: { conference_id: options.conferenceId, agora_uid: options.AgoraUid },
 		});
 	};
 }

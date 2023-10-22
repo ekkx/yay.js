@@ -1,4 +1,5 @@
 build/
+docs/
 
 test.ts
 test_compiled.ts

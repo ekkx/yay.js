@@ -368,22 +368,73 @@ export class Client extends BaseClient {
 
 	// CallAPI
 
+	/**
+	 *
+	 * **通話に参加できる上限人数を設定します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.participantLimit - 参加上限人数
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/calls/:callId/bump}
+	 *
+	 */
 	public bumpCall = async (options: { callId: number; participantLimit?: number }) => {
 		return await this.callAPI.bumpCall(options);
 	};
 
+	/**
+	 *
+	 * **ユーザーが参加している通話を取得します**
+	 *
+	 * @param options.userId - ユーザーのID
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/posts/active_call}
+	 *
+	 */
 	public getUserActiveCall = async (options: { userId: number }): Promise<PostResponse> => {
 		return await this.callAPI.getActiveCall(options);
 	};
 
+	/**
+	 *
+	 * **通話用のデフォルトBGMを取得します**
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/calls/bgm}
+	 *
+	 */
 	public getBgms = async (): Promise<BgmsResponse> => {
 		return await this.callAPI.getBgms();
 	};
 
+	/**
+	 *
+	 * **通話ルームのデータを取得します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/calls/conferences/:callId}
+	 *
+	 */
 	public getCall = async (options: { callId: number }): Promise<ConferenceCallResponse> => {
 		return await this.callAPI.getCall(options);
 	};
 
+	/**
+	 *
+	 * **通話ルームに招待可能なユーザーを取得します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.fromTimestamp - 取得元タイムスタンプ
+	 * @param options.nickname - ニックネーム
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/calls/:callId/users/invitable}
+	 *
+	 */
 	public getCallInvitableUsers = async (options: {
 		callId: number;
 		fromTimestamp?: number;
@@ -392,52 +443,189 @@ export class Client extends BaseClient {
 		return await this.callAPI.getCallInvitableUsers(options);
 	};
 
+	/**
+	 *
+	 * **通話の状態を取得します**
+	 *
+	 * @param options.opponentId - 相手のID
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/calls/:callId/users/invitable}
+	 *
+	 */
 	public getCallStatus = async (options: { opponentId: number }): Promise<CallStatusResponse> => {
 		return await this.callAPI.getCallStatus(options);
 	};
 
+	/**
+	 *
+	 * **ゲームを取得します**
+	 *
+	 * @param options.number - 取得する数
+	 * @param options.gameIds - ゲームのID
+	 * @param options.fromId - 取得元ID
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/games/apps}
+	 *
+	 */
 	public getGames = async (options: { number: number; gameIds: number[]; fromId?: number }): Promise<GamesResponse> => {
 		return await this.callAPI.getGames(options);
 	};
 
+	/**
+	 *
+	 * **ジャンルを取得します**
+	 *
+	 * @param options.number - 取得する数
+	 * @param options.from - 取得元ID
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/genres}
+	 *
+	 */
 	public getGenres = async (options: { number: number; from: number }): Promise<GenresResponse> => {
 		return await this.callAPI.getGenres(options);
 	};
 
+	/**
+	 *
+	 * **サークルの通話を取得します**
+	 *
+	 * @param options.number - 取得する数
+	 * @param options.groupCategoryId - サークルのカテゴリーID
+	 * @param options.fromTimestamp - 取得元タイムスタンプ
+	 * @param options.scope - 取得する範囲
+	 *
+	 * @endpoint
+	 * `GET`: {@link https://api.yay.space/v1/posts/group_calls}
+	 *
+	 */
 	public getGroupCalls = async (
 		options: { number?: number; groupCategoryId?: number; fromTimestamp?: number; scope?: string } = {},
 	): Promise<PostsResponse> => {
 		return await this.callAPI.getGroupCalls(options);
 	};
 
-	public inviteMultipleToCall = async (options: { callId: number; groupId?: number }) => {
+	/**
+	 *
+	 * **招待可能なユーザーを通話に招待します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.groupId - サークルのID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/calls/:callId/bulk_invite}
+	 *
+	 */
+	public inviteOnlineUsersToCall = async (options: { callId: number; groupId?: number }) => {
 		return await this.callAPI.inviteToCallBulk(options);
 	};
 
+	/**
+	 *
+	 * **ユーザーを通話に招待します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.userIds - 招待するユーザーのID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/calls/conference_calls/:callId/invite}
+	 *
+	 */
 	public inviteUsersToCall = async (options: { callId: number; userIds: number[] }) => {
 		return await this.callAPI.inviteUsersToCall(options);
 	};
 
+	/**
+	 *
+	 * **ユーザーをチャットルームの通話に招待します**
+	 *
+	 * @param options.chatRoomId - チャットルームのID
+	 * @param options.roomId - ルームID
+	 * @param options.roomUrl - ルームのURL
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v2/calls/invite}
+	 *
+	 */
 	public inviteUsersToChatCall = async (options: { chatRoomId?: number; roomId?: number; roomUrl?: string } = {}) => {
 		return await this.callAPI.inviteUsersToChatCall(options);
 	};
 
+	/**
+	 *
+	 * **ユーザーを通話から追放します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.userId - 追放するユーザーのID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/calls/conference_calls/:callId/kick}
+	 *
+	 */
 	public banUserFromCall = async (options: { callId: number; userId: number }) => {
 		return await this.callAPI.kickAndBanFromCall(options);
 	};
 
+	/**
+	 *
+	 * **匿名ユーザーが通話から退出したことを通知します**
+	 *
+	 * @param options.conferenceId - 通話ルームのID
+	 * @param options.agoraUid - AgoraのUID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/anonymous_calls/leave_agora_channel}
+	 *
+	 */
 	public notifyAnonymousUserLeaveCall = async (options: { conferenceId: number; agoraUid: string }) => {
 		return await this.callAPI.notifyAnonymousUserLeaveAgoraChannel(options);
 	};
 
+	/**
+	 *
+	 * **ユーザーが通話から退出したことを通知します**
+	 *
+	 * @param options.conferenceId - 通話ルームのID
+	 * @param options.userId - ユーザーのID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/calls/leave_agora_channel}
+	 *
+	 */
 	public notifyUserLeaveCall = async (options: { conferenceId: number; userId: number }) => {
 		return await this.callAPI.notifyUserLeaveAgoraChannel(options);
 	};
 
+	/**
+	 *
+	 * **通話のスクリーンショットを送信します**
+	 *
+	 * @param options.screenshotFilename - スクリーンショットのファイル名
+	 * @param options.conferenceId - 通話ルームのID
+	 *
+	 * @endpoint
+	 * `PUT`: {@link https://api.yay.space/v1/calls/screenshot}
+	 *
+	 */
 	public sendCallScreenshot = async (options: { screenshotFilename: string; conferenceId: number }) => {
 		return await this.callAPI.sendCallScreenshot(options);
 	};
 
+	/**
+	 *
+	 * **通話を開始します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.joinableBy - 参加可能なユーザー
+	 * @param options.gameTitle - ゲームのタイトル
+	 * @param options.categoryId - カテゴリーID
+	 *
+	 * @endpoint
+	 * `PUT`: {@link https://api.yay.space/v1/calls/:callId}
+	 *
+	 */
 	public startCall = async (options: {
 		callId: number;
 		joinableBy: string;
@@ -447,16 +635,83 @@ export class Client extends BaseClient {
 		return await this.callAPI.setCall(options);
 	};
 
+	/**
+	 *
+	 * **通話参加者の権限を設定します**
+	 *
+	 * @param options.callId - 通話ルームのID
+	 * @param options.userId - ユーザーのID
+	 * @param options.role - 権限 / 役割
+	 *
+	 * @endpoint
+	 * `PUT`: {@link https://api.yay.space/v1/calls/:callId/users/:userId}
+	 *
+	 */
 	public setCallUserRole = async (options: { callId: number; userId: number; role: string }) => {
 		return await this.callAPI.setUserRole(options);
 	};
 
-	public joinCall = async (options: { conferenceId: number; callSid: string }): Promise<ConferenceCallResponse> => {
+	/**
+	 *
+	 * **通話に参加します**
+	 *
+	 * @param options.conferenceId - 通話ルームのID
+	 * @param options.callSid - 通話のSID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v2/calls/start_conference_call}
+	 *
+	 */
+	public joinCall = async (options: { conferenceId: number; callSid?: string }): Promise<ConferenceCallResponse> => {
 		return await this.callAPI.startCall(options);
 	};
 
-	public leaveCall = async (options: { conferenceId: number; callSid: string }) => {
+	/**
+	 *
+	 * **通話から退出します**
+	 *
+	 * @param options.conferenceId - 通話ルームのID
+	 * @param options.callSid - 通話のSID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/calls/leave_conference_call}
+	 *
+	 */
+	public leaveCall = async (options: { conferenceId: number; callSid?: string }) => {
 		return await this.callAPI.stopCall(options);
+	};
+
+	/**
+	 *
+	 * **匿名ユーザーとして通話に参加します**
+	 *
+	 * @param options.conferenceId - 通話ルームのID
+	 * @param options.AgoraUid - AgoraのUID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/anonymous_calls/start_conference_call}
+	 *
+	 */
+	public joinCallAsAnonymous = async (options: {
+		conferenceId: number;
+		AgoraUid?: string;
+	}): Promise<ConferenceCallResponse> => {
+		return await this.callAPI.startAnonymousCall(options);
+	};
+
+	/**
+	 *
+	 * **匿名ユーザーとして通話から退出します**
+	 *
+	 * @param options.conferenceId - 通話ルームのID
+	 * @param options.AgoraUid - AgoraのUID
+	 *
+	 * @endpoint
+	 * `POST`: {@link https://api.yay.space/v1/anonymous_calls/leave_conference_call}
+	 *
+	 */
+	public leaveCallAsAnonymous = async (options: { conferenceId: number; AgoraUid?: string }) => {
+		return await this.callAPI.stopAnonymousCall(options);
 	};
 
 	// ChatAPI
