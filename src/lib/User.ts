@@ -544,7 +544,7 @@ export class UserAPI {
 	}) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v1/users/language`,
+			route: `v3/users/edit`,
 			json: {
 				nickname: options.nickname,
 				username: options.username,

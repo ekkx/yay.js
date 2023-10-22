@@ -64,7 +64,7 @@ export class CallAPI {
 	}): Promise<UsersByTimestampResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
-			route: `v1/calls/conferences/${options.callId}`,
+			route: `v1/calls/${options.callId}/users/invitable`,
 			requireAuth: false,
 			params: { from_timestamp: options.fromTimestamp, nickname: options.nickname },
 		});
@@ -126,7 +126,7 @@ export class CallAPI {
 			method: HttpMethod.POST,
 			route: `v1/calls/conference_calls/${options.callId}/invite`,
 			requireAuth: true,
-			json: { 'user_ids': options.userIds },
+			json: { user_ids: options.userIds },
 		});
 	};
 

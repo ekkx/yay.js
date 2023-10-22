@@ -140,7 +140,7 @@ export class AuthAPI {
 	public restoreUser = async (options: { userId: number }) => {
 		return await this.base.request({
 			method: HttpMethod.POST,
-			route: `v2/users/resend_confirm_email`,
+			route: `v2/users/restore`,
 			requireAuth: false,
 			json: {
 				user_id: options.userId,
@@ -167,8 +167,8 @@ export class AuthAPI {
 		emailGrantToken?: string;
 	}) => {
 		return await this.base.request({
-			method: HttpMethod.DELETE,
-			route: `v1/users/device_tokens`,
+			method: HttpMethod.POST,
+			route: `v3/users/login_update`,
 			requireAuth: false,
 			json: {
 				api_key: API_KEY,
