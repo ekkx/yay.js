@@ -56,7 +56,7 @@ export class PostAPI {
 			categoryId?: number;
 			gameTitle?: string;
 			joinableBy?: string;
-			messageTags?: MessageTag;
+			messageTags?: MessageTag[];
 			attachmentFilename?: string;
 			attachment2Filename?: string;
 			attachment3Filename?: string;
@@ -119,7 +119,7 @@ export class PostAPI {
 		mentionIds?: number[];
 		choices?: string[];
 		sharedUrl?: SharedUrl;
-		messageTags?: MessageTag;
+		messageTags?: MessageTag[];
 		attachmentFilename?: string;
 		attachment2Filename?: string;
 		attachment3Filename?: string;
@@ -173,7 +173,7 @@ export class PostAPI {
 		mentionIds?: number[];
 		choices?: string[];
 		sharedUrl?: SharedUrl;
-		messageTags?: MessageTag;
+		messageTags?: MessageTag[];
 		attachmentFilename?: string;
 		attachment2Filename?: string;
 		attachment3Filename?: string;
@@ -255,7 +255,7 @@ export class PostAPI {
 		mentionIds?: number[];
 		choices?: string[];
 		sharedUrl?: SharedUrl;
-		messageTags?: MessageTag;
+		messageTags?: MessageTag[];
 		attachmentFilename?: string;
 		attachment2Filename?: string;
 		attachment3Filename?: string;
@@ -772,7 +772,7 @@ export class PostAPI {
 		text?: string;
 		fontSize?: number;
 		color?: number;
-		messageTags?: MessageTag;
+		messageTags?: MessageTag[];
 	}): Promise<Post> => {
 		return await this.base.request({
 			method: HttpMethod.PUT,

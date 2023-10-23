@@ -5,15 +5,6 @@ import { RESTOptions } from './Types';
 import { BASE_API_URL } from './Constants';
 import { YJSLogger } from './Logger';
 
-/**
- * Rest API のクラス
- *
- * @remarks
- * サーバーサイドとのHTTP通信を担当するクラスです
- *
- * @see https://github.com/qvco/yay.js
- *
- */
 export class REST {
 	private logger: YJSLogger;
 	private api: AxiosInstance;

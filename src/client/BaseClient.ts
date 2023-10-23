@@ -32,6 +32,7 @@ import {
 import { Events } from '../util/Events';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { WebSocketInteractor } from '../util/WebSocketInteractor';
+import { MessageTag } from '../util/Models';
 import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, ErrorResponse, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
@@ -348,20 +349,6 @@ export class BaseClient extends EventEmitter {
 				} else {
 					throw new HTTPError(data as ErrorResponse);
 				}
-		}
-	}
-
-	protected getPostType(options: Record<string, any>): string {
-		if (options.choices) {
-			return 'survey';
-		} else if (options.sharedUrl) {
-			return 'shareable_url';
-		} else if (options.videoFileName) {
-			return 'video';
-		} else if (options.attachmentFileName) {
-			return 'image';
-		} else {
-			return 'text';
 		}
 	}
 }

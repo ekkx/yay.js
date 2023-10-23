@@ -1,6 +1,8 @@
 import { createHash, createHmac } from 'crypto';
 import util from 'util';
 import { API_KEY, API_VERSION_KEY, API_VERSION_NAME, SHARED_KEY } from './Constants';
+import { MessageTag } from './Models';
+import { YJSError } from './Errors';
 
 /**
  * **ユーザーをメンションします**
@@ -28,7 +30,50 @@ import { API_KEY, API_VERSION_KEY, API_VERSION_NAME, SHARED_KEY } from './Consta
  * @see https://github.com/qvco/yay.js
  */
 export const mention = (options: { userId: number; displayName: string }): string => {
-	return `${options.userId} ${options.displayName}`;
+	if (!options.displayName.length) {
+		throw new YJSError('displayNameは空白にできません。');
+	}
+	return `<@>${options.userId}:${options.displayName}<@/>`;
+};
+
+/** @ignore */
+export const buildMessageTags = (text: string): MessageTag[] => {
+	const messageTags: MessageTag[] = [];
+	const regex = /<@>(\d+):([^<]+)<@\/>/g;
+	let result;
+
+	let offsetAdjustment = 0;
+
+	while ((result = regex.exec(text)) !== null) {
+		const fullMatchLength = result[0].length;
+		const displayNameLength = result[2].length;
+
+		messageTags.push({
+			type: 'user',
+			userId: Number(result[1]),
+			offset: result.index - offsetAdjustment,
+			length: result[2].length,
+		});
+
+		offsetAdjustment += fullMatchLength - displayNameLength;
+	}
+
+	return messageTags;
+};
+
+/** @ignore */
+export const getPostType = (options: Record<string, any>): string => {
+	if (options.choices) {
+		return 'survey';
+	} else if (options.sharedUrl) {
+		return 'shareable_url';
+	} else if (options.videoFileName) {
+		return 'video';
+	} else if (options.attachmentFileName) {
+		return 'image';
+	} else {
+		return 'text';
+	}
 };
 
 /** @ignore */
