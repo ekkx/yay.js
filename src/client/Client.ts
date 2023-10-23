@@ -65,7 +65,8 @@ import {
 	VipGameRewardUrlResponse,
 	VoteSurveyResponse,
 } from '../util/Responses';
-import { GifImageCategory, GroupUser, MuteKeyword, Post, SharedUrl, Walkthrough } from '../util/Models';
+import { GifImageCategory, GroupUser, MessageTag, MuteKeyword, Post, SharedUrl, Walkthrough } from '../util/Models';
+import * as util from '../util/Utils';
 import { objectToSnake } from '../util/CaseConverter';
 
 /**
@@ -1359,11 +1360,18 @@ export class Client extends BaseClient {
 			videoFileName?: string;
 		} = {},
 	): Promise<Post> => {
-		const postType = this.getPostType(options);
+		const postType = util.getPostType(options);
 
 		let sharedUrlObj: SharedUrl | undefined = undefined;
+		let messageTags: MessageTag[] | undefined = undefined;
+
 		if (options.sharedUrl) {
 			sharedUrlObj = objectToSnake(await this.getUrlMetadata({ url: options.sharedUrl }));
+		}
+
+		if (options.text?.includes('<@>') && options.text.includes('<@/>')) {
+			messageTags = objectToSnake(util.buildMessageTags(options.text));
+			options.text = options.text.replace(/<@>(\d+):([^<]+)<@\/>/g, '$2');
 		}
 
 		return await this.postAPI.createPost({
@@ -1371,7 +1379,7 @@ export class Client extends BaseClient {
 			jwt: await this.getWebSocketToken(),
 			postType: postType,
 			sharedUrl: sharedUrlObj,
-			messageTags: undefined,
+			messageTags: messageTags,
 		});
 	};
 
@@ -1396,7 +1404,7 @@ export class Client extends BaseClient {
 		attachment9Filename?: string;
 		videoFileName?: string;
 	}): Promise<CreatePostResponse> => {
-		const postType = this.getPostType(options);
+		const postType = util.getPostType(options);
 
 		let sharedUrlObj: SharedUrl | undefined = undefined;
 		if (options.sharedUrl) {
@@ -1445,7 +1453,7 @@ export class Client extends BaseClient {
 		attachment9Filename?: string;
 		videoFileName?: string;
 	}): Promise<Post> => {
-		const postType = this.getPostType(options);
+		const postType = util.getPostType(options);
 
 		let sharedUrlObj: SharedUrl | undefined = undefined;
 		if (options.sharedUrl) {
