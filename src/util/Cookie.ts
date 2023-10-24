@@ -34,18 +34,18 @@ export class Cookie {
 		}
 	}
 
-	private isEncrypted(cookie: CookieProps): boolean {
+	private isEncrypted = (cookie: CookieProps): boolean => {
 		return cookie.authentication.accessToken.includes(':');
-	}
+	};
 
-	private generateKey(password: string): Buffer {
+	private generateKey = (password: string): Buffer => {
 		const key = Buffer.alloc(32);
 		const passwordBuffer = Buffer.from(password, 'utf8');
 		passwordBuffer.copy(key);
 		return key;
-	}
+	};
 
-	private encrypt(text: string): string {
+	private encrypt = (text: string): string => {
 		if (this.encryptionKey) {
 			const iv = crypto.randomBytes(16);
 			const cipher = crypto.createCipheriv(this.algorithm, this.encryptionKey, iv);
@@ -55,9 +55,9 @@ export class Cookie {
 		} else {
 			throw new YJSError('パスワードが設定されていません。');
 		}
-	}
+	};
 
-	private decrypt(text: string): string {
+	private decrypt = (text: string): string => {
 		if (this.encryptionKey) {
 			const [ivHex, encryptedTextHex] = text.split(':');
 			const iv = Buffer.from(ivHex, 'hex');
@@ -68,9 +68,9 @@ export class Cookie {
 		} else {
 			throw new YJSError('パスワードが設定されていません。');
 		}
-	}
+	};
 
-	private encryptCookie(cookie: CookieProps): CookieProps {
+	private encryptCookie = (cookie: CookieProps): CookieProps => {
 		return {
 			...cookie,
 			user: {
@@ -87,9 +87,9 @@ export class Cookie {
 				refreshToken: this.encrypt(cookie.authentication.refreshToken),
 			},
 		};
-	}
+	};
 
-	private decryptCookie(cookie: CookieProps): CookieProps {
+	private decryptCookie = (cookie: CookieProps): CookieProps => {
 		return {
 			...cookie,
 			user: {
@@ -106,32 +106,32 @@ export class Cookie {
 				refreshToken: this.decrypt(cookie.authentication.refreshToken),
 			},
 		};
-	}
+	};
 
-	public set(cookie: CookieProps): void {
+	public set = (cookie: CookieProps): void => {
 		this.email = cookie.user.email;
 		this.userId = cookie.user.userId;
 		this.uuid = cookie.user.uuid;
 		this.deviceUuid = cookie.device.deviceUuid;
 		this.accessToken = cookie.authentication.accessToken;
 		this.refreshToken = cookie.authentication.refreshToken;
-	}
+	};
 
-	private hash(str: string): string {
+	private hash = (str: string): string => {
 		const sha256Hash = crypto.createHash('sha256');
 		sha256Hash.update(str);
 		return sha256Hash.digest('hex');
-	}
+	};
 
-	public get(): CookieProps {
+	public get = (): CookieProps => {
 		return {
 			authentication: { accessToken: this.accessToken, refreshToken: this.refreshToken },
 			user: { email: this.email, userId: this.userId, uuid: this.uuid },
 			device: { deviceUuid: this.deviceUuid },
 		};
-	}
+	};
 
-	public save(cookie?: CookieProps): void {
+	public save = (cookie?: CookieProps): void => {
 		if (!this.saveCookie) {
 			return;
 		}
@@ -145,9 +145,9 @@ export class Cookie {
 		cookie.user.email = this.hash(cookie.user.email);
 
 		fs.writeFileSync(this.filePath, JSON.stringify(cookie), 'utf-8');
-	}
+	};
 
-	public load(email: string): CookieProps {
+	public load = (email: string): CookieProps => {
 		const data = fs.readFileSync(this.filePath, 'utf-8');
 		let loadedCookie: CookieProps = JSON.parse(data);
 
@@ -174,13 +174,13 @@ export class Cookie {
 		this.set(loadedCookie);
 
 		return this.get();
-	}
+	};
 
-	public destroy(): void {
+	public destroy = (): void => {
 		try {
 			fs.unlinkSync(this.filePath);
 		} catch (error) {
 			throw new YJSError('クッキーデータの削除に失敗しました。');
 		}
-	}
+	};
 }

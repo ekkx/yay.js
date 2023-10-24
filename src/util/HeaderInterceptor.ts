@@ -25,7 +25,7 @@ export class HeaderInterceptor {
 		this.connectionSpeed = '';
 	}
 
-	public intercept(): Record<string, any> {
+	public intercept = (): Record<string, any> => {
 		const headers: Record<string, any> = {
 			Host: BASE_HOST,
 			'User-Agent': this.userAgent,
@@ -49,21 +49,21 @@ export class HeaderInterceptor {
 		}
 
 		return headers;
-	}
+	};
 
-	public getClientIP(): string {
+	public getClientIP = (): string => {
 		return this.clientIP;
-	}
+	};
 
-	public getConnectionSpeed(): string {
+	public getConnectionSpeed = (): string => {
 		return this.connectionSpeed;
-	}
+	};
 
-	public setClientIP(clientIP: string): void {
+	public setClientIP = (clientIP: string): void => {
 		this.clientIP = clientIP;
-	}
+	};
 
-	public setConnectionSpeed(connectionSpeed: string): void {
+	public setConnectionSpeed = (connectionSpeed: string): void => {
 		this.connectionSpeed = connectionSpeed;
-	}
+	};
 }

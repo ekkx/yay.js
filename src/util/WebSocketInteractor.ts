@@ -16,7 +16,7 @@ export class WebSocketInteractor extends EventEmitter {
 		this.ws = undefined;
 	}
 
-	public connect(wsToken: string, intents: string[]): void {
+	public connect = (wsToken: string, intents: string[]): void => {
 		this.ws = new WebSocket(`${WEB_SOCKET_URL}?token=${wsToken}&app_version=${VERSION_NAME}`);
 
 		this.ws.on('message', (message: string) => {
@@ -81,22 +81,22 @@ export class WebSocketInteractor extends EventEmitter {
 		this.ws.on('error', (error: Error) => {
 			this.base.logger.error(`WebSocket Error: ${error.message}`);
 		});
-	}
+	};
 
-	private sendChannelCommand(command: string, intent: string) {
+	private sendChannelCommand = (command: string, intent: string) => {
 		if (!this.ws) return;
 		const channelJSON: ChannelCommand = {
 			command: command,
 			identifier: JSON.stringify({ channel: intent }),
 		};
 		this.ws.send(JSON.stringify(channelJSON));
-	}
+	};
 
-	public subscribe(intent: string): void {
+	public subscribe = (intent: string): void => {
 		this.sendChannelCommand('subscribe', intent);
-	}
+	};
 
-	public unsubscribe(intent: string): void {
+	public unsubscribe = (intent: string): void => {
 		this.sendChannelCommand('unsubscribe', intent);
-	}
+	};
 }

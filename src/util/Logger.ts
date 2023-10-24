@@ -25,7 +25,7 @@ export class YJSLogger {
 		});
 	}
 
-	private getColor(level: string): any {
+	private getColor = (level: string): any => {
 		switch (level) {
 			case 'info':
 				return colors.green;
@@ -38,36 +38,36 @@ export class YJSLogger {
 			default:
 				return colors.reset;
 		}
-	}
+	};
 
-	private log(level: string, message: string): void {
+	private log = (level: string, message: string): void => {
 		if (!this.disableLog) {
 			this.logger.log(level, message);
 		}
-	}
+	};
 
-	public info(message: string): void {
+	public info = (message: string): void => {
 		this.log('info', message);
-	}
+	};
 
-	public warn(message: string): void {
+	public warn = (message: string): void => {
 		this.log('warn', message);
-	}
+	};
 
-	public error(message: string): void {
+	public error = (message: string): void => {
 		this.log('error', message);
-	}
+	};
 
-	public debug(message: string): void {
+	public debug = (message: string): void => {
 		this.log('debug', message);
-	}
+	};
 
-	public setDebugMode(debugMode: boolean): void {
+	public setDebugMode = (debugMode: boolean): void => {
 		this.debugMode = debugMode;
 		this.logger.level = debugMode ? 'debug' : 'info';
-	}
+	};
 
-	public setDisableLog(disableLog: boolean): void {
+	public setDisableLog = (disableLog: boolean): void => {
 		this.disableLog = disableLog;
-	}
+	};
 }

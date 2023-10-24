@@ -32,7 +32,6 @@ import {
 import { Events } from '../util/Events';
 import { HeaderInterceptor } from '../util/HeaderInterceptor';
 import { WebSocketInteractor } from '../util/WebSocketInteractor';
-import { MessageTag } from '../util/Models';
 import { LoginUserResponse } from '../util/Responses';
 import { ClientOptions, CookieProps, ErrorResponse, LoginEmailUserRequest, RequestOptions } from '../util/Types';
 import { YJSLogger } from '../util/Logger';
@@ -152,7 +151,7 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.refreshToken;
 	}
 
-	private async authenticate(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+	private authenticate = async (options: LoginEmailUserRequest): Promise<LoginUserResponse> => {
 		try {
 			this.cookie.load(options.email);
 			return {
@@ -181,9 +180,9 @@ export class BaseClient extends EventEmitter {
 			this.cookie.save();
 			return res;
 		}
-	}
+	};
 
-	protected async prepare(options: LoginEmailUserRequest): Promise<LoginUserResponse> {
+	protected prepare = async (options: LoginEmailUserRequest): Promise<LoginUserResponse> => {
 		const res = await this.authenticate(options);
 
 		this.logger.info(`yay.js v${packageVersion} - UID: ${this.userId}`);
@@ -208,9 +207,9 @@ export class BaseClient extends EventEmitter {
 		if (!policyResponse.latestTermsOfUseAgreed) this.miscAPI.acceptPolicyAgreement({ type: 'terms_of_use' });
 
 		return res;
-	}
+	};
 
-	public async request(options: RequestOptions): Promise<any> {
+	public request = async (options: RequestOptions): Promise<any> => {
 		// X-Client-IPがヘッダーになければ設定する
 		if (!this.headerInterceptor.getClientIP() && options.route !== 'v2/users/timestamp') {
 			const res = await this.userAPI.getTimestamp();
@@ -296,17 +295,17 @@ export class BaseClient extends EventEmitter {
 		if (response) {
 			return this.handleResponse(response);
 		}
-	}
+	};
 
-	private isAccessTokenExpiredError(response: AxiosResponse): boolean {
+	private isAccessTokenExpiredError = (response: AxiosResponse): boolean => {
 		return (
 			response.status === 401 &&
 			(response.data.errorCode === ErrorCode.AccessTokenExpired ||
 				response.data.errorCode === ErrorCode.AccessTokenInvalid)
 		);
-	}
+	};
 
-	private isRateLimitError(response: AxiosResponse): boolean {
+	private isRateLimitError = (response: AxiosResponse): boolean => {
 		if (response.status === 429) {
 			return true;
 		}
@@ -316,9 +315,9 @@ export class BaseClient extends EventEmitter {
 			}
 		}
 		return false;
-	}
+	};
 
-	private async refreshTokens(): Promise<void> {
+	private refreshTokens = async (): Promise<void> => {
 		const res = await this.authAPI.getToken({ grantType: 'refresh_token', refreshToken: this.refreshToken });
 
 		this.cookie.set({
@@ -326,9 +325,9 @@ export class BaseClient extends EventEmitter {
 			authentication: { accessToken: res.accessToken, refreshToken: res.refreshToken },
 		});
 		this.cookie.save();
-	}
+	};
 
-	private handleResponse(response: AxiosResponse): any {
+	private handleResponse = (response: AxiosResponse): any => {
 		const { status, data } = response;
 		switch (status) {
 			case 400:
@@ -350,5 +349,5 @@ export class BaseClient extends EventEmitter {
 					throw new HTTPError(data as ErrorResponse);
 				}
 		}
-	}
+	};
 }

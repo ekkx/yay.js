@@ -22,7 +22,7 @@ export class REST {
 		});
 	}
 
-	private filterRequests(obj?: RequestObject): RequestObject | undefined {
+	private filterRequests = (obj?: RequestObject): RequestObject | undefined => {
 		if (!obj) {
 			return undefined;
 		}
@@ -33,9 +33,9 @@ export class REST {
 			}
 		}
 		return newObj;
-	}
+	};
 
-	public async request(options: RequestOptions): Promise<AxiosResponse> {
+	public request = async (options: RequestOptions): Promise<AxiosResponse> => {
 		const config: AxiosRequestConfig = {
 			method: options.method,
 			url: options.route,
@@ -66,5 +66,5 @@ export class REST {
 		this.logger.debug(responseDetails);
 
 		return response;
-	}
+	};
 }
