@@ -11,8 +11,8 @@
 		<a href="https://www.npmjs.com/package/yay.js"><img src="https://img.shields.io/npm/dt/yay.js.svg?maxAge=3600" alt="npm downloads" /></a>
 	</p>
     <p>
-        <a href="https://github.com/qvco/yay.js/tree/master/docs/javascript"><img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" height=30px></a>
-        <a href="https://github.com/qvco/yay.js/tree/master/docs/javascript"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height=30px></a>
+        <a href="https://qvco.github.io/yay.js"><img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" height=30px></a>
+        <a href="https://qvco.github.io/yay.js"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" height=30px></a>
     </p>
 </div>
 
@@ -90,7 +90,7 @@ client.login({
 
 ## Links
 
-- [Documentation](https://github.com/qvco/yay.js)
+- [Documentation](https://qvco.github.io/yay.js)
 - [GitHub](https://github.com/qvco/yay.js)
 - [npm](https://www.npmjs.com/package/yay.js)
 - [Discord Server](https://discord.gg/Y8f2K74URa)
