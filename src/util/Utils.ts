@@ -1,8 +1,23 @@
 import { createHash, createHmac } from 'crypto';
+import path from 'path';
 import util from 'util';
 import { API_KEY, API_VERSION_KEY, API_VERSION_NAME, SHARED_KEY } from './Constants';
-import { MessageTag } from './Models';
+import { Attachment, MessageTag } from './Models';
 import { YJSError } from './Errors';
+
+export const getFilenameAndExtension = (filePath: string): { filename: string; extension: string } => {
+	const filename: string = path.basename(filePath);
+	const extension: string = path.extname(filePath);
+	return { filename, extension };
+};
+
+export const isValidImageFormat = (extension: string): boolean => {
+	return /\.(jpg|jpeg|png|gif)$/.test(extension);
+};
+
+export const getHashedFilename = (att: Attachment, type: string, key: number, uuid: string): string => {
+	return '';
+};
 
 /**
  * **ユーザーをメンションします**
