@@ -4,6 +4,8 @@ test.ts
 test_compiled.ts
 cookie.json
 
+sample.*
+
 # Logs
 logs
 *.log
