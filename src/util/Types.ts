@@ -174,7 +174,7 @@ export interface ErrorResponse {
 	banUntil: number | null;
 }
 
-export const GatewayIntents = {
+export const GatewayIntents: { [key: string]: string } = {
 	ChatMessage: 'ChatRoomChannel',
 	GroupUpdates: 'GroupUpdatesChannel',
 };
@@ -182,7 +182,7 @@ export const GatewayIntents = {
 /**
  * 投稿のタイプ
  */
-export const PostType = {
+export const PostType: { [key: string]: string } = {
 	text: 'text',
 	media: 'media',
 	image: 'image',
@@ -195,7 +195,7 @@ export const PostType = {
 /**
  * 通話のタイプ
  */
-export const CallType = {
+export const CallType: { [key: string]: string } = {
 	voice: 'voice',
 	video: 'vdo',
 };
@@ -203,7 +203,7 @@ export const CallType = {
 /**
  * 画像のタイプ
  */
-export const ImageType = {
+export const ImageType: { [key: string]: string } = {
 	post: 'post',
 	chatMessage: 'chat_message',
 	chatBackground: 'chat_background',
@@ -218,7 +218,7 @@ export const ImageType = {
 /**
  * 共有のタイプ
  */
-export const ShareableType = {
+export const ShareableType: { [key: string]: string } = {
 	group: 'group',
 	thread: 'thread',
 };

@@ -7,7 +7,7 @@
  * @see https://github.com/qvco/yay.js
  *
  */
-export const Events = {
+export const Events: { [key: string]: string } = {
 	ChatRequest: 'chatRequest',
 	ChatRoomDelete: 'chatRoomDelete',
 	ClientReady: 'ready',
