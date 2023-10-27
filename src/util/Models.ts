@@ -1,3 +1,12 @@
+export interface Attachment {
+	file: Buffer;
+	fileName: string;
+	originalFileName: string;
+	originalExtension: string;
+	naturalWidth: number;
+	naturalHeight: number;
+	isThumb: boolean;
+}
 export interface User {
 	ageVerified?: boolean;
 	biography?: string;
