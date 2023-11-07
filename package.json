@@ -17,7 +17,7 @@
         "build": "tsc && rimraf ./build/package.json ./build/src",
         "test": "jest",
         "docs": "typedoc",
-        "publish": "npm publish --access public"
+        "out": "npm run build && npm run docs && npm publish --access public"
     },
     "repository": "https://github.com/qvco/yay.js",
     "keywords": [
