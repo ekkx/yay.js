@@ -1,6 +1,6 @@
 {
     "name": "yay.js",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Simple and intuitive, yet full featured API wrapper for https://yay.space written in TypeScript/JavaScript.",
     "type": "commonjs",
     "source": "./src/index.ts",
@@ -38,7 +38,6 @@
     "dependencies": {
         "axios": "^1.5.0",
         "colors": "^1.4.0",
-        "sharp": "^0.32.6",
         "uuid": "^9.0.1",
         "winston": "^3.10.0",
         "ws": "^8.14.2"

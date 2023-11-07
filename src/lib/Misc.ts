@@ -14,7 +14,6 @@ import { HttpMethod, ImageType } from '../util/Types';
 import { API_VERSION_NAME, ID_CARD_CHECK_URL } from '../util/Constants';
 import { Attachment } from '../util/Models';
 import { getFilenameAndExtension, getHashedFilename, isValidImageFormat } from '../util/Utils';
-import sharp from 'sharp';
 import { v4 as uuid } from 'uuid';
 
 /**
@@ -144,54 +143,54 @@ export class MiscAPI {
 		});
 	};
 
-	public uploadImage = async (options: { imagePaths: string[]; uploadImageType: string }) => {
-		const type: string = options.uploadImageType;
+	// public uploadImage = async (options: { imagePaths: string[]; uploadImageType: string }) => {
+	// 	const type: string = options.uploadImageType;
 
-		if (!ImageType[type]) {
-			throw new Error("'uploadImageType'が不正です。");
-		}
+	// 	if (!ImageType[type]) {
+	// 		throw new Error("'uploadImageType'が不正です。");
+	// 	}
 
-		let _files: Attachment[] = [];
+	// 	let _files: Attachment[] = [];
 
-		await Promise.all(
-			options.imagePaths.map(async (imagePath, key) => {
-				const { filename, extension } = getFilenameAndExtension(imagePath);
+	// 	await Promise.all(
+	// 		options.imagePaths.map(async (imagePath, key) => {
+	// 			const { filename, extension } = getFilenameAndExtension(imagePath);
 
-				if (!isValidImageFormat(extension)) {
-					throw new Error(`画像のフォーマットが不正です。[${filename}]`);
-				}
+	// 			if (!isValidImageFormat(extension)) {
+	// 				throw new Error(`画像のフォーマットが不正です。[${filename}]`);
+	// 			}
 
-				sharp(imagePath).toBuffer(async (error, file, info) => {
-					if (error) {
-						throw new Error(error.message);
-					} else {
-						const resizedImage = info.format === 'gif' ? file : await sharp(file).resize(450).toBuffer();
+	// 			sharp(imagePath).toBuffer(async (error, file, info) => {
+	// 				if (error) {
+	// 					throw new Error(error.message);
+	// 				} else {
+	// 					const resizedImage = info.format === 'gif' ? file : await sharp(file).resize(450).toBuffer();
 
-						const originalAttachment: Attachment = {
-							file: file,
-							fileName: '',
-							originalFileName: filename,
-							originalExtension: extension,
-							naturalWidth: info.width,
-							naturalHeight: info.height,
-							isThumb: false,
-						};
+	// 					const originalAttachment: Attachment = {
+	// 						file: file,
+	// 						fileName: '',
+	// 						originalFileName: filename,
+	// 						originalExtension: extension,
+	// 						naturalWidth: info.width,
+	// 						naturalHeight: info.height,
+	// 						isThumb: false,
+	// 					};
 
-						const thumbnailAttachment: Attachment = {
-							...originalAttachment,
-							file: resizedImage,
-							isThumb: true,
-						};
+	// 					const thumbnailAttachment: Attachment = {
+	// 						...originalAttachment,
+	// 						file: resizedImage,
+	// 						isThumb: true,
+	// 					};
 
-						const shortUuid: string = uuid().replace(/-/g, '').slice(0, 16);
+	// 					const shortUuid: string = uuid().replace(/-/g, '').slice(0, 16);
 
-						originalAttachment.fileName = getHashedFilename(originalAttachment, type, key, shortUuid);
-						thumbnailAttachment.fileName = getHashedFilename(thumbnailAttachment, type, key, shortUuid);
-					}
-				});
-			}),
-		);
-	};
+	// 					originalAttachment.fileName = getHashedFilename(originalAttachment, type, key, shortUuid);
+	// 					thumbnailAttachment.fileName = getHashedFilename(thumbnailAttachment, type, key, shortUuid);
+	// 				}
+	// 			});
+	// 		}),
+	// 	);
+	// };
 
 	/** @ignore */
 	private get uuid(): string {
