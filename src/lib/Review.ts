@@ -1,6 +1,6 @@
 import { HttpMethod } from '../util/Types';
 import { BaseClient } from '../client/BaseClient';
-import { ReviewsResponse } from 'util/Responses';
+import { ReviewsResponse } from '../util/Responses';
 
 /**
  * **レターAPI**
