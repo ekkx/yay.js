@@ -1,6 +1,6 @@
 {
     "name": "yay.js",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Simple and intuitive, yet full featured API wrapper for https://yay.space written in TypeScript/JavaScript.",
     "type": "commonjs",
     "source": "./src/index.ts",
@@ -17,7 +17,7 @@
         "build": "tsc && rimraf ./build/package.json ./build/src",
         "test": "jest",
         "docs": "typedoc",
-        "out": "npm run build && npm run docs && npm publish --access public"
+        "out": "npm run build && npm publish --access public"
     },
     "repository": "https://github.com/qvco/yay.js",
     "keywords": [
