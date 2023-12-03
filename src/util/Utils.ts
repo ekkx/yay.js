@@ -48,7 +48,7 @@ export const mention = (options: { userId: number; displayName: string }): strin
 	if (!options.displayName.length) {
 		throw new YJSError('displayNameは空白にできません。');
 	}
-	return `<@>${options.userId}:${options.displayName}<@/>`;
+	return `<@>${options.userId}:@${options.displayName}<@/>`;
 };
 
 /** @ignore */
