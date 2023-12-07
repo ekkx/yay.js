@@ -584,7 +584,7 @@ export class UserAPI {
 
 	/** @ignore */
 	private get signedInfo(): string {
-		return util.md5(this.deviceUuid, Math.floor(Date.now() / 1000), false);
+		return util.md5(this.uuid, Math.floor(Date.now() / 1000), true);
 	}
 
 	/** @ignore */
