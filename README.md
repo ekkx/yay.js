@@ -22,8 +22,10 @@
 
 - オブジェクト指向
 - 非同期処理に対応
-- クッキーの暗号化
+- クッキーに対応
 - API を 100% カバー
+
+[Python 版はこちら](https://github.com/qvco/yaylib)
 
 ## Installation
 
@@ -93,6 +95,7 @@ client.login({
 - [Documentation](https://qvco.github.io/yay.js)
 - [GitHub](https://github.com/qvco/yay.js)
 - [npm](https://www.npmjs.com/package/yay.js)
+- [For Python](https://github.com/qvco/yaylib)
 - [Discord Server](https://discord.gg/Y8f2K74URa)
 
 ## Contributing
