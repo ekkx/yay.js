@@ -92,7 +92,7 @@ export class BaseClient extends EventEmitter {
 		this.retryStatuses = [500, 502, 503, 504];
 		this.intents = options.intents ?? [];
 
-		this.cookie = new Cookie(options.saveCookie, options.cookieFilePath, options.cookiePassword);
+		this.cookie = new Cookie(options.saveCookie, options.cookieDirPath, options.cookieFilename, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
 
 		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie);

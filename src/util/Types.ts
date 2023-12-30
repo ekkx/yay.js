@@ -67,9 +67,15 @@ export type ClientOptions = {
 	/**
 	 * クッキーを保存するパス
 	 *
-	 * @defaultValue `'cookie'`
+	 * @defaultValue 作業デレクトリ
 	 */
-	cookieFilePath?: string;
+	cookieDirPath?: string;
+	/**
+	 * クッキーを保存するファイル名
+	 *
+	 * @defaultValue `'cookie.json'`
+	 */
+	cookieFilename?: string;
 	/**
 	 * 取得するWebSocketイベントの範囲
 	 *

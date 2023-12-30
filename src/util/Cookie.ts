@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { CookieProps } from './Types';
 import { YJSError } from './Errors';
 
-const defaultFilePath = process.cwd() + '/cookie.json';
+const defaultFilePath = process.cwd() + '/';
 
 export class Cookie {
 	private algorithm: string;
@@ -18,16 +18,25 @@ export class Cookie {
 	public accessToken: string;
 	public refreshToken: string;
 
-	public constructor(saveCookie: boolean = true, filePath: string = defaultFilePath, password?: string) {
+	public constructor(
+		saveCookie: boolean = true,
+		dirPath: string = defaultFilePath,
+		filename: string = 'cookie.json',
+		password?: string,
+	) {
 		this.algorithm = 'aes-256-ctr';
 		this.saveCookie = saveCookie;
-		this.filePath = filePath;
+		this.filePath = dirPath + filename;
 		this.email = '';
 		this.userId = 0;
 		this.uuid = uuid();
 		this.deviceUuid = uuid();
 		this.accessToken = '';
 		this.refreshToken = '';
+
+		if (!fs.existsSync(dirPath)) {
+			fs.mkdirSync(dirPath);
+		}
 
 		if (password) {
 			this.encryptionKey = this.generateKey(password);
