@@ -437,6 +437,7 @@ export class UserAPI {
 		notRecentGomimushi?: boolean;
 		recentlyCreated?: boolean;
 		samePrefecture?: boolean;
+		prefecture?: string;
 		saveRecentSearch?: boolean;
 	}): Promise<UsersResponse> => {
 		return await this.base.request({
@@ -452,6 +453,7 @@ export class UserAPI {
 				not_recent_gomimushi: options.notRecentGomimushi,
 				recently_created: options.recentlyCreated,
 				same_prefecture: options.samePrefecture,
+				prefecture: options.prefecture,
 				save_recent_search: options.saveRecentSearch,
 			},
 			requireAuth: false,

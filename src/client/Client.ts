@@ -2062,6 +2062,7 @@ export class Client extends BaseClient {
 		notRecentGomimushi?: boolean;
 		recentlyCreated?: boolean;
 		samePrefecture?: boolean;
+		prefecture?: string;
 		saveRecentSearch?: boolean;
 	}): Promise<UsersResponse> => {
 		return await this.userAPI.searchUsers(options);
