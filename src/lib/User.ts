@@ -428,8 +428,8 @@ export class UserAPI {
 	};
 
 	public searchUsers = async (options: {
-		gender?: string;
-		nickname?: number;
+		gender?: number;
+		nickname?: string;
 		title?: string;
 		biography?: string;
 		fromTimestamp?: number;
