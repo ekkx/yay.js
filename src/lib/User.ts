@@ -439,6 +439,8 @@ export class UserAPI {
 		samePrefecture?: boolean;
 		prefecture?: string;
 		saveRecentSearch?: boolean;
+		number?: number;
+		page?: number;
 	}): Promise<UsersResponse> => {
 		return await this.base.request({
 			method: HttpMethod.GET,
@@ -455,6 +457,8 @@ export class UserAPI {
 				same_prefecture: options.samePrefecture,
 				prefecture: options.prefecture,
 				save_recent_search: options.saveRecentSearch,
+				number: options.number,
+				page: options.page,
 			},
 			requireAuth: false,
 		});

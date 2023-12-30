@@ -2064,6 +2064,8 @@ export class Client extends BaseClient {
 		samePrefecture?: boolean;
 		prefecture?: string;
 		saveRecentSearch?: boolean;
+		number?: number;
+		page?: number;
 	}): Promise<UsersResponse> => {
 		return await this.userAPI.searchUsers(options);
 	};
