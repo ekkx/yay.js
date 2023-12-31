@@ -1,6 +1,6 @@
 {
     "name": "yay.js",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "description": "Simple and intuitive, yet full featured API wrapper for https://yay.space written in TypeScript/JavaScript.",
     "type": "commonjs",
     "source": "./src/index.ts",
