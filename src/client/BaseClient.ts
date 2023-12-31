@@ -151,6 +151,17 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.refreshToken;
 	}
 
+	public setTokens = (options: { accessToken: string; refresh_token?: string }) => {
+		this.cookie.set({
+			...this.cookies,
+			authentication: {
+				...this.cookies.authentication,
+				accessToken: options.accessToken,
+				refreshToken: options.refresh_token ?? this.cookie.refreshToken,
+			},
+		});
+	};
+
 	private authenticate = async (options: LoginEmailUserRequest): Promise<LoginUserResponse> => {
 		try {
 			this.cookie.load(options.email);
