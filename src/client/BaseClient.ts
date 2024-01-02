@@ -151,13 +151,26 @@ export class BaseClient extends EventEmitter {
 		return this.cookie.refreshToken;
 	}
 
-	public setTokens = (options: { accessToken: string; refresh_token?: string }) => {
+	public setCookie = (options: {
+		accessToken: string;
+		refresh_token?: string;
+		userId?: number;
+		email?: string;
+		uuid?: string;
+		deviceUuid?: string;
+	}) => {
 		this.cookie.set({
-			...this.cookies,
 			authentication: {
-				...this.cookies.authentication,
 				accessToken: options.accessToken,
 				refreshToken: options.refresh_token ?? this.cookie.refreshToken,
+			},
+			user: {
+				email: options.email ?? this.cookie.email,
+				userId: options.userId ?? this.cookie.userId,
+				uuid: options.uuid ?? this.cookie.uuid,
+			},
+			device: {
+				deviceUuid: options.deviceUuid ?? this.cookie.deviceUuid,
 			},
 		});
 	};
