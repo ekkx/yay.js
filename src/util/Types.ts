@@ -1,5 +1,6 @@
 import { AxiosProxyConfig } from 'axios';
 import { YJSLogger } from './Logger';
+import { Cookie } from './Cookie';
 
 /**
  * RESTクラスのrequest関数の引数
@@ -52,6 +53,12 @@ export type ClientOptions = {
 	 * @defaultValue `true`
 	 */
 	waitOnRateLimit?: boolean;
+	/**
+	 * 独自のクッキー
+	 *
+	 * @defaultValue `true`
+	 */
+	cookie?: Cookie;
 	/**
 	 * クッキーを保存するか
 	 *

@@ -92,7 +92,9 @@ export class BaseClient extends EventEmitter {
 		this.retryStatuses = [500, 502, 503, 504];
 		this.intents = options.intents ?? [];
 
-		this.cookie = new Cookie(options.saveCookie, options.cookieDirPath, options.cookieFilename, options.cookiePassword);
+		this.cookie =
+			options.cookie ??
+			new Cookie(options.saveCookie, options.cookieDirPath, options.cookieFilename, options.cookiePassword);
 		this.logger = new YJSLogger(options.debugMode, options.disableLog);
 
 		this.headerInterceptor = new HeaderInterceptor(DEFAULT_DEVICE, this.cookie);
@@ -150,30 +152,6 @@ export class BaseClient extends EventEmitter {
 	protected get refreshToken(): string {
 		return this.cookie.refreshToken;
 	}
-
-	public setCookie = (options: {
-		accessToken: string;
-		refresh_token?: string;
-		userId?: number;
-		email?: string;
-		uuid?: string;
-		deviceUuid?: string;
-	}) => {
-		this.cookie.set({
-			authentication: {
-				accessToken: options.accessToken,
-				refreshToken: options.refresh_token ?? this.cookie.refreshToken,
-			},
-			user: {
-				email: options.email ?? this.cookie.email,
-				userId: options.userId ?? this.cookie.userId,
-				uuid: options.uuid ?? this.cookie.uuid,
-			},
-			device: {
-				deviceUuid: options.deviceUuid ?? this.cookie.deviceUuid,
-			},
-		});
-	};
 
 	private authenticate = async (options: LoginEmailUserRequest): Promise<LoginUserResponse> => {
 		try {

@@ -1,4 +1,5 @@
 export * from './client/Client';
+export * from './util/Cookie';
 export * from './util/Events';
 export * from './util/Errors';
 export * from './util/Models';
