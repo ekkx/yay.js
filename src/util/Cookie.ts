@@ -146,6 +146,10 @@ export class Cookie {
 		return cookie;
 	};
 
+	public getDecrypted = (encryptedCookie: CookieProps): CookieProps => {
+		return this.decryptCookie(encryptedCookie);
+	};
+
 	public save = (cookie?: CookieProps): void => {
 		if (!this.saveCookie) {
 			return;
