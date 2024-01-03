@@ -126,7 +126,7 @@ export class Cookie {
 		this.refreshToken = cookie.authentication.refreshToken;
 	};
 
-	private hash = (str: string): string => {
+	public hash = (str: string): string => {
 		const sha256Hash = crypto.createHash('sha256');
 		sha256Hash.update(str);
 		return sha256Hash.digest('hex');
@@ -138,6 +138,12 @@ export class Cookie {
 			user: { email: this.email, userId: this.userId, uuid: this.uuid },
 			device: { deviceUuid: this.deviceUuid },
 		};
+	};
+
+	public getEncrypted = (): CookieProps => {
+		const cookie = this.encryptCookie(this.get());
+		cookie.user.email = this.hash(cookie.user.email);
+		return cookie;
 	};
 
 	public save = (cookie?: CookieProps): void => {
