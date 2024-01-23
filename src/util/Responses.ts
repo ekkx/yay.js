@@ -11,14 +11,12 @@ import {
 	Genre,
 	GifImageCategory,
 	Gift,
-	GiftCount,
 	GiftingAbility,
 	Group,
 	GroupCategory,
 	GroupSetting,
 	GroupUser,
 	Message,
-	MessageTag,
 	MuteKeyword,
 	PopularWord,
 	Post,
@@ -28,8 +26,6 @@ import {
 	RefreshCounterRequest,
 	Review,
 	Settings,
-	Shareable,
-	SharedUrl,
 	StickerPack,
 	Survey,
 	ThreadInfo,
@@ -37,7 +33,6 @@ import {
 	User,
 	UserSetting,
 	UserWrapper,
-	Video,
 } from './Models';
 
 export interface BlockedUserIdsResponse {

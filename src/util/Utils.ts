@@ -15,6 +15,7 @@ export const isValidImageFormat = (extension: string): boolean => {
 	return /\.(jpg|jpeg|png|gif)$/.test(extension);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getHashedFilename = (att: Attachment, type: string, key: number, uuid: string): string => {
 	return '';
 };

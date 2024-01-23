@@ -16,6 +16,7 @@ export class REST {
 			proxy: options.proxy,
 			timeout: options.timeout ?? 30000,
 			headers: options.defaultHeaders,
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			validateStatus: function (status) {
 				return true;
 			},
