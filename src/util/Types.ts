@@ -14,7 +14,7 @@ export type RESTOptions = {
 };
 
 export type RequestOptions = {
-	method: HttpMethod;
+	method: 'GET' | 'POST' | 'PUT' | 'DELETE';
 	route: string;
 	requireAuth: boolean;
 	params?: Record<string, any>;
@@ -167,17 +167,6 @@ export interface EventMessage {
 	data?: Record<string, any>;
 	message?: Record<string, any>;
 	event?: string;
-}
-
-/**
- * リクエストを送信する際のAPIメソッド
- */
-export enum HttpMethod {
-	DELETE = 'DELETE',
-	GET = 'GET',
-	PATCH = 'PATCH',
-	POST = 'POST',
-	PUT = 'PUT',
 }
 
 export interface ErrorResponse {
